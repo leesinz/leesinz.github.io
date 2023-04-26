@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>vulnhub_Pwnlab</title>
+    <link href="/2023/04/26/vulnhub-Pwnlab/"/>
+    <url>/2023/04/26/vulnhub-Pwnlab/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Pwnlab"><a href="#Pwnlab" class="headerlink" title="Pwnlab"></a>Pwnlab</h1><p>nmap扫端口&amp;服务：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323110917405.png" alt="image-20230323110917405"></p><p>主要是rpc和80端口的http服务。</p><p>使用rpcinfo进行探测：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323111530034.png" alt="image-20230323111530034"></p><p>无有效信息。</p><p>dirsearch爆破后台敏感目录：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323111545504.png" alt="image-20230323111545504"></p><p>首先直接访问80端口：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134559022.png" alt="image-20230323134559022"></p><p>访问&#x2F;upload:</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134621886.png" alt="image-20230323134621886"></p><p>很明显为上传的文件。</p><p>接着访问&#x2F;upload.php:</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134633666.png" alt="image-20230323134633666"></p><p>提示需要登录。</p><p>接下来访问login页面，出现登录框：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134652498.png" alt="image-20230323134652498"></p><p>burp抓包：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323135618265.png" alt="image-20230323135618265"></p><p>输入单引号，无变化，保存报文内容跑sqlmap，无果。</p><p>对&#x2F;login.php进行同样的尝试：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323135734466.png" alt="image-20230323135734466"></p><p>同样失败。</p><p>尝试对upload发送options请求：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323135830977.png" alt="image-20230323135830977"></p><p>不允许put方法，无法直接写马。</p><p>仔细观察流量，发现登录页面的url为&#x2F;?page&#x3D;login，考虑存在文件包含漏洞。</p><p>直接尝试&#x2F;etc&#x2F;passwd：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323140414126.png" alt="image-20230323140414126"></p><p>无回显。</p><p>尝试伪协议读取源码。目前url为<a href="http://192.168.59.30/index.php?page=login%EF%BC%8C%E8%80%8Cconfig.php%E4%B8%BAhttp://192.168.59.30/config.php%EF%BC%8C%E5%9B%A0%E6%AD%A4%E9%9C%80%E8%A6%81%E8%BF%94%E5%9B%9E%E4%B8%80%E7%BA%A7%E7%9B%AE%E5%BD%95%EF%BC%9A">http://192.168.59.30/index.php?page=login，而config.php为http://192.168.59.30/config.php，因此需要返回一级目录：</a></p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323140649744.png" alt="image-20230323140649744"></p><p>成功读取，base64解密：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323140713926.png" alt="image-20230323140713926"></p><p>得到数据库的账号密码，连接数据库：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323141140279.png" alt="image-20230323141140279"></p><p>base64解密后，得到kent，mike和kane3个用户的密码。ssh连接失败，端口未开放：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323141906558.png" alt="image-20230323141906558"></p><p>无法直接ssh，因此登录尝试文件上传：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323142523888.png" alt="image-20230323142523888"></p><p>上传php马，提示不允许的后缀，只能上传图片。</p><p>首先考虑apache多后缀解析漏洞，上传pwnlab.php.jpg:</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144220196.png" alt="image-20230323144220196"></p><p>未绕过。</p><p>接下来考虑上传图片马，再配合解析漏洞或者文件包含漏洞将其作为php文件解析。</p><p>&#x2F;index.php?page&#x3D;xxx该处存在文件包含漏洞，读取index.php源码：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144332964.png" alt="image-20230323144332964"></p><p>base64 decode：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144356432.png" alt="image-20230323144356432"></p><p>这里如果cookie中lang参数又存在文件包含。</p><p>先制作图片马，echo -e代表允许反斜杠解析，GIF89a为gif文件的文件头：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144857630.png" alt="image-20230323144857630"></p><p>上传成功：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323145006507.png" alt="image-20230323145006507"></p><p>在cookie中输入gif文件的url，将php马包含，kali开启监听：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323145136383.png" alt="image-20230323145136383"></p><p>成功获取shell。</p><p>当前为www-data权限，通过前面获取的账号密码，可以登录到kent和kane账户。</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323145609941.png" alt="image-20230323145609941"></p><p>kent目录下无文件，切换到kane，发现msgmike。</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323150733143.png" alt="image-20230323150733143"></p><p>msgmike为elf可执行文件，并且有suid，strings查看发现存在命令cat &#x2F;home&#x2F;mike&#x2F;msg.txt。</p><p>直接运行：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323150837248.png" alt="image-20230323150837248"></p><p>提示无cat文件。因此直接新建cat文件，内容为&#x2F;bin&#x2F;bash，并且将$PATH参数修改，默认先使用我们新建的cat：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323151050920.png" alt="image-20230323151050920"></p><p>成功提权到mike，此时记得将$PATH恢复。</p><p>进入&#x2F;home&#x2F;mike目录下，存在msg2root文件，通过命名判断，需要通过该文件从mike提权到root权限。</p><p>将msg2root放入ida：</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152452183.png" alt="image-20230323152452183"></p><p>发现system函数。</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152547004.png" alt="image-20230323152547004"></p><p>并且msg2root为root权限，因此考虑直接使用msg2root执行&#x2F;bin&#x2F;bash命令拿到root shell。</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152844893.png" alt="image-20230323152844893"></p><p>这里类似于远程代码执行漏洞，通过；截断即可执行命令，&#x2F;bin&#x2F;bash失败，尝试&#x2F;bin&#x2F;sh:</p><p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152925140.png" alt="image-20230323152925140"></p><p>成功。经过尝试&amp;等符号同样可行。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_Mr-robot</title>
+    <link href="/2023/04/26/vulnhub-Mr-robot/"/>
+    <url>/2023/04/26/vulnhub-Mr-robot/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Mr-robot"><a href="#Mr-robot" class="headerlink" title="Mr-robot"></a>Mr-robot</h1><p>nmap扫描，开放了80和443端口：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322143637974.png" alt="image-20230322143637974"></p><p>浏览器访问：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322143728895.png" alt="image-20230322143728895"></p><p>后台目录爆破：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322145023429.png" alt="image-20230322145023429"></p><p>发现robots.txt，访问：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322145306410.png" alt="image-20230322145306410"></p><p>发现两个文件,fsocity.dic，key-1-of-3.txt，分别查看：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322145336763.png" alt="image-20230322145336763"></p><p>其中fsocity.dic是一个字典，有80万行，接着访问key：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322145351085.png" alt="image-20230322145351085"></p><p>看似为md5值，md5解密失败，从名称判断应该是3个key中的第一个。</p><p>dirsearch还发现了wp-login等目录，判断该网站为word press。</p><p>结合dic字典，进行账号爆破。首先对字典进行去重：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322145213115.png" alt="image-20230322145213115"></p><p>去重后保存到new文件，有1万多行数据。</p><p>首先从lostpassword页面爆破用户名：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322150401225.png" alt="image-20230322150401225"></p><p>对结果进行关键字匹配，成功爆破出Elliot。</p><p>使用该用户名，继续爆破密码：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322150604710.png" alt="image-20230322150604710"></p><p>爆破出密码ER28-0652。</p><p>登录后台：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322150644787.png" alt="image-20230322150644787"></p><p>在appearance模块中可以编辑php文件，最简单的方法是修改404.php，将马复制到404.php，任意输入不存在的url，报错，连接成功：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322151001633.png" alt="image-20230322151001633"></p><p>此时为daemon权限。</p><p>进入home，发现存在robot目录，发现password.raw-md5，解密后得到robot用户的密码，并且成功得到第二个key。</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322151015498.png" alt="image-20230322151015498"></p><p>接下来继续提权到root，sudo -l无可用命令，上传检查脚本：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322151033460.png" alt="image-20230322151033460"></p><p>发现nmap有suid：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322151207435.png" alt="image-20230322151207435"></p><p>nmap –interactive进入交互模式，起shell：</p><p><img src="/2023/04/26/vulnhub-Mr-robot/image-20230322151416138.png" alt="image-20230322151416138"></p><p>成功拿到root权限，得到第三个key。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>vulnhub_FristiLeaks_1.3</title>
     <link href="/2023/04/26/vulnhub-FristiLeaks-1-3/"/>
     <url>/2023/04/26/vulnhub-FristiLeaks-1-3/</url>
@@ -35,19 +73,6 @@
       <category>htb</category>
       
     </categories>
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="/2023/04/26/hello-world/"/>
-    <url>/2023/04/26/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-    
     
     
   </entry>
