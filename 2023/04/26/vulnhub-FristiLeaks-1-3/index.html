@@ -16,43 +16,62 @@
   <meta name="author" content="Ry4nnnn">
   <meta name="keywords" content="">
   
-    <meta name="description" content="preciousinformation gatheringuse nmap to discover open-ports and services:  Now we focus on its http service on port 80. Access it by firefox browser(remember to modify your &#x2F;etc&#x2F;hosts):  It">
+    <meta name="description" content="FristiLeaks_1.3arp-scan获取目标ip 192.168.59.18：  masscan全端口扫描:  nmap对开放端口进行服务探测：  whatweb：  dirsearch目录爆破：  nikto扫描：  综上，只开放了一个80端口，开启了apache服务，apache2.2.15+php5.3.3，linux操作系统，后台目录有&#x2F;cola,&#x2F;robot">
 <meta property="og:type" content="article">
-<meta property="og:title" content="htb_precious">
-<meta property="og:url" content="https://leesinz.github.io/2023/04/26/htb-precious/index.html">
+<meta property="og:title" content="vulnhub_FristiLeaks_1.3">
+<meta property="og:url" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/index.html">
 <meta property="og:site_name" content="Ry4nnnn">
-<meta property="og:description" content="preciousinformation gatheringuse nmap to discover open-ports and services:  Now we focus on its http service on port 80. Access it by firefox browser(remember to modify your &#x2F;etc&#x2F;hosts):  It">
+<meta property="og:description" content="FristiLeaks_1.3arp-scan获取目标ip 192.168.59.18：  masscan全端口扫描:  nmap对开放端口进行服务探测：  whatweb：  dirsearch目录爆破：  nikto扫描：  综上，只开放了一个80端口，开启了apache服务，apache2.2.15+php5.3.3，linux操作系统，后台目录有&#x2F;cola,&#x2F;robot">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426093453128.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426093615323.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426093935361.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426094213706.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426094838824.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426095134399.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426095404721.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426095817647.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426095839251.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426100735748.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426100950158.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426101437784.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426101649976.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426101922560.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426102257184.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426102404182.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426102947150.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426103016168.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426103128047.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426103144435.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426103206671.png">
-<meta property="article:published_time" content="2023-04-26T07:10:28.000Z">
-<meta property="article:modified_time" content="2023-04-26T08:34:54.457Z">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307205944349.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212119043.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212152487.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212239788.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212417837.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213101589.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213538737.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213600829.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213610628.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213726384.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213811701.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213906097.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213932426.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214017727.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214232322.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214806121.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214431409.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214859613.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214950977.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215107490.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215246674.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215418880.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215630815.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215658986.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220022189.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220110652.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220139843.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220407606.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220524600.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307221710113.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307221828145.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222312005.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222356135.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222439699.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222639878.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222841090.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223028627.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223554288.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223705185.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223841372.png">
+<meta property="article:published_time" content="2023-04-26T08:51:46.000Z">
+<meta property="article:modified_time" content="2023-04-26T08:52:33.824Z">
 <meta property="article:author" content="Ry4nnnn">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://leesinz.github.io/2023/04/26/htb-precious/image-20230426093453128.png">
+<meta name="twitter:image" content="https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307205944349.png">
   
   
   
-  <title>htb_precious - Ry4nnnn</title>
+  <title>vulnhub_FristiLeaks_1.3 - Ry4nnnn</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -235,7 +254,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="htb_precious"></span>
+            <span id="subtitle" data-typed-text="vulnhub_FristiLeaks_1.3"></span>
           
         </div>
 
@@ -246,7 +265,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-04-26 15:10" pubdate>
+        <time datetime="2023-04-26 16:51" pubdate>
           2023年4月26日 下午
         </time>
       </span>
@@ -258,7 +277,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          1.3k 字
         
       </span>
     
@@ -269,7 +288,7 @@
         
         
         
-          14 分钟
+          12 分钟
         
       </span>
     
@@ -315,70 +334,105 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">htb_precious</h1>
+            <h1 style="display: none">vulnhub_FristiLeaks_1.3</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="precious"><a href="#precious" class="headerlink" title="precious"></a>precious</h1><h2 id="information-gathering"><a href="#information-gathering" class="headerlink" title="information gathering"></a>information gathering</h2><p>use nmap to discover open-ports and services:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426093453128.png" srcset="/img/loading.gif" lazyload alt="image-20230426093453128"></p>
-<p>Now we focus on its http service on <strong>port 80</strong>.</p>
-<p>Access it by firefox browser(remember to modify your &#x2F;etc&#x2F;hosts):</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426093615323.png" srcset="/img/loading.gif" lazyload alt="image-20230426093615323"></p>
-<p>It seems that this website would help us convert web page to a pdf file. I tried <code>aaa</code> in the search bar:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426093935361.png" srcset="/img/loading.gif" lazyload alt="image-20230426093935361"></p>
-<p>I was reminded to provide a valid url. Naturally i think of starting a http-server on my kali and then entering my server address :</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426094213706.png" srcset="/img/loading.gif" lazyload alt="image-20230426094213706"></p>
-<p>As excepted, a pdf was downloaded to my own machine. We can obviously find some familiar files by clicking it.</p>
-<p>At this time all i can access is a <strong>pdf</strong> , as a result i use <code>exiftool</code> to analyse it.</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426094838824.png" srcset="/img/loading.gif" lazyload alt="image-20230426094838824"></p>
-<p>What inspires me is <code>pdfkit v0.8.6</code>. I tried <code>searchsploit</code> subconsciously but found nothing:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426095134399.png" srcset="/img/loading.gif" lazyload alt="image-20230426095134399"></p>
-<p>Then i turned to google , finding a command injection vulnerability:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426095404721.png" srcset="/img/loading.gif" lazyload alt="image-20230426095404721"></p>
-<p>After trying several pocs, i found a python exp[<a target="_blank" rel="noopener" href="https://github.com/nikn0laty/PDFkit-CMD-Injection-CVE-2022-25765">nikn0laty&#x2F;PDFkit-CMD-Injection-CVE-2022-25765: Exploit for CVE-2022-25765 command injection in pdfkit &lt; 0.8.6 (github.com)</a>]:</p>
-<p>step 1:</p>
-<p>starting a python simple http-server:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426095817647.png" srcset="/img/loading.gif" lazyload alt="image-20230426095817647"></p>
-<p>step 2:</p>
-<p>nc:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426095839251.png" srcset="/img/loading.gif" lazyload alt="image-20230426095839251"></p>
-<p>step 3:</p>
-<p>python CVE-2022-25765.py -t target -a localhost -p localport:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426100735748.png" srcset="/img/loading.gif" lazyload alt="image-20230426100735748"></p>
-<h2 id="foothold"><a href="#foothold" class="headerlink" title="foothold"></a>foothold</h2><p>now we got a shell after exploit:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426100950158.png" srcset="/img/loading.gif" lazyload alt="image-20230426100950158"></p>
-<p>By following below steps , i finally access a fully interactive shell:</p>
-<ol>
-<li>open a bash terminal</li>
-<li>nc -nlvp 4444</li>
-<li>ctrl+z to background the job</li>
-<li>stty -echo raw</li>
-<li>fg</li>
-</ol>
-<p><img src="/2023/04/26/htb-precious/image-20230426101437784.png" srcset="/img/loading.gif" lazyload alt="image-20230426101437784"></p>
-<p>I found a secret directory in home path after looking around:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426101649976.png" srcset="/img/loading.gif" lazyload alt="image-20230426101649976"></p>
-<p><code>su henry</code>:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426101922560.png" srcset="/img/loading.gif" lazyload alt="image-20230426101922560"></p>
-<p><code>user.txt</code> lies in <code>/home/henry</code> .</p>
-<h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>The last step is privilege escalation.</p>
-<p>At first , i tried the most simple but effective way:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426102257184.png" srcset="/img/loading.gif" lazyload alt="image-20230426102257184"></p>
-<p>It appears that henry can run the file update_depencies.rb as root. Use cat to take a look at the file:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426102404182.png" srcset="/img/loading.gif" lazyload alt="image-20230426102404182"></p>
-<p>I’m stuck with <code>YAML.load</code> , it appears to be vulnerable to a deserialization attack. </p>
-<p>Notice that the rb load a file named <strong>dependencies.yml</strong>. I download malicious yml from google to vefity the vul.</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426102947150.png" srcset="/img/loading.gif" lazyload alt="image-20230426102947150"></p>
-<p><code>sudo /usr/bin/ruby /opt/update_dependencies.rb</code>:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426103016168.png" srcset="/img/loading.gif" lazyload alt="image-20230426103016168"></p>
-<p>It works!</p>
-<p>Try to add suid to &#x2F;bin&#x2F;bash:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426103128047.png" srcset="/img/loading.gif" lazyload alt="image-20230426103128047"></p>
-<p>exploit:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426103144435.png" srcset="/img/loading.gif" lazyload alt="image-20230426103144435"></p>
-<p><code>/bin/bash -p</code>:</p>
-<p><img src="/2023/04/26/htb-precious/image-20230426103206671.png" srcset="/img/loading.gif" lazyload alt="image-20230426103206671"></p>
+                <h1 id="FristiLeaks-1-3"><a href="#FristiLeaks-1-3" class="headerlink" title="FristiLeaks_1.3"></a>FristiLeaks_1.3</h1><p>arp-scan获取目标ip 192.168.59.18：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307205944349.png" srcset="/img/loading.gif" lazyload alt="image-20230307205944349"></p>
+<p>masscan全端口扫描:</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212119043.png" srcset="/img/loading.gif" lazyload alt="image-20230307212119043"></p>
+<p>nmap对开放端口进行服务探测：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212152487.png" srcset="/img/loading.gif" lazyload alt="image-20230307212152487"></p>
+<p>whatweb：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212239788.png" srcset="/img/loading.gif" lazyload alt="image-20230307212239788"></p>
+<p>dirsearch目录爆破：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307212417837.png" srcset="/img/loading.gif" lazyload alt="image-20230307212417837"></p>
+<p>nikto扫描：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213101589.png" srcset="/img/loading.gif" lazyload alt="image-20230307213101589"></p>
+<p>综上，只开放了一个80端口，开启了apache服务，apache2.2.15+php5.3.3，linux操作系统，后台目录有&#x2F;cola,&#x2F;robots.txt,&#x2F;images,&#x2F;sisi,&#x2F;beer.</p>
+<p>先访问web界面：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213538737.png" srcset="/img/loading.gif" lazyload alt="image-20230307213538737"></p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213600829.png" srcset="/img/loading.gif" lazyload alt="image-20230307213600829"></p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213610628.png" srcset="/img/loading.gif" lazyload alt="image-20230307213610628"></p>
+<p>查看源代码：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213726384.png" srcset="/img/loading.gif" lazyload alt="image-20230307213726384"></p>
+<p>均无有效信息。</p>
+<p>接下来尝试寻找php+apache漏洞。</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213811701.png" srcset="/img/loading.gif" lazyload alt="image-20230307213811701"></p>
+<p>前两个版本均符合，尝试利用。</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213906097.png" srcset="/img/loading.gif" lazyload alt="image-20230307213906097"></p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307213932426.png" srcset="/img/loading.gif" lazyload alt="image-20230307213932426"></p>
+<p>404.无cgi页面。</p>
+<p>第二个脚本利用结果同样如此：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214017727.png" srcset="/img/loading.gif" lazyload alt="image-20230307214017727"></p>
+<p>404 not found.</p>
+<p>继续从web页面寻找突破，根据首页的图片，尝试访问&#x2F;fristi:</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214232322.png" srcset="/img/loading.gif" lazyload alt="image-20230307214232322"></p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214806121.png" srcset="/img/loading.gif" lazyload alt="image-20230307214806121"></p>
+<p>经过简单的手注之后，无果，直接sqlmap：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214431409.png" srcset="/img/loading.gif" lazyload alt="image-20230307214431409"></p>
+<p>不存在sql注入。</p>
+<p>爆破弱口令同样失败。</p>
+<p>查看源代码，发现提示：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214859613.png" srcset="/img/loading.gif" lazyload alt="image-20230307214859613"></p>
+<p>作者名为eezeepz，并且使用了base64加密图片，往下飞发现base64密文：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307214950977.png" srcset="/img/loading.gif" lazyload alt="image-20230307214950977"></p>
+<p>base64解密，发现文件头PNG：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215107490.png" srcset="/img/loading.gif" lazyload alt="image-20230307215107490"></p>
+<p>保存为png查看：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215246674.png" srcset="/img/loading.gif" lazyload alt="image-20230307215246674"></p>
+<p>发现一串密码，keKkeKKeKKeKkEkkEk，登录：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215418880.png" srcset="/img/loading.gif" lazyload alt="image-20230307215418880"></p>
+<p>登录成功，来到文件上传页面。</p>
+<p>上传正常jpg文件，成功：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215630815.png" srcset="/img/loading.gif" lazyload alt="image-20230307215630815"></p>
+<p>访问&#x2F;uploads&#x2F;conan.jpg:</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307215658986.png" srcset="/img/loading.gif" lazyload alt="image-20230307215658986"></p>
+<p>正常。</p>
+<p>写马，改后缀：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220022189.png" srcset="/img/loading.gif" lazyload alt="image-20230307220022189"></p>
+<p>失败，校验了后缀名，只能为png,jpg,gif。</p>
+<p>考虑到apache版本为2.2.15，存在多后缀解析漏洞，直接加后缀：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220110652.png" srcset="/img/loading.gif" lazyload alt="image-20230307220110652"></p>
+<p>成功，蚁剑连接：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220139843.png" srcset="/img/loading.gif" lazyload alt="image-20230307220139843"></p>
+<p>为低权限，apache，home目录下有3个用户，admin,eezeepz,fristigod:</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220407606.png" srcset="/img/loading.gif" lazyload alt="image-20230307220407606"></p>
+<p>除了eezeepz目录，都没有权限访问，在eezeepz目录下发现notes.txt:</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307220524600.png" srcset="/img/loading.gif" lazyload alt="image-20230307220524600"></p>
+<p>可以发现如下信息：</p>
+<p>作者jerry，即为&#x2F;home&#x2F;admin，该目录下有chmod,df,cat,echo,ps,grep,egrep等命令可以使用，在&#x2F;tmp&#x2F;目录下新建一个runthis文件，该文件里的内容会以admin的权限每分钟运行一次，结果保存在&#x2F;tmp&#x2F;cronresult中。</p>
+<p>首先想到的是chmod命令，改变&#x2F;home&#x2F;admin权限：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307221710113.png" srcset="/img/loading.gif" lazyload alt="image-20230307221710113"></p>
+<p>此时已经能够访问&#x2F;admin目录。</p>
+<p>查看文件内容：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307221828145.png" srcset="/img/loading.gif" lazyload alt="image-20230307221828145"></p>
+<p>从命名看出，cryptedpass.txt为加密后的密文，而cryptpass.py为加密脚本。</p>
+<p>编写解密函数：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222312005.png" srcset="/img/loading.gif" lazyload alt="image-20230307222312005"></p>
+<p>解密得到明文：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222356135.png" srcset="/img/loading.gif" lazyload alt="image-20230307222356135"></p>
+<p>可能是某个用户的密码，尝试su：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222439699.png" srcset="/img/loading.gif" lazyload alt="image-20230307222439699"></p>
+<p>先tty：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222639878.png" srcset="/img/loading.gif" lazyload alt="image-20230307222639878"></p>
+<p>蚁剑的虚拟终端无法成功，先传shell到kali，再用python：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307222841090.png" srcset="/img/loading.gif" lazyload alt="image-20230307222841090"></p>
+<p>成功拿到fristigod权限。</p>
+<p>sudo -l：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223028627.png" srcset="/img/loading.gif" lazyload alt="image-20230307223028627"></p>
+<p>提示可以使用该 “doCom” 执行任何命令。</p>
+<p>访问文件：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223554288.png" srcset="/img/loading.gif" lazyload alt="image-20230307223554288"></p>
+<p>为二进制文件。</p>
+<p>有提示.&#x2F;program_name terminal_command.</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223705185.png" srcset="/img/loading.gif" lazyload alt="image-20230307223705185"></p>
+<p>来到同级目录，查看history文件，用法为sudo -u fristi &#x2F;var&#x2F;fristigod&#x2F;.secret_admin_stuff&#x2F;doCom &lt;command&gt;</p>
+<p>因此直接起新的终端：</p>
+<p><img src="/2023/04/26/vulnhub-FristiLeaks-1-3/image-20230307223841372.png" srcset="/img/loading.gif" lazyload alt="image-20230307223841372"></p>
+<p>拿到root权限，获取flag。</p>
 
                 
               </div>
@@ -397,7 +451,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  <a href="/categories/vulnhub/" class="category-chain-item">vulnhub</a>
   
   
 
@@ -417,8 +471,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>htb_precious</div>
-      <div>https://leesinz.github.io/2023/04/26/htb-precious/</div>
+      <div>vulnhub_FristiLeaks_1.3</div>
+      <div>https://leesinz.github.io/2023/04/26/vulnhub-FristiLeaks-1-3/</div>
     </div>
     <div class="license-meta">
       
@@ -462,18 +516,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/04/26/vulnhub-FristiLeaks-1-3/" title="vulnhub_FristiLeaks_1.3">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">vulnhub_FristiLeaks_1.3</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/04/26/hello-world/" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
+                      <a href="/2023/04/26/htb-precious/" title="htb_precious">
+                        <span class="hidden-mobile">htb_precious</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
