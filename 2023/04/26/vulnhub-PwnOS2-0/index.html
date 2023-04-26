@@ -16,52 +16,47 @@
   <meta name="author" content="Ry4nnnn">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Pwnlabnmap扫端口&amp;服务：  主要是rpc和80端口的http服务。 使用rpcinfo进行探测：  无有效信息。 dirsearch爆破后台敏感目录：  首先直接访问80端口：  访问&#x2F;upload:  很明显为上传的文件。 接着访问&#x2F;upload.php:  提示需要登录。 接下来访问login页面，出现登录框：  burp抓包：  输入单引号，无变化，保存">
+    <meta name="description" content="PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&amp;#97;&amp;#97;&amp;#97;&amp;#x40;&amp;#x71;&amp;#x71;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;，未发现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vulnhub_Pwnlab">
-<meta property="og:url" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/index.html">
+<meta property="og:title" content="vulnhub_PwnOS2.0">
+<meta property="og:url" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/index.html">
 <meta property="og:site_name" content="Ry4nnnn">
-<meta property="og:description" content="Pwnlabnmap扫端口&amp;服务：  主要是rpc和80端口的http服务。 使用rpcinfo进行探测：  无有效信息。 dirsearch爆破后台敏感目录：  首先直接访问80端口：  访问&#x2F;upload:  很明显为上传的文件。 接着访问&#x2F;upload.php:  提示需要登录。 接下来访问login页面，出现登录框：  burp抓包：  输入单引号，无变化，保存">
+<meta property="og:description" content="PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&amp;#97;&amp;#97;&amp;#97;&amp;#x40;&amp;#x71;&amp;#x71;&amp;#x2e;&amp;#x63;&amp;#x6f;&amp;#x6d;，未发现">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323110917405.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323111530034.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323111545504.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323134559022.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323134621886.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323134633666.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323134652498.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323135618265.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323135734466.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323135830977.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323140414126.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323140649744.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323140713926.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323141140279.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323141906558.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323142523888.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323144220196.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323144332964.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323144356432.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323144857630.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323145006507.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323145136383.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323145609941.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323150733143.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323150837248.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323151050920.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323152452183.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323152547004.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323152844893.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323152925140.png">
-<meta property="article:published_time" content="2023-04-26T08:57:19.000Z">
-<meta property="article:modified_time" content="2023-04-26T08:57:35.238Z">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321135938360.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140053612.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140123549.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140140442.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140320230.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140330516.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140613604.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321140853513.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321141528736.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321141719166.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321141951074.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321142452841.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321142229760.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321142252180.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321142626934.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321142650060.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321142837619.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321155456474.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321155715082.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321155755619.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321155836405.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321143053212.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321160832973.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321153548843.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321143316978.png">
+<meta property="article:published_time" content="2023-04-26T09:00:06.000Z">
+<meta property="article:modified_time" content="2023-04-26T09:00:42.154Z">
 <meta property="article:author" content="Ry4nnnn">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/image-20230323110917405.png">
+<meta name="twitter:image" content="https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/image-20230321135938360.png">
   
   
   
-  <title>vulnhub_Pwnlab - Ry4nnnn</title>
+  <title>vulnhub_PwnOS2.0 - Ry4nnnn</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -244,7 +239,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="vulnhub_Pwnlab"></span>
+            <span id="subtitle" data-typed-text="vulnhub_PwnOS2.0"></span>
           
         </div>
 
@@ -255,7 +250,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-04-26 16:57" pubdate>
+        <time datetime="2023-04-26 17:00" pubdate>
           2023年4月26日 下午
         </time>
       </span>
@@ -267,7 +262,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          1.2k 字
         
       </span>
     
@@ -278,7 +273,7 @@
         
         
         
-          12 分钟
+          11 分钟
         
       </span>
     
@@ -324,89 +319,71 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">vulnhub_Pwnlab</h1>
+            <h1 style="display: none">vulnhub_PwnOS2.0</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Pwnlab"><a href="#Pwnlab" class="headerlink" title="Pwnlab"></a>Pwnlab</h1><p>nmap扫端口&amp;服务：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323110917405.png" srcset="/img/loading.gif" lazyload alt="image-20230323110917405"></p>
-<p>主要是rpc和80端口的http服务。</p>
-<p>使用rpcinfo进行探测：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323111530034.png" srcset="/img/loading.gif" lazyload alt="image-20230323111530034"></p>
-<p>无有效信息。</p>
-<p>dirsearch爆破后台敏感目录：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323111545504.png" srcset="/img/loading.gif" lazyload alt="image-20230323111545504"></p>
-<p>首先直接访问80端口：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134559022.png" srcset="/img/loading.gif" lazyload alt="image-20230323134559022"></p>
-<p>访问&#x2F;upload:</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134621886.png" srcset="/img/loading.gif" lazyload alt="image-20230323134621886"></p>
-<p>很明显为上传的文件。</p>
-<p>接着访问&#x2F;upload.php:</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134633666.png" srcset="/img/loading.gif" lazyload alt="image-20230323134633666"></p>
-<p>提示需要登录。</p>
-<p>接下来访问login页面，出现登录框：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323134652498.png" srcset="/img/loading.gif" lazyload alt="image-20230323134652498"></p>
-<p>burp抓包：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323135618265.png" srcset="/img/loading.gif" lazyload alt="image-20230323135618265"></p>
-<p>输入单引号，无变化，保存报文内容跑sqlmap，无果。</p>
-<p>对&#x2F;login.php进行同样的尝试：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323135734466.png" srcset="/img/loading.gif" lazyload alt="image-20230323135734466"></p>
-<p>同样失败。</p>
-<p>尝试对upload发送options请求：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323135830977.png" srcset="/img/loading.gif" lazyload alt="image-20230323135830977"></p>
-<p>不允许put方法，无法直接写马。</p>
-<p>仔细观察流量，发现登录页面的url为&#x2F;?page&#x3D;login，考虑存在文件包含漏洞。</p>
-<p>直接尝试&#x2F;etc&#x2F;passwd：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323140414126.png" srcset="/img/loading.gif" lazyload alt="image-20230323140414126"></p>
-<p>无回显。</p>
-<p>尝试伪协议读取源码。目前url为<a target="_blank" rel="noopener" href="http://192.168.59.30/index.php?page=login%EF%BC%8C%E8%80%8Cconfig.php%E4%B8%BAhttp://192.168.59.30/config.php%EF%BC%8C%E5%9B%A0%E6%AD%A4%E9%9C%80%E8%A6%81%E8%BF%94%E5%9B%9E%E4%B8%80%E7%BA%A7%E7%9B%AE%E5%BD%95%EF%BC%9A">http://192.168.59.30/index.php?page=login，而config.php为http://192.168.59.30/config.php，因此需要返回一级目录：</a></p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323140649744.png" srcset="/img/loading.gif" lazyload alt="image-20230323140649744"></p>
-<p>成功读取，base64解密：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323140713926.png" srcset="/img/loading.gif" lazyload alt="image-20230323140713926"></p>
-<p>得到数据库的账号密码，连接数据库：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323141140279.png" srcset="/img/loading.gif" lazyload alt="image-20230323141140279"></p>
-<p>base64解密后，得到kent，mike和kane3个用户的密码。ssh连接失败，端口未开放：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323141906558.png" srcset="/img/loading.gif" lazyload alt="image-20230323141906558"></p>
-<p>无法直接ssh，因此登录尝试文件上传：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323142523888.png" srcset="/img/loading.gif" lazyload alt="image-20230323142523888"></p>
-<p>上传php马，提示不允许的后缀，只能上传图片。</p>
-<p>首先考虑apache多后缀解析漏洞，上传pwnlab.php.jpg:</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144220196.png" srcset="/img/loading.gif" lazyload alt="image-20230323144220196"></p>
-<p>未绕过。</p>
-<p>接下来考虑上传图片马，再配合解析漏洞或者文件包含漏洞将其作为php文件解析。</p>
-<p>&#x2F;index.php?page&#x3D;xxx该处存在文件包含漏洞，读取index.php源码：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144332964.png" srcset="/img/loading.gif" lazyload alt="image-20230323144332964"></p>
-<p>base64 decode：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144356432.png" srcset="/img/loading.gif" lazyload alt="image-20230323144356432"></p>
-<p>这里如果cookie中lang参数又存在文件包含。</p>
-<p>先制作图片马，echo -e代表允许反斜杠解析，GIF89a为gif文件的文件头：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323144857630.png" srcset="/img/loading.gif" lazyload alt="image-20230323144857630"></p>
-<p>上传成功：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323145006507.png" srcset="/img/loading.gif" lazyload alt="image-20230323145006507"></p>
-<p>在cookie中输入gif文件的url，将php马包含，kali开启监听：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323145136383.png" srcset="/img/loading.gif" lazyload alt="image-20230323145136383"></p>
-<p>成功获取shell。</p>
-<p>当前为www-data权限，通过前面获取的账号密码，可以登录到kent和kane账户。</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323145609941.png" srcset="/img/loading.gif" lazyload alt="image-20230323145609941"></p>
-<p>kent目录下无文件，切换到kane，发现msgmike。</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323150733143.png" srcset="/img/loading.gif" lazyload alt="image-20230323150733143"></p>
-<p>msgmike为elf可执行文件，并且有suid，strings查看发现存在命令cat &#x2F;home&#x2F;mike&#x2F;msg.txt。</p>
-<p>直接运行：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323150837248.png" srcset="/img/loading.gif" lazyload alt="image-20230323150837248"></p>
-<p>提示无cat文件。因此直接新建cat文件，内容为&#x2F;bin&#x2F;bash，并且将$PATH参数修改，默认先使用我们新建的cat：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323151050920.png" srcset="/img/loading.gif" lazyload alt="image-20230323151050920"></p>
-<p>成功提权到mike，此时记得将$PATH恢复。</p>
-<p>进入&#x2F;home&#x2F;mike目录下，存在msg2root文件，通过命名判断，需要通过该文件从mike提权到root权限。</p>
-<p>将msg2root放入ida：</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152452183.png" srcset="/img/loading.gif" lazyload alt="image-20230323152452183"></p>
-<p>发现system函数。</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152547004.png" srcset="/img/loading.gif" lazyload alt="image-20230323152547004"></p>
-<p>并且msg2root为root权限，因此考虑直接使用msg2root执行&#x2F;bin&#x2F;bash命令拿到root shell。</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152844893.png" srcset="/img/loading.gif" lazyload alt="image-20230323152844893"></p>
-<p>这里类似于远程代码执行漏洞，通过；截断即可执行命令，&#x2F;bin&#x2F;bash失败，尝试&#x2F;bin&#x2F;sh:</p>
-<p><img src="/2023/04/26/vulnhub-Pwnlab/image-20230323152925140.png" srcset="/img/loading.gif" lazyload alt="image-20230323152925140"></p>
-<p>成功。经过尝试&amp;等符号同样可行。</p>
+                <h1 id="PwnOS2-0"><a href="#PwnOS2-0" class="headerlink" title="PwnOS2.0"></a>PwnOS2.0</h1><p>首先nmap扫描端口，发现22，25，80，110等开放：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321135938360.png" srcset="/img/loading.gif" lazyload alt="image-20230321135938360"></p>
+<p>nikto扫一下80的http服务：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140053612.png" srcset="/img/loading.gif" lazyload alt="image-20230321140053612"></p>
+<p>发现了一些敏感目录。</p>
+<p>info目录为phpinfo:</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140123549.png" srcset="/img/loading.gif" lazyload alt="image-20230321140123549"></p>
+<p>includes:</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140140442.png" srcset="/img/loading.gif" lazyload alt="image-20230321140140442"></p>
+<p>login.php为登录页面：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140320230.png" srcset="/img/loading.gif" lazyload alt="image-20230321140320230"></p>
+<p>register.php为注册页面：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140330516.png" srcset="/img/loading.gif" lazyload alt="image-20230321140330516"></p>
+<p>注册用户<a href="mailto:&#97;&#97;&#97;&#x40;&#x71;&#x71;&#x2e;&#x63;&#x6f;&#x6d;">&#97;&#97;&#97;&#x40;&#x71;&#x71;&#x2e;&#x63;&#x6f;&#x6d;</a>，未发现有用信息。</p>
+<p>接下来考虑通过login.php来getshell，在email字段输入单引号，报错：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140613604.png" srcset="/img/loading.gif" lazyload alt="image-20230321140613604"></p>
+<p>明显存在sql注入，并且报错提示数据库为mysql。</p>
+<p>burp抓包直接跑sqlmap，加上–dbms mysql参数：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140853513.png" srcset="/img/loading.gif" lazyload alt="image-20230321140853513"></p>
+<p>存在注入，–dump，查看user&#x2F;pass：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141528736.png" srcset="/img/loading.gif" lazyload alt="image-20230321141528736"></p>
+<p><a href="mailto:&#97;&#97;&#x61;&#64;&#113;&#x71;&#46;&#x63;&#x6f;&#109;">&#97;&#97;&#x61;&#64;&#113;&#x71;&#46;&#x63;&#x6f;&#109;</a>是注册的测试账号，尝试使用<a href="mailto:&#x61;&#100;&#x6d;&#105;&#110;&#x40;&#105;&#x73;&#105;&#110;&#x74;&#x73;&#46;&#99;&#111;&#109;">&#x61;&#100;&#x6d;&#105;&#110;&#x40;&#105;&#x73;&#105;&#110;&#x74;&#x73;&#46;&#99;&#111;&#109;</a>账号登录&#x2F;</p>
+<p>密码为md5，解开后为killerbeesareflying，登录：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141719166.png" srcset="/img/loading.gif" lazyload alt="image-20230321141719166"></p>
+<p>登录成功，但是没有可用信息，回到sqlmap，直接–os-shell:</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141951074.png" srcset="/img/loading.gif" lazyload alt="image-20230321141951074"></p>
+<p>成功拿到shell，为www-data权限，但是此处的shell无法弹到kali。</p>
+<p>在kali上寻找php马，传到靶机上：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142452841.png" srcset="/img/loading.gif" lazyload alt="image-20230321142452841"></p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142229760.png" srcset="/img/loading.gif" lazyload alt="image-20230321142229760"></p>
+<p>本地开启监听，成功连上靶机：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142252180.png" srcset="/img/loading.gif" lazyload alt="image-20230321142252180"></p>
+<p>在当前目录下发现mysqli_connect.php文件，并发现密码root&#x2F;goodday:</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142626934.png" srcset="/img/loading.gif" lazyload alt="image-20230321142626934"></p>
+<p>尝试登录mysql，失败，登录ssh同样失败。</p>
+<p>回到上级目录，也存在mysqli_connect.php文件，查看发现另一组账号root&#x2F;root@ISIntS:</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142650060.png" srcset="/img/loading.gif" lazyload alt="image-20230321142650060"></p>
+<p>ssh登录，成功拿到root权限：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142837619.png" srcset="/img/loading.gif" lazyload alt="image-20230321142837619"></p>
+<p>同时该密码可以登录mysql，因此尝试udf提权。</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155456474.png" srcset="/img/loading.gif" lazyload alt="image-20230321155456474"></p>
+<p>首先查看secure_file_priv，如果值为空，则可以提权：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155715082.png" srcset="/img/loading.gif" lazyload alt="image-20230321155715082"></p>
+<p>接下来查看compile选项：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155755619.png" srcset="/img/loading.gif" lazyload alt="image-20230321155755619"></p>
+<p>linux，64位。</p>
+<p>最后查看plugin路径，如果没有需要自行创建，此处存在：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155836405.png" srcset="/img/loading.gif" lazyload alt="image-20230321155836405"></p>
+<p>使用sqlmap直接将udf.so文件传到plugin目录：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321143053212.png" srcset="/img/loading.gif" lazyload alt="image-20230321143053212"></p>
+<p>此处的so文件使用的是msf自带的，如果使用sqlmap中的，需要先进行解码。</p>
+<p>msf中路径为：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321160832973.png" srcset="/img/loading.gif" lazyload alt="image-20230321160832973"></p>
+<p>分别对应了linux和windows中的32&#x2F;64位文件，此处使用的是lib_mysqludf_sys_64.so。</p>
+<p>上传之后，默认会多出一个sys_eval方法，但是不会回显，再手动添加一次，returns string：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321153548843.png" srcset="/img/loading.gif" lazyload alt="image-20230321153548843"></p>
+<p>此时查询方法，存在sys_eval，执行whoami，是root权限，提权成功。</p>
+<p>为了后续操作，给find加上suid：</p>
+<p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321143316978.png" srcset="/img/loading.gif" lazyload alt="image-20230321143316978"></p>
+<p>从www-data权限，使用suid提权，<code>touch 1.txt, find 1.txt -exec &#39;/bin/sh&#39; \;</code>，成功提权到root。</p>
 
                 
               </div>
@@ -445,8 +422,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>vulnhub_Pwnlab</div>
-      <div>https://leesinz.github.io/2023/04/26/vulnhub-Pwnlab/</div>
+      <div>vulnhub_PwnOS2.0</div>
+      <div>https://leesinz.github.io/2023/04/26/vulnhub-PwnOS2-0/</div>
     </div>
     <div class="license-meta">
       
@@ -490,9 +467,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/04/26/vulnhub-PwnOS2-0/" title="vulnhub_PwnOS2.0">
+                      <a href="/2023/04/26/vulnhub-Stapler/" title="vulnhub_Stapler">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">vulnhub_PwnOS2.0</span>
+                        <span class="hidden-mobile">vulnhub_Stapler</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -500,8 +477,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/04/26/vulnhub-Mr-robot/" title="vulnhub_Mr-robot">
-                        <span class="hidden-mobile">vulnhub_Mr-robot</span>
+                      <a href="/2023/04/26/vulnhub-Pwnlab/" title="vulnhub_Pwnlab">
+                        <span class="hidden-mobile">vulnhub_Pwnlab</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
