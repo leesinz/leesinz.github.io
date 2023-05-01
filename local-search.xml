@@ -4,6 +4,82 @@
   
   
   <entry>
+    <title>htb_legacy</title>
+    <link href="/2023/05/01/htb-legacy/"/>
+    <url>/2023/05/01/htb-legacy/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-legacy"><a href="#htb-legacy" class="headerlink" title="htb_legacy"></a>htb_legacy</h1><p>nmap端口扫描：</p><p><img src="/2023/05/01/htb-legacy/image-20230501142850551.png" alt="image-20230501142850551"></p><p>扫服务：</p><p><img src="/2023/05/01/htb-legacy/image-20230501142914119.png" alt="image-20230501142914119"></p><p>开放135，139，445端口，考虑ms17010，先用nmap进行漏洞扫描：</p><p><code>nmap -sC -sV -A -p 135,139,445 --script vuln 10.10.10.4</code></p><p><img src="/2023/05/01/htb-legacy/image-20230501143008849.png" alt="image-20230501143008849"></p><p>ms08-067 vulnerable。</p><p>msf：</p><p><img src="/2023/05/01/htb-legacy/image-20230501143055349.png" alt="image-20230501143055349"></p><p>getshell，system权限。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_lame</title>
+    <link href="/2023/05/01/htb-lame/"/>
+    <url>/2023/05/01/htb-lame/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-lame"><a href="#htb-lame" class="headerlink" title="htb_lame"></a>htb_lame</h1><p>nmap扫描：</p><p><img src="/2023/05/01/htb-lame/image-20230501211833742.png" alt="image-20230501211833742"></p><p>服务探测：</p><p><img src="/2023/05/01/htb-lame/image-20230501211850783.png" alt="image-20230501211850783"></p><p>漏洞扫描：</p><p><img src="/2023/05/01/htb-lame/image-20230501211911579.png" alt="image-20230501211911579"></p><p>没有直接发现可利用漏洞。</p><p>使用searchsploit搜索相关漏洞：</p><p><img src="/2023/05/01/htb-lame/image-20230501212032502.png" alt="image-20230501212032502"></p><p>首先是vsftpd，找到一个后门，尝试后无果，跳过。</p><p>接下来是samba：</p><p><img src="/2023/05/01/htb-lame/image-20230501212113153.png" alt="image-20230501212113153"></p><p>发现命令注入漏洞，但是在msf模块中，尽量避免使用msf：</p><p><img src="/2023/05/01/htb-lame/image-20230501212313179.png" alt="image-20230501212313179"></p><p>直接查看rb脚本，发现CVE-2007-2447。</p><p>github搜索并git clone exp：</p><p><img src="/2023/05/01/htb-lame/image-20230501212415484.png" alt="image-20230501212415484"></p><p><img src="/2023/05/01/htb-lame/image-20230501212444089.png" alt="image-20230501212444089"></p><p>本地起监听，攻击成功，root权限。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_jerry</title>
+    <link href="/2023/05/01/htb-jerry/"/>
+    <url>/2023/05/01/htb-jerry/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-jerry"><a href="#htb-jerry" class="headerlink" title="htb_jerry"></a>htb_jerry</h1><p>nmap先端口扫描：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213312119.png" alt="image-20230501213312119"></p><p>8080的http服务，firefox访问看看：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213335521.png" alt="image-20230501213335521"></p><p>tomcat。使用tomcat字典进行目录爆破，先查找tomcat字典：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213409061.png" alt="image-20230501213409061"></p><p>爆破：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213425390.png" alt="image-20230501213425390"></p><p>访问之后，发现只有manager可利用，为登录页面：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213449833.png" alt="image-20230501213449833"></p><p>tomcat&#x2F;tomcat登录失败。此时点击cancel：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213512808.png" alt="image-20230501213512808"></p><p>返回401页面，并包含了tomcat&#x2F;s3cret的一组账号密码：</p><p><img src="/2023/05/01/htb-jerry/image-20230501213556528.png" alt="image-20230501213556528"></p><p>成功登录。</p><p>接下来就是上传war来getshell：</p><p><img src="/2023/05/01/htb-jerry/image-20230501214307244.png" alt="image-20230501214307244"></p><p>msfvenom生成war格式的马，上传：</p><p><img src="/2023/05/01/htb-jerry/image-20230501214326514.png" alt="image-20230501214326514"></p><p>上传成功，msf中开监听，点击&#x2F;shell即可上线：</p><p><img src="/2023/05/01/htb-jerry/image-20230501214524229.png" alt="image-20230501214524229"></p><p>查看whoami，system权限：</p><p><img src="/2023/05/01/htb-jerry/image-20230501214538005.png" alt="image-20230501214538005"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_blue</title>
+    <link href="/2023/05/01/htb-blue/"/>
+    <url>/2023/05/01/htb-blue/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-blue"><a href="#htb-blue" class="headerlink" title="htb_blue"></a>htb_blue</h1><p>nmap端口扫描：</p><p><img src="/2023/05/01/htb-blue/image-20230501102723572.png" alt="image-20230501102723572"></p><p>扫具体服务：</p><p><img src="/2023/05/01/htb-blue/image-20230501102743582.png" alt="image-20230501102743582"></p><p>win7&#x2F;win2008，开放了139，445端口，ms17-010：</p><p><img src="/2023/05/01/htb-blue/image-20230501102958871.png" alt="image-20230501102958871"></p><p>getshell，system权限。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>htb_photobomb</title>
     <link href="/2023/04/28/htb-photobomb/"/>
     <url>/2023/04/28/htb-photobomb/</url>
@@ -84,7 +160,7 @@
     <link href="/2023/04/26/vulnhub-PwnOS2-0/"/>
     <url>/2023/04/26/vulnhub-PwnOS2-0/</url>
     
-    <content type="html"><![CDATA[<h1 id="PwnOS2-0"><a href="#PwnOS2-0" class="headerlink" title="PwnOS2.0"></a>PwnOS2.0</h1><p>首先nmap扫描端口，发现22，25，80，110等开放：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321135938360.png" alt="image-20230321135938360"></p><p>nikto扫一下80的http服务：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140053612.png" alt="image-20230321140053612"></p><p>发现了一些敏感目录。</p><p>info目录为phpinfo:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140123549.png" alt="image-20230321140123549"></p><p>includes:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140140442.png" alt="image-20230321140140442"></p><p>login.php为登录页面：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140320230.png" alt="image-20230321140320230"></p><p>register.php为注册页面：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140330516.png" alt="image-20230321140330516"></p><p>注册用户<a href="mailto:&#97;&#x61;&#97;&#64;&#x71;&#113;&#46;&#99;&#111;&#109;">&#97;&#x61;&#97;&#64;&#x71;&#113;&#46;&#99;&#111;&#109;</a>，未发现有用信息。</p><p>接下来考虑通过login.php来getshell，在email字段输入单引号，报错：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140613604.png" alt="image-20230321140613604"></p><p>明显存在sql注入，并且报错提示数据库为mysql。</p><p>burp抓包直接跑sqlmap，加上–dbms mysql参数：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140853513.png" alt="image-20230321140853513"></p><p>存在注入，–dump，查看user&#x2F;pass：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141528736.png" alt="image-20230321141528736"></p><p><a href="mailto:&#97;&#97;&#x61;&#x40;&#x71;&#x71;&#x2e;&#x63;&#111;&#x6d;">&#97;&#97;&#x61;&#x40;&#x71;&#x71;&#x2e;&#x63;&#111;&#x6d;</a>是注册的测试账号，尝试使用<a href="mailto:&#x61;&#x64;&#x6d;&#105;&#x6e;&#64;&#x69;&#115;&#105;&#x6e;&#116;&#x73;&#x2e;&#99;&#111;&#109;">&#x61;&#x64;&#x6d;&#105;&#x6e;&#64;&#x69;&#115;&#105;&#x6e;&#116;&#x73;&#x2e;&#99;&#111;&#109;</a>账号登录&#x2F;</p><p>密码为md5，解开后为killerbeesareflying，登录：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141719166.png" alt="image-20230321141719166"></p><p>登录成功，但是没有可用信息，回到sqlmap，直接–os-shell:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141951074.png" alt="image-20230321141951074"></p><p>成功拿到shell，为www-data权限，但是此处的shell无法弹到kali。</p><p>在kali上寻找php马，传到靶机上：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142452841.png" alt="image-20230321142452841"></p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142229760.png" alt="image-20230321142229760"></p><p>本地开启监听，成功连上靶机：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142252180.png" alt="image-20230321142252180"></p><p>在当前目录下发现mysqli_connect.php文件，并发现密码root&#x2F;goodday:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142626934.png" alt="image-20230321142626934"></p><p>尝试登录mysql，失败，登录ssh同样失败。</p><p>回到上级目录，也存在mysqli_connect.php文件，查看发现另一组账号root&#x2F;root@ISIntS:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142650060.png" alt="image-20230321142650060"></p><p>ssh登录，成功拿到root权限：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142837619.png" alt="image-20230321142837619"></p><p>同时该密码可以登录mysql，因此尝试udf提权。</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155456474.png" alt="image-20230321155456474"></p><p>首先查看secure_file_priv，如果值为空，则可以提权：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155715082.png" alt="image-20230321155715082"></p><p>接下来查看compile选项：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155755619.png" alt="image-20230321155755619"></p><p>linux，64位。</p><p>最后查看plugin路径，如果没有需要自行创建，此处存在：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155836405.png" alt="image-20230321155836405"></p><p>使用sqlmap直接将udf.so文件传到plugin目录：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321143053212.png" alt="image-20230321143053212"></p><p>此处的so文件使用的是msf自带的，如果使用sqlmap中的，需要先进行解码。</p><p>msf中路径为：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321160832973.png" alt="image-20230321160832973"></p><p>分别对应了linux和windows中的32&#x2F;64位文件，此处使用的是lib_mysqludf_sys_64.so。</p><p>上传之后，默认会多出一个sys_eval方法，但是不会回显，再手动添加一次，returns string：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321153548843.png" alt="image-20230321153548843"></p><p>此时查询方法，存在sys_eval，执行whoami，是root权限，提权成功。</p><p>为了后续操作，给find加上suid：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321143316978.png" alt="image-20230321143316978"></p><p>从www-data权限，使用suid提权，<code>touch 1.txt, find 1.txt -exec &#39;/bin/sh&#39; \;</code>，成功提权到root。</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="PwnOS2-0"><a href="#PwnOS2-0" class="headerlink" title="PwnOS2.0"></a>PwnOS2.0</h1><p>首先nmap扫描端口，发现22，25，80，110等开放：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321135938360.png" alt="image-20230321135938360"></p><p>nikto扫一下80的http服务：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140053612.png" alt="image-20230321140053612"></p><p>发现了一些敏感目录。</p><p>info目录为phpinfo:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140123549.png" alt="image-20230321140123549"></p><p>includes:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140140442.png" alt="image-20230321140140442"></p><p>login.php为登录页面：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140320230.png" alt="image-20230321140320230"></p><p>register.php为注册页面：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140330516.png" alt="image-20230321140330516"></p><p>注册用户<a href="mailto:&#x61;&#97;&#97;&#x40;&#x71;&#x71;&#46;&#99;&#x6f;&#109;">&#x61;&#97;&#97;&#x40;&#x71;&#x71;&#46;&#99;&#x6f;&#109;</a>，未发现有用信息。</p><p>接下来考虑通过login.php来getshell，在email字段输入单引号，报错：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140613604.png" alt="image-20230321140613604"></p><p>明显存在sql注入，并且报错提示数据库为mysql。</p><p>burp抓包直接跑sqlmap，加上–dbms mysql参数：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321140853513.png" alt="image-20230321140853513"></p><p>存在注入，–dump，查看user&#x2F;pass：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141528736.png" alt="image-20230321141528736"></p><p><a href="mailto:&#97;&#97;&#x61;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;">&#97;&#97;&#x61;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;</a>是注册的测试账号，尝试使用<a href="mailto:&#x61;&#x64;&#109;&#105;&#110;&#64;&#105;&#115;&#x69;&#110;&#x74;&#x73;&#x2e;&#x63;&#x6f;&#109;">&#x61;&#x64;&#109;&#105;&#110;&#64;&#105;&#115;&#x69;&#110;&#x74;&#x73;&#x2e;&#x63;&#x6f;&#109;</a>账号登录&#x2F;</p><p>密码为md5，解开后为killerbeesareflying，登录：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141719166.png" alt="image-20230321141719166"></p><p>登录成功，但是没有可用信息，回到sqlmap，直接–os-shell:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321141951074.png" alt="image-20230321141951074"></p><p>成功拿到shell，为www-data权限，但是此处的shell无法弹到kali。</p><p>在kali上寻找php马，传到靶机上：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142452841.png" alt="image-20230321142452841"></p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142229760.png" alt="image-20230321142229760"></p><p>本地开启监听，成功连上靶机：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142252180.png" alt="image-20230321142252180"></p><p>在当前目录下发现mysqli_connect.php文件，并发现密码root&#x2F;goodday:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142626934.png" alt="image-20230321142626934"></p><p>尝试登录mysql，失败，登录ssh同样失败。</p><p>回到上级目录，也存在mysqli_connect.php文件，查看发现另一组账号root&#x2F;root@ISIntS:</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142650060.png" alt="image-20230321142650060"></p><p>ssh登录，成功拿到root权限：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321142837619.png" alt="image-20230321142837619"></p><p>同时该密码可以登录mysql，因此尝试udf提权。</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155456474.png" alt="image-20230321155456474"></p><p>首先查看secure_file_priv，如果值为空，则可以提权：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155715082.png" alt="image-20230321155715082"></p><p>接下来查看compile选项：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155755619.png" alt="image-20230321155755619"></p><p>linux，64位。</p><p>最后查看plugin路径，如果没有需要自行创建，此处存在：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321155836405.png" alt="image-20230321155836405"></p><p>使用sqlmap直接将udf.so文件传到plugin目录：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321143053212.png" alt="image-20230321143053212"></p><p>此处的so文件使用的是msf自带的，如果使用sqlmap中的，需要先进行解码。</p><p>msf中路径为：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321160832973.png" alt="image-20230321160832973"></p><p>分别对应了linux和windows中的32&#x2F;64位文件，此处使用的是lib_mysqludf_sys_64.so。</p><p>上传之后，默认会多出一个sys_eval方法，但是不会回显，再手动添加一次，returns string：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321153548843.png" alt="image-20230321153548843"></p><p>此时查询方法，存在sys_eval，执行whoami，是root权限，提权成功。</p><p>为了后续操作，给find加上suid：</p><p><img src="/2023/04/26/vulnhub-PwnOS2-0/image-20230321143316978.png" alt="image-20230321143316978"></p><p>从www-data权限，使用suid提权，<code>touch 1.txt, find 1.txt -exec &#39;/bin/sh&#39; \;</code>，成功提权到root。</p>]]></content>
     
     
     <categories>

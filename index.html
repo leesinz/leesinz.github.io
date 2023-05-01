@@ -241,6 +241,222 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/01/htb-legacy/" target="_self">
+          htb_legacy
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/01/htb-legacy/" target="_self">
+        <div>
+          htb_legacynmap端口扫描：  扫服务：  开放135，139，445端口，考虑ms17010，先用nmap进行漏洞扫描： nmap -sC -sV -A -p 135,139,445 --script vuln 10.10.10.4  ms08-067 vulnerable。 msf：  getshell，system权限。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:57" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-lame/" target="_self">
+          htb_lame
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/01/htb-lame/" target="_self">
+        <div>
+          htb_lamenmap扫描：  服务探测：  漏洞扫描：  没有直接发现可利用漏洞。 使用searchsploit搜索相关漏洞：  首先是vsftpd，找到一个后门，尝试后无果，跳过。 接下来是samba：  发现命令注入漏洞，但是在msf模块中，尽量避免使用msf：  直接查看rb脚本，发现CVE-2007-2447。 github搜索并git clone exp：   本地起监听，攻击成功，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:56" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-jerry/" target="_self">
+          htb_jerry
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/01/htb-jerry/" target="_self">
+        <div>
+          htb_jerrynmap先端口扫描：  8080的http服务，firefox访问看看：  tomcat。使用tomcat字典进行目录爆破，先查找tomcat字典：  爆破：  访问之后，发现只有manager可利用，为登录页面：  tomcat&#x2F;tomcat登录失败。此时点击cancel：  返回401页面，并包含了tomcat&#x2F;s3cret的一组账号密码：  成功登录。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:55" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-blue/" target="_self">
+          htb_blue
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/01/htb-blue/" target="_self">
+        <div>
+          htb_bluenmap端口扫描：  扫具体服务：  win7&#x2F;win2008，开放了139，445端口，ms17-010：  getshell，system权限。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:54" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/04/28/htb-photobomb/" target="_self">
           htb_photobomb
         </a>
@@ -465,7 +681,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-PwnOS2-0/" target="_self">
         <div>
-          PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&#97;&#x61;&#97;&#64;&#x71;&#113;&#46;&#99;&#111;&#109;，未发现有用
+          PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&#x61;&#97;&#97;&#x40;&#x71;&#x71;&#46;&#99;&#x6f;&#109;，未发现有
         </div>
       </a>
 
@@ -559,169 +775,13 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/26/vulnhub-Mr-robot/" target="_self">
-          vulnhub_Mr-robot
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-Mr-robot/" target="_self">
-        <div>
-          Mr-robotnmap扫描，开放了80和443端口：  浏览器访问：  后台目录爆破：  发现robots.txt，访问：  发现两个文件,fsocity.dic，key-1-of-3.txt，分别查看：  其中fsocity.dic是一个字典，有80万行，接着访问key：  看似为md5值，md5解密失败，从名称判断应该是3个key中的第一个。 dirsearch还发现了wp-login等目录
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 16:56" pubdate>
-              2023-04-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/vulnhub/" class="category-chain-item">vulnhub</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/26/vulnhub-FristiLeaks-1-3/" target="_self">
-          vulnhub_FristiLeaks_1.3
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-FristiLeaks-1-3/" target="_self">
-        <div>
-          FristiLeaks_1.3arp-scan获取目标ip 192.168.59.18：  masscan全端口扫描:  nmap对开放端口进行服务探测：  whatweb：  dirsearch目录爆破：  nikto扫描：  综上，只开放了一个80端口，开启了apache服务，apache2.2.15+php5.3.3，linux操作系统，后台目录有&#x2F;cola,&#x2F;robot
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 16:51" pubdate>
-              2023-04-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/vulnhub/" class="category-chain-item">vulnhub</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/26/htb-precious/" target="_self">
-          htb_precious
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/htb-precious/" target="_self">
-        <div>
-          preciousinformation gatheringuse nmap to discover open-ports and services:  Now we focus on its http service on port 80. Access it by firefox browser(remember to modify your &#x2F;etc&#x2F;hosts):  It
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 15:10" pubdate>
-              2023-04-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/htb/" class="category-chain-item">htb</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
 
 
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 
