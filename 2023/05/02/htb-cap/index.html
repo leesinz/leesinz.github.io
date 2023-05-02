@@ -16,21 +16,33 @@
   <meta name="author" content="Ry4nnnn">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在路上有问题欢迎交流: &amp;#114;&amp;#x79;&amp;#x34;&amp;#110;&amp;#x6e;&amp;#110;&amp;#110;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="https://leesinz.github.io/about/index.html">
+    <meta name="description" content="htb_capgetshell端口扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.245  nmap -sC -sV -A -p 21,22,80 10.10.10.245  开放了21，22，80端口，首先尝试从80http服务突破，访问：  点击security snapshots：  发现url变为&#x2F;data&#x2F;1. 此时将url改为&amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="htb_cap">
+<meta property="og:url" content="https://leesinz.github.io/2023/05/02/htb-cap/index.html">
 <meta property="og:site_name" content="Ry4nnnn">
-<meta property="og:description" content="在路上有问题欢迎交流: &amp;#114;&amp;#x79;&amp;#x34;&amp;#110;&amp;#x6e;&amp;#110;&amp;#110;&amp;#64;&amp;#x31;&amp;#54;&amp;#51;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;">
+<meta property="og:description" content="htb_capgetshell端口扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.245  nmap -sC -sV -A -p 21,22,80 10.10.10.245  开放了21，22，80端口，首先尝试从80http服务突破，访问：  点击security snapshots：  发现url变为&#x2F;data&#x2F;1. 此时将url改为&amp;#">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-26T06:37:24.000Z">
-<meta property="article:modified_time" content="2023-04-26T09:25:12.815Z">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502220157451.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502221443622.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502223709813.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224340252.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224432032.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224603202.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224824145.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224913833.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502225620044.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502225710519.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502225740390.png">
+<meta property="article:published_time" content="2023-05-02T14:59:03.000Z">
+<meta property="article:modified_time" content="2023-05-02T14:59:48.294Z">
 <meta property="article:author" content="Ry4nnnn">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502220157451.png">
   
   
   
-  <title>关于 - Ry4nnnn</title>
+  <title>htb_cap - Ry4nnnn</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -107,7 +119,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -213,9 +225,57 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="关于"></span>
+            <span id="subtitle" data-typed-text="htb_cap"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-05-02 22:59" pubdate>
+          2023年5月2日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          405 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
 
         
       </div>
@@ -231,76 +291,178 @@
 
   <main>
     
-      <div class="container nopadding-x-md">
-        <div id="board"
-          >
-          
-            <div class="about-avatar">
-              <img src="/img/avatar.png" srcset="/img/loading.gif" lazyload class="img-fluid" alt="avatar">
-            </div>
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
+      
 
-<div class="text-center">
-  <div class="about-info">
-    <div class="about-name">Fluid</div>
-    <div class="about-intro">An elegant theme for Hexo</div>
-    <div class="about-icons">
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        
-        
-        
-        <a href=https://github.com class="
-           hint--bottom hint--rounded"
-           aria-label=GitHub
-           target="_blank"
-        >
-          <i class="iconfont icon-github-fill" aria-hidden="true"></i>
-          
-        </a>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">htb_cap</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="htb-cap"><a href="#htb-cap" class="headerlink" title="htb_cap"></a>htb_cap</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>端口扫描：</p>
+<p><code>nmap -p- --min-rate=1000 -T4 10.10.10.245</code></p>
+<p><img src="/2023/05/02/htb-cap/image-20230502220157451.png" srcset="/img/loading.gif" lazyload alt="image-20230502220157451"></p>
+<p><code>nmap -sC -sV -A -p 21,22,80 10.10.10.245</code></p>
+<p><img src="/2023/05/02/htb-cap/image-20230502221443622.png" srcset="/img/loading.gif" lazyload alt="image-20230502221443622"></p>
+<p>开放了21，22，80端口，首先尝试从80http服务突破，访问：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502223709813.png" srcset="/img/loading.gif" lazyload alt="image-20230502223709813"></p>
+<p>点击security snapshots：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502224340252.png" srcset="/img/loading.gif" lazyload alt="image-20230502224340252"></p>
+<p>发现url变为&#x2F;data&#x2F;1.</p>
+<p>此时将url改为&#x2F;data&#x2F;0,页面改变，出现流量，点击下载，查看下载的pcap：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502224432032.png" srcset="/img/loading.gif" lazyload alt="image-20230502224432032"></p>
+<p>发现tfp流量，查看内容：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502224603202.png" srcset="/img/loading.gif" lazyload alt="image-20230502224603202"></p>
+<p>找到ftp账号密码。</p>
+<p>接下来使用ftp登录：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502224824145.png" srcset="/img/loading.gif" lazyload alt="image-20230502224824145"></p>
+<p>找到user.txt。</p>
+<p>再用这组账号尝试直接登录ssh：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502224913833.png" srcset="/img/loading.gif" lazyload alt="image-20230502224913833"></p>
+<p>成功，接下来提权到root。</p>
+<h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>从本地使用wget下载linpeas到靶机上，加执行权限运行：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502225620044.png" srcset="/img/loading.gif" lazyload alt="image-20230502225620044"></p>
+<p>这里标注出，python3.8，有cap_setuid权限。</p>
+<p>gtfobins网站搜索：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502225710519.png" srcset="/img/loading.gif" lazyload alt="image-20230502225710519"></p>
+<p>尝试执行：</p>
+<p><img src="/2023/05/02/htb-cap/image-20230502225740390.png" srcset="/img/loading.gif" lazyload alt="image-20230502225740390"></p>
+<p>成功提权到root权限。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
       
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
         
-        
-        
-        <a href=https://douban.com class="
-           hint--bottom hint--rounded"
-           aria-label=豆瓣
-           target="_blank"
-        >
-          <i class="iconfont icon-douban-fill" aria-hidden="true"></i>
-          
-        </a>
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>htb_cap</div>
+      <div>https://leesinz.github.io/2023/05/02/htb-cap/</div>
+    </div>
+    <div class="license-meta">
       
-        
-        
-        
-        <a  class="qr-trigger
-           "
-           
-           target="_self"
-        >
-          <i class="iconfont icon-wechat-fill" aria-hidden="true"></i>
-          
-            <img class="qr-img" src="/img/favicon.png" srcset="/img/loading.gif" lazyload alt="qrcode" />
-          
-        </a>
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ry4nnnn</div>
+        </div>
       
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年5月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/01/htb-legacy/" title="htb_legacy">
+                        <span class="hidden-mobile">htb_legacy</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
     </div>
   </div>
 </div>
 
-<article class="about-content page-content mt-5">
-  <div class="markdown-body">
-    <h3 id="在路上"><a href="#在路上" class="headerlink" title="在路上"></a>在路上</h3><p>有问题欢迎交流: <a href="mailto:&#114;&#x79;&#x34;&#110;&#x6e;&#110;&#110;&#64;&#x31;&#54;&#51;&#x2e;&#99;&#111;&#109;">&#114;&#x79;&#x34;&#110;&#x6e;&#110;&#110;&#64;&#x31;&#54;&#51;&#x2e;&#99;&#111;&#109;</a></p>
-
-  </div>
-
-  
-</article>
-
 
 
 
@@ -327,11 +489,8 @@
 
 
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
     
 
     
@@ -449,6 +608,46 @@
   
 
 
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
 
 
   <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>

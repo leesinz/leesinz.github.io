@@ -241,6 +241,60 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/02/htb-cap/" target="_self">
+          htb_cap
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/02/htb-cap/" target="_self">
+        <div>
+          htb_capgetshell端口扫描： nmap -p- --min-rate=1000 -T4 10.10.10.245  nmap -sC -sV -A -p 21,22,80 10.10.10.245  开放了21，22，80端口，首先尝试从80http服务突破，访问：  点击security snapshots：  发现url变为&#x2F;data&#x2F;1. 此时将url改为&#
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-02 22:59" pubdate>
+              2023-05-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/01/htb-legacy/" target="_self">
           htb_legacy
         </a>
@@ -681,7 +735,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-PwnOS2-0/" target="_self">
         <div>
-          PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&#x61;&#97;&#97;&#x40;&#x71;&#x71;&#46;&#99;&#x6f;&#109;，未发现有
+          PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&#x61;&#97;&#x61;&#x40;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;，未发
         </div>
       </a>
 
@@ -690,60 +744,6 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2023-04-26 17:00" pubdate>
-              2023-04-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/vulnhub/" class="category-chain-item">vulnhub</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/26/vulnhub-Pwnlab/" target="_self">
-          vulnhub_Pwnlab
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-Pwnlab/" target="_self">
-        <div>
-          Pwnlabnmap扫端口&amp;服务：  主要是rpc和80端口的http服务。 使用rpcinfo进行探测：  无有效信息。 dirsearch爆破后台敏感目录：  首先直接访问80端口：  访问&#x2F;upload:  很明显为上传的文件。 接着访问&#x2F;upload.php:  提示需要登录。 接下来访问login页面，出现登录框：  burp抓包：  输入单引号，无变化，保存
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 16:57" pubdate>
               2023-04-26
             </time>
           </div>
