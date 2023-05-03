@@ -241,6 +241,60 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/03/htb-knife/" target="_self">
+          htb_knife
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/03/htb-knife/" target="_self">
+        <div>
+          htb_knifegetshell首先nmap扫描：  22，80端口开放，进行扫描结果如上。 火狐访问：  看起来是个静态页面，尝试目录爆破：  没有可用信息。 尝试curl  发现php&#x2F;8.1.0-dev，searchsploit搜索： 直接利用py脚本：  getshell。 privilege escalation使用上述脚本连接的shell不稳定，直接在ua里弹shell，n
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-03 21:35" pubdate>
+              2023-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/03/htb-netmon/" target="_self">
           htb_netmon
         </a>
@@ -690,60 +744,6 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2023-04-26 17:12" pubdate>
-              2023-04-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/vulnhub/" class="category-chain-item">vulnhub</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/26/vulnhub-Stapler/" target="_self">
-          vulnhub_Stapler
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-Stapler/" target="_self">
-        <div>
-          Staplerarp-scan发现目标主机：  masscan全端口扫描：  nmap详细扫描：   开放了ftp,ssh,mysql,smb,http等服务。 ftp允许匿名登录：  查看note文件内容:  这里提到一些用户名：Harry,Jojn,Elly. ssh连接：  新的用户名Barry。 尝试弱口令失败，暂时跳过。 enum4linux可以发现一些用户信息：  对于smb协议，查看
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 17:01" pubdate>
               2023-04-26
             </time>
           </div>
