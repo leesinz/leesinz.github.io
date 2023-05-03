@@ -241,6 +241,60 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/03/htb-netmon/" target="_self">
+          htb_netmon
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/05/03/htb-netmon/" target="_self">
+        <div>
+          htb_netmon首先是nmap扫描： nmap -p- --min-rate=1000 -T4 10.10.10.152  ftp服务开放，ftp尝试匿名登录：  在public目录下发现user.txt. 接下来考虑http服务。 仔细扫一下80口：  发现为PRTG 18.1，火狐访问： 需要账号密码进行登录，尝试prtg默认密码prtgadmin&#x2F;prtgadmin失败，再次回
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-03 20:14" pubdate>
+              2023-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/htb/" class="category-chain-item">htb</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/02/htb-cap/" target="_self">
           htb_cap
         </a>
@@ -690,60 +744,6 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
             <time datetime="2023-04-26 17:01" pubdate>
-              2023-04-26
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/vulnhub/" class="category-chain-item">vulnhub</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/26/vulnhub-PwnOS2-0/" target="_self">
-          vulnhub_PwnOS2.0
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/04/26/vulnhub-PwnOS2-0/" target="_self">
-        <div>
-          PwnOS2.0首先nmap扫描端口，发现22，25，80，110等开放：  nikto扫一下80的http服务：  发现了一些敏感目录。 info目录为phpinfo:  includes:  login.php为登录页面：  register.php为注册页面：  注册用户&#x61;&#97;&#x61;&#x40;&#113;&#x71;&#x2e;&#99;&#x6f;&#x6d;，未发
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 17:00" pubdate>
               2023-04-26
             </time>
           </div>

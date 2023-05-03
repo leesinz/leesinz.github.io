@@ -16,33 +16,32 @@
   <meta name="author" content="Ry4nnnn">
   <meta name="keywords" content="">
   
-    <meta name="description" content="htb_capgetshell端口扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.245  nmap -sC -sV -A -p 21,22,80 10.10.10.245  开放了21，22，80端口，首先尝试从80http服务突破，访问：  点击security snapshots：  发现url变为&#x2F;data&#x2F;1. 此时将url改为&amp;#">
+    <meta name="description" content="htb_netmon首先是nmap扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.152  ftp服务开放，ftp尝试匿名登录：  在public目录下发现user.txt. 接下来考虑http服务。 仔细扫一下80口：  发现为PRTG 18.1，火狐访问： 需要账号密码进行登录，尝试prtg默认密码prtgadmin&#x2F;prtgadmin失败，再次回">
 <meta property="og:type" content="article">
-<meta property="og:title" content="htb_cap">
-<meta property="og:url" content="https://leesinz.github.io/2023/05/02/htb-cap/index.html">
+<meta property="og:title" content="htb_netmon">
+<meta property="og:url" content="https://leesinz.github.io/2023/05/03/htb-netmon/index.html">
 <meta property="og:site_name" content="Ry4nnnn">
-<meta property="og:description" content="htb_capgetshell端口扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.245  nmap -sC -sV -A -p 21,22,80 10.10.10.245  开放了21，22，80端口，首先尝试从80http服务突破，访问：  点击security snapshots：  发现url变为&#x2F;data&#x2F;1. 此时将url改为&amp;#">
+<meta property="og:description" content="htb_netmon首先是nmap扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.152  ftp服务开放，ftp尝试匿名登录：  在public目录下发现user.txt. 接下来考虑http服务。 仔细扫一下80口：  发现为PRTG 18.1，火狐访问： 需要账号密码进行登录，尝试prtg默认密码prtgadmin&#x2F;prtgadmin失败，再次回">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502220157451.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502221443622.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502223709813.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224340252.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224432032.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224603202.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224824145.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502224913833.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502225620044.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502225710519.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502225740390.png">
-<meta property="article:published_time" content="2023-05-02T14:59:03.000Z">
-<meta property="article:modified_time" content="2023-05-02T14:59:48.294Z">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200138890.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200318244.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200414831.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200507925.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200600225.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200714445.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200847852.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200916968.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200959209.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503201012353.png">
+<meta property="article:published_time" content="2023-05-03T12:14:40.000Z">
+<meta property="article:modified_time" content="2023-05-03T12:15:52.066Z">
 <meta property="article:author" content="Ry4nnnn">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://leesinz.github.io/2023/05/02/htb-cap/image-20230502220157451.png">
+<meta name="twitter:image" content="https://leesinz.github.io/2023/05/03/htb-netmon/image-20230503200138890.png">
   
   
   
-  <title>htb_cap - Ry4nnnn</title>
+  <title>htb_netmon - Ry4nnnn</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -225,7 +224,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="htb_cap"></span>
+            <span id="subtitle" data-typed-text="htb_netmon"></span>
           
         </div>
 
@@ -236,8 +235,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-05-02 22:59" pubdate>
-          2023年5月2日 晚上
+        <time datetime="2023-05-03 20:14" pubdate>
+          2023年5月3日 晚上
         </time>
       </span>
     
@@ -248,7 +247,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          405 字
+          429 字
         
       </span>
     
@@ -305,40 +304,37 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">htb_cap</h1>
+            <h1 style="display: none">htb_netmon</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="htb-cap"><a href="#htb-cap" class="headerlink" title="htb_cap"></a>htb_cap</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>端口扫描：</p>
-<p><code>nmap -p- --min-rate=1000 -T4 10.10.10.245</code></p>
-<p><img src="/2023/05/02/htb-cap/image-20230502220157451.png" srcset="/img/loading.gif" lazyload alt="image-20230502220157451"></p>
-<p><code>nmap -sC -sV -A -p 21,22,80 10.10.10.245</code></p>
-<p><img src="/2023/05/02/htb-cap/image-20230502221443622.png" srcset="/img/loading.gif" lazyload alt="image-20230502221443622"></p>
-<p>开放了21，22，80端口，首先尝试从80http服务突破，访问：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502223709813.png" srcset="/img/loading.gif" lazyload alt="image-20230502223709813"></p>
-<p>点击security snapshots：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502224340252.png" srcset="/img/loading.gif" lazyload alt="image-20230502224340252"></p>
-<p>发现url变为&#x2F;data&#x2F;1.</p>
-<p>此时将url改为&#x2F;data&#x2F;0,页面改变，出现流量，点击下载，查看下载的pcap：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502224432032.png" srcset="/img/loading.gif" lazyload alt="image-20230502224432032"></p>
-<p>发现tfp流量，查看内容：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502224603202.png" srcset="/img/loading.gif" lazyload alt="image-20230502224603202"></p>
-<p>找到ftp账号密码。</p>
-<p>接下来使用ftp登录：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502224824145.png" srcset="/img/loading.gif" lazyload alt="image-20230502224824145"></p>
-<p>找到user.txt。</p>
-<p>再用这组账号尝试直接登录ssh：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502224913833.png" srcset="/img/loading.gif" lazyload alt="image-20230502224913833"></p>
-<p>成功，接下来提权到root。</p>
-<h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>从本地使用wget下载linpeas到靶机上，加执行权限运行：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502225620044.png" srcset="/img/loading.gif" lazyload alt="image-20230502225620044"></p>
-<p>这里标注出，python3.8，有cap_setuid权限。</p>
-<p>gtfobins网站搜索：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502225710519.png" srcset="/img/loading.gif" lazyload alt="image-20230502225710519"></p>
-<p>尝试执行：</p>
-<p><img src="/2023/05/02/htb-cap/image-20230502225740390.png" srcset="/img/loading.gif" lazyload alt="image-20230502225740390"></p>
-<p>成功提权到root权限。</p>
+                <h1 id="htb-netmon"><a href="#htb-netmon" class="headerlink" title="htb_netmon"></a>htb_netmon</h1><p>首先是nmap扫描：</p>
+<p><code>nmap -p- --min-rate=1000 -T4 10.10.10.152</code></p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200138890.png" srcset="/img/loading.gif" lazyload alt="image-20230503200138890"></p>
+<p>ftp服务开放，ftp尝试匿名登录：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200318244.png" srcset="/img/loading.gif" lazyload alt="image-20230503200318244"></p>
+<p>在public目录下发现user.txt.</p>
+<p>接下来考虑http服务。</p>
+<p>仔细扫一下80口：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200414831.png" srcset="/img/loading.gif" lazyload alt="image-20230503200414831"></p>
+<p>发现为PRTG 18.1，火狐访问：<br><img src="/2023/05/03/htb-netmon/image-20230503200507925.png" srcset="/img/loading.gif" lazyload alt="image-20230503200507925"></p>
+<p>需要账号密码进行登录，尝试prtg默认密码prtgadmin&#x2F;prtgadmin失败，再次回到ftp寻找：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200600225.png" srcset="/img/loading.gif" lazyload alt="image-20230503200600225"></p>
+<p>最终在&#x2F;users&#x2F;all user&#x2F;paessler&#x2F;prtg network monitor目录下找到配置文件（看wp得知）。</p>
+<p>接下来搜索密码相关字符：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200714445.png" srcset="/img/loading.gif" lazyload alt="image-20230503200714445"></p>
+<p>找到prtgadmin&#x2F;PrTg@dmin2018</p>
+<p>利用这组账号登录，失败，正确密码为PrTg@dmin2019(参考wp得知)。</p>
+<p>searchsploit搜索相关漏洞：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200847852.png" srcset="/img/loading.gif" lazyload alt="image-20230503200847852"></p>
+<p>存在RCE，查看sh文件：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200916968.png" srcset="/img/loading.gif" lazyload alt="image-20230503200916968"></p>
+<p>CVE-2018-9276.</p>
+<p>github下载相关利用poc：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503200959209.png" srcset="/img/loading.gif" lazyload alt="image-20230503200959209"></p>
+<p>直接为system权限：</p>
+<p><img src="/2023/05/03/htb-netmon/image-20230503201012353.png" srcset="/img/loading.gif" lazyload alt="image-20230503201012353"></p>
 
                 
               </div>
@@ -377,8 +373,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>htb_cap</div>
-      <div>https://leesinz.github.io/2023/05/02/htb-cap/</div>
+      <div>htb_netmon</div>
+      <div>https://leesinz.github.io/2023/05/03/htb-netmon/</div>
     </div>
     <div class="license-meta">
       
@@ -390,7 +386,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年5月2日</div>
+          <div>2023年5月3日</div>
         </div>
       
       
@@ -422,18 +418,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/05/03/htb-netmon/" title="htb_netmon">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">htb_netmon</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/05/01/htb-legacy/" title="htb_legacy">
-                        <span class="hidden-mobile">htb_legacy</span>
+                      <a href="/2023/05/02/htb-cap/" title="htb_cap">
+                        <span class="hidden-mobile">htb_cap</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
