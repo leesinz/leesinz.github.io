@@ -16,42 +16,37 @@
   <meta name="author" content="Ry4nnnn">
   <meta name="keywords" content="">
   
-    <meta name="description" content="htb_squashedgetshell首先nmap：  详细扫描：  重点放在http和rpc服务上。 先看80端口的http：  目录爆破： 没有可用信息。 rpcinfo：  showmount看一下有无可挂载目录：  有两个，&#x2F;home&#x2F;ross和&#x2F;var&#x2F;www&#x2F;html。 分别挂载到&#x2F;mnt&#x2F;1,&#x2F;mnt&amp;">
+    <meta name="description" content="htb_miraigetshellnmap扫描：  重点关注80端口和32400的http服务。 80端口：  空白，查看源代码也没有任何内容。 目录爆破：  存在admin目录：  在底部可以看到版本信息：  3.1.4，exploitdb搜索一下：  存在rce，但是版本号不对，并且需要认证，pass。 点击图标：  发现是树莓派，google得到默认账号密码：pi&#x2F;raspberr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="htb_squashed">
-<meta property="og:url" content="https://leesinz.github.io/2023/05/05/htb-squashed/index.html">
+<meta property="og:title" content="htb_mirai">
+<meta property="og:url" content="https://leesinz.github.io/2023/05/06/htb-mirai/index.html">
 <meta property="og:site_name" content="Ry4nnnn">
-<meta property="og:description" content="htb_squashedgetshell首先nmap：  详细扫描：  重点放在http和rpc服务上。 先看80端口的http：  目录爆破： 没有可用信息。 rpcinfo：  showmount看一下有无可挂载目录：  有两个，&#x2F;home&#x2F;ross和&#x2F;var&#x2F;www&#x2F;html。 分别挂载到&#x2F;mnt&#x2F;1,&#x2F;mnt&amp;">
+<meta property="og:description" content="htb_miraigetshellnmap扫描：  重点关注80端口和32400的http服务。 80端口：  空白，查看源代码也没有任何内容。 目录爆破：  存在admin目录：  在底部可以看到版本信息：  3.1.4，exploitdb搜索一下：  存在rce，但是版本号不对，并且需要认证，pass。 点击图标：  发现是树莓派，google得到默认账号密码：pi&#x2F;raspberr">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170109970.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170223256.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170501511.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170521065.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170841327.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170910819.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505172757455.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505172957737.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173026499.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173119147.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173153436.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173221379.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173325297.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173539068.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173728022.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505173824712.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505174239342.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505174421274.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505174724974.png">
-<meta property="og:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505174833420.png">
-<meta property="article:published_time" content="2023-05-05T09:51:46.000Z">
-<meta property="article:modified_time" content="2023-05-05T09:52:18.721Z">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230505211229060.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506100232470.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506100934237.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506100959978.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506101533458.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506101602622.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506101903505.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506102203946.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506102444787.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506102538831.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506102728212.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506102927697.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506103005719.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506103138523.png">
+<meta property="og:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230506103217232.png">
+<meta property="article:published_time" content="2023-05-06T05:34:27.000Z">
+<meta property="article:modified_time" content="2023-05-06T05:34:55.950Z">
 <meta property="article:author" content="Ry4nnnn">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://leesinz.github.io/2023/05/05/htb-squashed/image-20230505170109970.png">
+<meta name="twitter:image" content="https://leesinz.github.io/2023/05/06/htb-mirai/image-20230505211229060.png">
   
   
   
-  <title>htb_squashed - Ry4nnnn</title>
+  <title>htb_mirai - Ry4nnnn</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -234,7 +229,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="htb_squashed"></span>
+            <span id="subtitle" data-typed-text="htb_mirai"></span>
           
         </div>
 
@@ -245,8 +240,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-05-05 17:51" pubdate>
-          2023年5月5日 下午
+        <time datetime="2023-05-06 13:34" pubdate>
+          2023年5月6日 下午
         </time>
       </span>
     
@@ -257,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          752 字
+          410 字
         
       </span>
     
@@ -268,7 +263,7 @@
         
         
         
-          7 分钟
+          4 分钟
         
       </span>
     
@@ -314,58 +309,46 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">htb_squashed</h1>
+            <h1 style="display: none">htb_mirai</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="htb-squashed"><a href="#htb-squashed" class="headerlink" title="htb_squashed"></a>htb_squashed</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>首先nmap：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505170109970.png" srcset="/img/loading.gif" lazyload alt="image-20230505170109970"></p>
-<p>详细扫描：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505170223256.png" srcset="/img/loading.gif" lazyload alt="image-20230505170223256"></p>
-<p>重点放在http和rpc服务上。</p>
-<p>先看80端口的http：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505170501511.png" srcset="/img/loading.gif" lazyload alt="image-20230505170501511"></p>
-<p>目录爆破：<br><img src="/2023/05/05/htb-squashed/image-20230505170521065.png" srcset="/img/loading.gif" lazyload alt="image-20230505170521065"></p>
-<p>没有可用信息。</p>
-<p>rpcinfo：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505170841327.png" srcset="/img/loading.gif" lazyload alt="image-20230505170841327"></p>
-<p>showmount看一下有无可挂载目录：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505170910819.png" srcset="/img/loading.gif" lazyload alt="image-20230505170910819"></p>
-<p>有两个，&#x2F;home&#x2F;ross和&#x2F;var&#x2F;www&#x2F;html。</p>
-<p>分别挂载到&#x2F;mnt&#x2F;1,&#x2F;mnt&#x2F;2:</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505172757455.png" srcset="/img/loading.gif" lazyload alt="image-20230505172757455"></p>
-<p>并且根据所有者的uid，创建用户test1,test2，uid分别为1001和2017.</p>
-<p>切换到test1，进入&#x2F;home&#x2F;ross挂载目录：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505172957737.png" srcset="/img/loading.gif" lazyload alt="image-20230505172957737"></p>
-<p>发现.Xauthority文件，查看内容发现magic-cookie等字符串：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173026499.png" srcset="/img/loading.gif" lazyload alt="image-20230505173026499"></p>
-<p>接着切换到test2，进入&#x2F;var&#x2F;www&#x2F;html:</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173119147.png" srcset="/img/loading.gif" lazyload alt="image-20230505173119147"></p>
-<p>看起来是网站目录，尝试写入文件：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173153436.png" srcset="/img/loading.gif" lazyload alt="image-20230505173153436"></p>
-<p>写入成功，通过curl判断后台语言类型：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173221379.png" srcset="/img/loading.gif" lazyload alt="image-20230505173221379"></p>
-<p>暂未发现，尝试php：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173325297.png" srcset="/img/loading.gif" lazyload alt="image-20230505173325297"></p>
-<p>成功解析，下一步直接写马弹shell。</p>
-<p>在本机上查找php反弹shell脚本，修改lhost后本地开启python http server，再用test2用户下载到网站目录下：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173539068.png" srcset="/img/loading.gif" lazyload alt="image-20230505173539068"></p>
-<p>访问php马，成功接收到shell：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173728022.png" srcset="/img/loading.gif" lazyload alt="image-20230505173728022"></p>
-<p>在home目录下发现user.txt：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505173824712.png" srcset="/img/loading.gif" lazyload alt="image-20230505173824712"></p>
-<h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>接下来进行权限提升。（全靠wp）</p>
-<p>将&#x2F;home&#x2F;ross目录下的.Xauthority保存到&#x2F;tmp目录下：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505174239342.png" srcset="/img/loading.gif" lazyload alt="image-20230505174239342"></p>
-<p>保存之后设置环境变量XAUTHORITY，并且通过w命令查看当前所处的display：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505174421274.png" srcset="/img/loading.gif" lazyload alt="image-20230505174421274"></p>
-<p>起python服务器，下载至本地，再利用convert工具转换为png：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505174724974.png" srcset="/img/loading.gif" lazyload alt="image-20230505174724974"></p>
-<p>发现root密码，su提到root：</p>
-<p><img src="/2023/05/05/htb-squashed/image-20230505174833420.png" srcset="/img/loading.gif" lazyload alt="image-20230505174833420"></p>
-<p>成功。</p>
-<p>涉及到的X11工具为一个display manager，具体相关原理自行google。</p>
+                <h1 id="htb-mirai"><a href="#htb-mirai" class="headerlink" title="htb_mirai"></a>htb_mirai</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>nmap扫描：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230505211229060.png" srcset="/img/loading.gif" lazyload alt="image-20230505211229060"></p>
+<p>重点关注80端口和32400的http服务。</p>
+<p>80端口：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506100232470.png" srcset="/img/loading.gif" lazyload alt="image-20230506100232470"></p>
+<p>空白，查看源代码也没有任何内容。</p>
+<p>目录爆破：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506100934237.png" srcset="/img/loading.gif" lazyload alt="image-20230506100934237"></p>
+<p>存在admin目录：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506100959978.png" srcset="/img/loading.gif" lazyload alt="image-20230506100959978"></p>
+<p>在底部可以看到版本信息：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506101533458.png" srcset="/img/loading.gif" lazyload alt="image-20230506101533458"></p>
+<p>3.1.4，exploitdb搜索一下：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506101602622.png" srcset="/img/loading.gif" lazyload alt="image-20230506101602622"></p>
+<p>存在rce，但是版本号不对，并且需要认证，pass。</p>
+<p>点击图标：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506101903505.png" srcset="/img/loading.gif" lazyload alt="image-20230506101903505"></p>
+<p>发现是树莓派，google得到默认账号密码：pi&#x2F;raspberry，尝试登录，失败。</p>
+<p>ssh登录成功：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506102203946.png" srcset="/img/loading.gif" lazyload alt="image-20230506102203946"></p>
+<p>对于另一个开放的http端口，访问后为一个登录框：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506102444787.png" srcset="/img/loading.gif" lazyload alt="image-20230506102444787"></p>
+<p>无法注册，登录后各个参数尝试注入，无果，并且会锁登录次数，pass。</p>
+<h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>ssh成功后，find查找flag：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506102538831.png" srcset="/img/loading.gif" lazyload alt="image-20230506102538831"></p>
+<p>sudo -l提权：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506102728212.png" srcset="/img/loading.gif" lazyload alt="image-20230506102728212"></p>
+<p>查看root.txt，提示：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506102927697.png" srcset="/img/loading.gif" lazyload alt="image-20230506102927697"></p>
+<p>root在usb里，mount命令结合df命令查看：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506103005719.png" srcset="/img/loading.gif" lazyload alt="image-20230506103005719"></p>
+<p>进入&#x2F;media&#x2F;usbstick查看：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506103138523.png" srcset="/img/loading.gif" lazyload alt="image-20230506103138523"></p>
+<p>提示root被删了….，翻&#x2F;dev&#x2F;sdb文件：</p>
+<p><img src="/2023/05/06/htb-mirai/image-20230506103217232.png" srcset="/img/loading.gif" lazyload alt="image-20230506103217232"></p>
 
                 
               </div>
@@ -404,8 +387,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>htb_squashed</div>
-      <div>https://leesinz.github.io/2023/05/05/htb-squashed/</div>
+      <div>htb_mirai</div>
+      <div>https://leesinz.github.io/2023/05/06/htb-mirai/</div>
     </div>
     <div class="license-meta">
       
@@ -417,7 +400,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年5月5日</div>
+          <div>2023年5月6日</div>
         </div>
       
       
@@ -449,18 +432,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/05/06/htb-mirai/" title="htb_mirai">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">htb_mirai</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/05/05/htb-blocky/" title="htb_blocky">
-                        <span class="hidden-mobile">htb_blocky</span>
+                      <a href="/2023/05/05/htb-squashed/" title="htb_squashed">
+                        <span class="hidden-mobile">htb_squashed</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
