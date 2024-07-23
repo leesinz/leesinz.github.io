@@ -191,6 +191,55 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/05/htb-blocky/" target="_self">
+          htb_blocky
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/05/htb-blocky/" target="_self">
+          
+          htb_blockygetshell首先nmap：   访问http（记得添加dns解析）：  目录爆破：  这里有几个目录需要关注，首先是wp-login.php，表明这是wordpress，其次还存在phpmyadmin，可以考虑写shell，还有&#x2F;plugins。 phpmyadmin:  弱口令失败，常规的登录界面：  &#x2F;plugins：  存在两个jar包，下载至本地
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-05 17:50" pubdate>
+              2023-05-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/04/htb-granny/" target="_self">
           htb_granny
         </a>
@@ -619,53 +668,6 @@
               <a href="/tags/walkthrough/">walkthrough</a>
             
               <a href="/tags/htb/">htb</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/27/file-upload/" target="_self">
-          file_upload
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2023/04/27/file-upload/" target="_self">
-          
-          file_upload 介绍什么是文件上传漏洞简单来说，存在文件上传，就可能存在文件上传漏洞。上传文件时，如果未对上传的文件进行严格的验证和过滤，就可能导致传入非法文件，例如木马等等。 文件上传的危害上传漏洞与SQL注入或 XSS相比，其风险更大。 如果 Web应用程序存在上传漏洞，攻击者上传的文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本，就会导致代码执行。如果上传的文件是F
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-27 22:32" pubdate>
-              2023-04-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/OWASP/">OWASP</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/file-upload/">file upload</a>
             
           </div>
         
