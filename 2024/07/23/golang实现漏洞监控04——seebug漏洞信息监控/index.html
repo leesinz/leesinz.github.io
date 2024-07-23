@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="golang 实现漏洞监控04——seebug 漏洞信息监控整体功能先看一段最简单的 get 请求： 123456789101112func main() &#123;      url :&#x3D; &quot;https:&#x2F;&#x2F;www.seebug.org&#x2F;vuldb&#x2F;vulnerabilities?page&#x3D;1&quot;      res, err :&#x3D; http.Get(url)      if">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang 实现漏洞监控04——seebug 漏洞信息监控">
+<meta property="og:url" content="http://example.com/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A704%E2%80%94%E2%80%94seebug%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="golang 实现漏洞监控04——seebug 漏洞信息监控整体功能先看一段最简单的 get 请求： 123456789101112func main() &#123;      url :&#x3D; &quot;https:&#x2F;&#x2F;www.seebug.org&#x2F;vuldb&#x2F;vulnerabilities?page&#x3D;1&quot;      res, err :&#x3D; http.Get(url)      if">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126131752248.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126131851302.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126140736499.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126141158241.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126140926830.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126141631453.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126142002894.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126142320638.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126142707838.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240126143131960.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/image-20240229134844024.png">
+<meta property="article:published_time" content="2024-07-23T04:40:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:02:33.127Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="crush">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="seebug">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/image-20240126131752248.png">
+  
+  
+  <title>golang 实现漏洞监控04——seebug 漏洞信息监控 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="golang 实现漏洞监控04——seebug 漏洞信息监控">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 12:40" pubdate>
+        2024年7月23日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">golang 实现漏洞监控04——seebug 漏洞信息监控</h1>
+            
+            <div class="markdown-body">
+              <h1 id="golang-实现漏洞监控04——seebug-漏洞信息监控"><a href="#golang-实现漏洞监控04——seebug-漏洞信息监控" class="headerlink" title="golang 实现漏洞监控04——seebug 漏洞信息监控"></a>golang 实现漏洞监控04——seebug 漏洞信息监控</h1><h2 id="整体功能"><a href="#整体功能" class="headerlink" title="整体功能"></a>整体功能</h2><p>先看一段最简单的 get 请求：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    url := <span class="hljs-string">&quot;https://www.seebug.org/vuldb/vulnerabilities?page=1&quot;</span>  <br>    res, err := http.Get(url)  <br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  <br>       fmt.Println(<span class="hljs-string">&quot;Error request:&quot;</span>, err)  <br>       <span class="hljs-keyword">return</span>  <br>    &#125;  <br>    <span class="hljs-keyword">defer</span> res.Body.Close()  <br>  <br>    body, _ := ioutil.ReadAll(res.Body)  <br>    fmt.Println(<span class="hljs-type">string</span>(body))  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>GET 方法访问 seebug 漏洞库，打印出的结果如下：<br><img src="/2023/04/27/file-upload/image-20240126131752248.png" srcset="/img/loading.gif" lazyload><br>这是一段 js 混淆的代码，而不是期望的 html 数据。<br><img src="/2023/04/27/file-upload/image-20240126131851302.png" srcset="/img/loading.gif" lazyload><br>curl 的结果同样如此，随后尝试用 burp 补全正常请求的参数，依然无法得到正确的数据。<br>因此考虑使用 chromedp 来进行访问。</p>
+<h3 id="chromedp"><a href="#chromedp" class="headerlink" title="chromedp"></a>chromedp</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cardlink">url: https://github.com/chromedp/chromedp<br>title: &quot;GitHub - chromedp/chromedp: A faster, simpler way to drive browsers supporting the Chrome DevTools Protocol.&quot;<br>description: &quot;A faster, simpler way to drive browsers supporting the Chrome DevTools Protocol. - GitHub - chromedp/chromedp: A faster, simpler way to drive browsers supporting the Chrome DevTools Protocol.&quot;<br>host: github.com<br>favicon: https://github.githubcrush_seebug.com/favicons/favicon.svg<br>image: https://opengraph.githubcrush_seebug.com/d4bf4b8aff3b3b26f607fb6f006cf4bda0646c39debab713acbccfb851de2080/chromedp/chromedp<br></code></pre></td></tr></table></figure>
+<p>先看一段 demo，通过 chromedp 来访问百度并且搜索特定内容，再点击搜索按钮：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs stylus">package <span class="hljs-selector-tag">main</span>  <br>  <br>import (  <br>    <span class="hljs-string">&quot;context&quot;</span>  <br>    <span class="hljs-string">&quot;fmt&quot;</span>    <span class="hljs-string">&quot;github.com/chromedp/chromedp&quot;</span>)  <br>  <br>func <span class="hljs-selector-tag">main</span>() &#123;  <br>    ctx, _ := chromedp<span class="hljs-selector-class">.NewExecAllocator</span>(context<span class="hljs-selector-class">.Background</span>(),  <br>       <span class="hljs-built_in">append</span>(  <br>          chromedp<span class="hljs-selector-class">.DefaultExecAllocatorOptions</span><span class="hljs-selector-attr">[:]</span>, chromedp<span class="hljs-selector-class">.Flag</span>(<span class="hljs-string">&quot;headless&quot;</span>, false), chromedp<span class="hljs-selector-class">.Flag</span>(<span class="hljs-string">&quot;enable-automation&quot;</span>, false),  <br>       )...,  <br>    )  <br>    ctx, _ = chromedp<span class="hljs-selector-class">.NewContext</span>(ctx)  <br>    chromedp<span class="hljs-selector-class">.Run</span>(ctx, chromedp<span class="hljs-selector-class">.Navigate</span>(<span class="hljs-string">&quot;http://www.baidu.com&quot;</span>))  <br>  <br>    chromedp<span class="hljs-selector-class">.Run</span>(ctx, chromedp<span class="hljs-selector-class">.SendKeys</span>(`#kw`, <span class="hljs-string">&quot;111&quot;</span>, chromedp.ByID))  <br>    fmt<span class="hljs-selector-class">.Println</span>(<span class="hljs-string">&quot;wait for 2 seconds&quot;</span>)  <br>    chromedp<span class="hljs-selector-class">.Run</span>(ctx, chromedp<span class="hljs-selector-class">.WaitVisible</span>(`#su`, chromedp.ByID))  <br>    chromedp<span class="hljs-selector-class">.Run</span>(ctx, chromedp<span class="hljs-selector-class">.Click</span>(`document<span class="hljs-selector-class">.querySelector</span>(<span class="hljs-string">&quot;#su&quot;</span>)`, chromedp.ByJSPath))  <br>  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>首先是新建一个执行上下文，通过 append 来覆盖 options 中的一些参数，DefaultExecAllocatorOptions 的默认配置如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-selector-tag">var</span> DefaultExecAllocatorOptions = <span class="hljs-selector-attr">[...]</span>ExecAllocatorOption&#123;  <br>	NoFirstRun,  <br>	NoDefaultBrowserCheck,  <br>	Headless,  <br>  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-background-networking&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;enable-features&quot;</span>, <span class="hljs-string">&quot;NetworkService,NetworkServiceInProcess&quot;</span>),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-background-timer-throttling&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-backgrounding-occluded-windows&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-breakpad&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-client-side-phishing-detection&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-default-apps&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-dev-shm-usage&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-extensions&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-features&quot;</span>, <span class="hljs-string">&quot;site-per-process,Translate,BlinkGenPropertyTrees&quot;</span>),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-hang-monitor&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-ipc-flooding-protection&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-popup-blocking&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-prompt-on-repost&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-renderer-backgrounding&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;disable-sync&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;force-color-profile&quot;</span>, <span class="hljs-string">&quot;srgb&quot;</span>),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;metrics-recording-only&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;safebrowsing-disable-auto-update&quot;</span>, true),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;enable-automation&quot;</span>, true),  <span class="hljs-comment">// 会显示自动化测试标识  </span><br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;password-store&quot;</span>, <span class="hljs-string">&quot;basic&quot;</span>),  <br>	<span class="hljs-built_in">Flag</span>(<span class="hljs-string">&quot;use-mock-keychain&quot;</span>, true),  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>headless 参数如果设置为 false，就会打开一个窗口，反之则无，为了调试方便这里将参数设置为 false。<br>通过 chromedp.Navigate()导航到 baidu，再通过 chromedp.SendKeys()模拟键盘输入，QueryOptions 设置为 ByID，再找到 id 为 kw 的部分，实现了在搜索框中输入内容：<br><img src="/2023/04/27/file-upload/image-20240126140736499.png" srcset="/img/loading.gif" lazyload><br>接着通过 chromedp.WaitVisible()等待搜索按钮出现，并进行点击：<br><img src="/2023/04/27/file-upload/image-20240126141158241.png" srcset="/img/loading.gif" lazyload><br>最终结果如下：<br><img src="/2023/04/27/file-upload/image-20240126140926830.png" srcset="/img/loading.gif" lazyload><br>下面尝试访问 seebug。<br><img src="/2023/04/27/file-upload/image-20240126141631453.png" srcset="/img/loading.gif" lazyload><br>chrome 打开了一个空白网页，可能是有反爬的逻辑，在 options 中添加头：<code>chromedp.Flag(&quot;disable-blink-features&quot;, &quot;AutomationControlled&quot;),</code> 即可。<br><img src="/2023/04/27/file-upload/image-20240126142002894.png" srcset="/img/loading.gif" lazyload><br>在控制台中查看 window.navigator.webdriver，可以发现不加参数时为 true，加上参数之后 webdriver 变为 false。<br><img src="/2023/04/27/file-upload/image-20240126142320638.png" srcset="/img/loading.gif" lazyload><br>目前已经能够正常访问，尝试打印出 html 内容：<br><img src="/2023/04/27/file-upload/image-20240126142707838.png" srcset="/img/loading.gif" lazyload><br>可以看到网页还在加载，打印出的内容依然是混淆的 js 数据。<br>这里只需要 sleep 一段时间等待网页加载完成就好：<br><img src="/2023/04/27/file-upload/image-20240126143131960.png" srcset="/img/loading.gif" lazyload><br>或者使用更高效的方法，例如等待第一个漏洞的漏洞名称加载完再打印：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-keyword">xpath</span> := <span class="hljs-string">&quot;/html/body/div[2]/div/div/div/div/table/tbody/tr[1]/td[4]/a&quot;</span><br>chromedp.WaitVisible(<span class="hljs-keyword">xpath</span>, chromedp.BySearch),<br></code></pre></td></tr></table></figure>
+
+<p>能够拿到正确的html之后，进行解析提取出想要的信息即可。</p>
+<h2 id="爬取逻辑"><a href="#爬取逻辑" class="headerlink" title="爬取逻辑"></a>爬取逻辑</h2><p>每天凌晨通过chromedp访问seebug漏洞库第一页的内容，通过提交时间判断是否为新漏洞，如果是则插入数据库。</p>
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p><img src="/2023/04/27/file-upload/image-20240229134844024.png" srcset="/img/loading.gif" lazyload alt="image-20240229134844024"></p>
+<p>目前seebug源的监控已经加入crush项目:<a target="_blank" rel="noopener" href="https://github.com/leesinz/crush">https://github.com/leesinz/crush</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/crush/">crush</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/crush/">crush</a>
+                    
+                      <a class="hover-with-bg" href="/tags/golang/">golang</a>
+                    
+                      <a class="hover-with-bg" href="/tags/seebug/">seebug</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A705%E2%80%94%E2%80%940day%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">golang实现漏洞监控05——0day漏洞信息监控</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A703%E2%80%94%E2%80%94metasploit%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/">
+                        <span class="hidden-mobile">golang 实现漏洞监控03——metasploit 漏洞信息监控</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

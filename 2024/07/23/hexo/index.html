@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="hexo+github搭建个人博客nodejs，npm安装node.js不使用最新版本，而是选择v14.21.3，链接如下： Node.js — 下载 Node.js® (nodejs.org) 通过msi安装，同时包含了npm 6.14.18. 安装完成后查看版本：  hexo安装1npm install -g hexo-cli  安装完成后如下所示：  下面选择一个目录，创建hexo项目： 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo+github搭建个人博客">
+<meta property="og:url" content="http://example.com/2024/07/23/hexo/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="hexo+github搭建个人博客nodejs，npm安装node.js不使用最新版本，而是选择v14.21.3，链接如下： Node.js — 下载 Node.js® (nodejs.org) 通过msi安装，同时包含了npm 6.14.18. 安装完成后查看版本：  hexo安装1npm install -g hexo-cli  安装完成后如下所示：  下面选择一个目录，创建hexo项目： 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723090054454.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723090420627.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723090846584.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723090959722.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723091251487.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723091448827.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723091557550.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723091730465.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723092431068.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723092611006.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723092810378.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723092916902.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723093308374.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723093419081.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723093523470.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723093645078.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723093825819.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723093933391.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723094142932.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723094450220.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723094606481.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723095857177.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723104325771.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723104526181.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723104608472.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723104648753.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723110951541.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0240723111032524.png">
+<meta property="article:published_time" content="2024-07-23T05:30:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:08:58.589Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/0240723090054454.png">
+  
+  
+  <title>hexo+github搭建个人博客 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="hexo+github搭建个人博客">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 13:30" pubdate>
+        2024年7月23日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">hexo+github搭建个人博客</h1>
+            
+            <div class="markdown-body">
+              <h1 id="hexo-github搭建个人博客"><a href="#hexo-github搭建个人博客" class="headerlink" title="hexo+github搭建个人博客"></a>hexo+github搭建个人博客</h1><h2 id="nodejs，npm安装"><a href="#nodejs，npm安装" class="headerlink" title="nodejs，npm安装"></a>nodejs，npm安装</h2><p>node.js不使用最新版本，而是选择v14.21.3，链接如下：</p>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn/download/prebuilt-installer">Node.js — 下载 Node.js® (nodejs.org)</a></p>
+<p>通过msi安装，同时包含了npm 6.14.18.</p>
+<p>安装完成后查看版本：</p>
+<p><img src="/2023/04/27/file-upload/0240723090054454.png" srcset="/img/loading.gif" lazyload alt="image-20240723090054454"></p>
+<h2 id="hexo安装"><a href="#hexo安装" class="headerlink" title="hexo安装"></a>hexo安装</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">npm install <span class="hljs-literal">-g</span> hexo<span class="hljs-literal">-cli</span><br></code></pre></td></tr></table></figure>
+
+<p>安装完成后如下所示：</p>
+<p><img src="/2023/04/27/file-upload/0240723090420627.png" srcset="/img/loading.gif" lazyload alt="image-20240723090420627"></p>
+<p>下面选择一个目录，创建hexo项目：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cmake">hexo init [<span class="hljs-keyword">project</span>-name]<br>cd [<span class="hljs-keyword">project</span>-name]<br>npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/0240723090846584.png" srcset="/img/loading.gif" lazyload alt="image-20240723090846584"></p>
+<p>本地启动项目：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css">hexo <span class="hljs-selector-tag">g</span><br>hexo s<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/0240723090959722.png" srcset="/img/loading.gif" lazyload alt="image-20240723090959722"></p>
+<h2 id="fluid安装"><a href="#fluid安装" class="headerlink" title="fluid安装"></a>fluid安装</h2><p>主题选择fluid，同样不选用最新版，选择v1.8.13</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fluid-dev/hexo-theme-fluid/archive/refs/tags/v1.8.13.zip">https://github.com/fluid-dev/hexo-theme-fluid/archive/refs/tags/v1.8.13.zip</a></p>
+<p>下载后解压并重命名为fluid，复制到hexo&#x2F;themes目录下：</p>
+<p><img src="/2023/04/27/file-upload/0240723091251487.png" srcset="/img/loading.gif" lazyload alt="image-20240723091251487"></p>
+<p>接下来修改根目录下的_config.yml，将theme改为fluid：</p>
+<p><img src="/2023/04/27/file-upload/0240723091448827.png" srcset="/img/loading.gif" lazyload alt="image-20240723091448827"></p>
+<p>刷新一下，成功：</p>
+<p><img src="/2023/04/27/file-upload/0240723091557550.png" srcset="/img/loading.gif" lazyload alt="image-20240723091557550"></p>
+<h2 id="具体配置"><a href="#具体配置" class="headerlink" title="具体配置"></a>具体配置</h2><h3 id="创建关于页"><a href="#创建关于页" class="headerlink" title="创建关于页"></a>创建关于页</h3><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">hexo <span class="hljs-keyword">new</span> page about<br></code></pre></td></tr></table></figure>
+
+<p>到source&#x2F;about目录下，修改index.md文件：</p>
+<p><img src="/2023/04/27/file-upload/0240723091730465.png" srcset="/img/loading.gif" lazyload alt="image-20240723091730465"></p>
+<h3 id="新建文章"><a href="#新建文章" class="headerlink" title="新建文章"></a>新建文章</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">hexo new post <span class="hljs-selector-attr">[article]</span><br>hexo <span class="hljs-selector-tag">g</span> -d <br>hexo s<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/0240723092431068.png" srcset="/img/loading.gif" lazyload alt="image-20240723092431068"></p>
+<h3 id="个性化展示"><a href="#个性化展示" class="headerlink" title="个性化展示"></a>个性化展示</h3><h4 id="标签页title："><a href="#标签页title：" class="headerlink" title="标签页title："></a>标签页title：</h4><p>根目录_config.yml-&gt;title</p>
+<p><img src="/2023/04/27/file-upload/0240723092611006.png" srcset="/img/loading.gif" lazyload alt="image-20240723092611006"></p>
+<h4 id="导航栏左侧标题"><a href="#导航栏左侧标题" class="headerlink" title="导航栏左侧标题"></a>导航栏左侧标题</h4><p>fluid-&gt;_config.yml-&gt;bolg_title</p>
+<p><img src="/2023/04/27/file-upload/0240723092810378.png" srcset="/img/loading.gif" lazyload alt="image-20240723092810378"></p>
+<h4 id="首页标题"><a href="#首页标题" class="headerlink" title="首页标题"></a>首页标题</h4><p>fluid-&gt;_config.yml-&gt;slogan:text</p>
+<p><img src="/2023/04/27/file-upload/0240723092916902.png" srcset="/img/loading.gif" lazyload alt="image-20240723092916902"></p>
+<h4 id="阅读量统计"><a href="#阅读量统计" class="headerlink" title="阅读量统计"></a>阅读量统计</h4><p><a target="_blank" rel="noopener" href="https://console.leancloud.cn/">https://console.leancloud.cn/</a></p>
+<p>注册账号之后创建开发版本应用，在设置-&gt;应用凭证处获取api信息：</p>
+<p><img src="/2023/04/27/file-upload/0240723093308374.png" srcset="/img/loading.gif" lazyload alt="image-20240723093308374"></p>
+<p>下面到fluid-&gt;_config.yml文件中修改配置：</p>
+<p><img src="/2023/04/27/file-upload/0240723093419081.png" srcset="/img/loading.gif" lazyload alt="image-20240723093419081"></p>
+<p>首先将web_analytics项的enable改为true，下面填写api_id，api_key和server_url:</p>
+<p><img src="/2023/04/27/file-upload/0240723093523470.png" srcset="/img/loading.gif" lazyload alt="image-20240723093523470"></p>
+<p>最后打开浏览计数，将来源改为leancloud：</p>
+<p><img src="/2023/04/27/file-upload/0240723093645078.png" srcset="/img/loading.gif" lazyload alt="image-20240723093645078"></p>
+<p>至此，已经开启单篇文章阅读量统计，效果如下：</p>
+<p><img src="/2023/04/27/file-upload/0240723093825819.png" srcset="/img/loading.gif" lazyload alt="image-20240723093825819"></p>
+<p>下面开启整个博客浏览数据统计。</p>
+<p>同样是fluid-&gt;.config.yml:</p>
+<p><img src="/2023/04/27/file-upload/0240723093933391.png" srcset="/img/loading.gif" lazyload alt="image-20240723093933391"></p>
+<p>效果如下：</p>
+<p><img src="/2023/04/27/file-upload/0240723094142932.png" srcset="/img/loading.gif" lazyload alt="image-20240723094142932"></p>
+<h4 id="评论"><a href="#评论" class="headerlink" title="评论"></a>评论</h4><p>修改fluid的配置文件，打开评论插件并选择valine：</p>
+<p><img src="/2023/04/27/file-upload/0240723094450220.png" srcset="/img/loading.gif" lazyload alt="image-20240723094450220"></p>
+<p>并到下面配置leancloud的api信息：</p>
+<p><img src="/2023/04/27/file-upload/0240723094606481.png" srcset="/img/loading.gif" lazyload alt="image-20240723094606481"></p>
+<p>效果如下：</p>
+<p><img src="/2023/04/27/file-upload/0240723095857177.png" srcset="/img/loading.gif" lazyload alt="image-20240723095857177"></p>
+<h2 id="图片加载问题"><a href="#图片加载问题" class="headerlink" title="图片加载问题"></a>图片加载问题</h2><p>hexo配置过程中遇到的最大问题就是图片无法加载，或者根据官方文档能够加载，但是与markdown格式不同，只能在一处正常显示。</p>
+<p>hexo支持的markdown类型图片名为<code>test.jpg</code>，但是在typora中为<code>test/test.jpg</code>，为了解决这一问题，这里使用hexo-renderer-marked插件，踩坑的步骤跳过，直接给出最终的解决方案。</p>
+<p>安装插件：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-renderer-marked <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure>
+
+<p>修改根目录下的_config.yml:</p>
+<p><img src="/2023/04/27/file-upload/0240723104325771.png" srcset="/img/loading.gif" lazyload alt="image-20240723104325771"></p>
+<p>修改插件中的js代码，目录为<code>hexo\node_modules\hexo-renderer-marked\lib\renderer.js</code></p>
+<p>搜索image定位到下面的位置，1为原代码，2为修改后的代码：</p>
+<p><img src="/2023/04/27/file-upload/0240723104526181.png" srcset="/img/loading.gif" lazyload alt="image-20240723104526181"></p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs markdown">// findById requires forward slash<br>// <span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span>* Add the following code <span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">***</span><br><span class="hljs-strong">const fixPostPath = join(postPath, &#x27;../&#x27;);</span><br><span class="hljs-strong">const asset = PostAsset.findById(join(fixPostPath, href.replace(/\\/g, &#x27;/&#x27;)));</span><br><span class="hljs-strong">// const asset = PostAsset.findById(join(postPath, href.replace(/\\/g, &#x27;/&#x27;)));</span><br><span class="hljs-strong">// **</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span> End <span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span><span class="hljs-strong">****</span>*<br>// asset.path is backward slash in Windows<br></code></pre></td></tr></table></figure>
+
+<p>最终效果如下。</p>
+<p>在md中，能够正常加载图片，路径为hexo&#x2F;xxx.png:</p>
+<p><img src="/2023/04/27/file-upload/0240723104608472.png" srcset="/img/loading.gif" lazyload alt="image-20240723104608472"></p>
+<p>hexo中同样正常：</p>
+<p><img src="/2023/04/27/file-upload/0240723104648753.png" srcset="/img/loading.gif" lazyload alt="image-20240723104648753"></p>
+<h2 id="推送到github"><a href="#推送到github" class="headerlink" title="推送到github"></a>推送到github</h2><p>安装插件<code>hexo-deployer-git</code></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure>
+
+<p>修改根目录配置：</p>
+<p><img src="/2023/04/27/file-upload/0240723110951541.png" srcset="/img/loading.gif" lazyload alt="image-20240723110951541"></p>
+<p><code>hexo g -d</code>推送即可：</p>
+<p><img src="/2023/04/27/file-upload/0240723111032524.png" srcset="/img/loading.gif" lazyload alt="image-20240723111032524"></p>
+<p>参考链接：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yaorongke/article/details/119089190">GitHub Pages + Hexo搭建个人博客网站，史上最全教程_hexo博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-renderer-marked/issues/216">md img render part improvement of hexo-render-marked · Issue #216 · hexojs&#x2F;hexo-renderer-marked (github.com)</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/hexo/">hexo</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/hexo/">hexo</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8A)/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java反序列化CommonsCollections-CC1链(上)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/taocms_v3.0.2/">
+                        <span class="hidden-mobile">taocms_v3.0.2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

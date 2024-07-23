@@ -191,15 +191,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/04/26/htb-precious/" target="_self">
-          htb_precious
+        <a href="/2023/05/04/htb-granny/" target="_self">
+          htb_granny
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2023/04/26/htb-precious/" target="_self">
+        <a href="/2023/05/04/htb-granny/" target="_self">
           
-          preciousinformation gatheringuse nmap to discover open-ports and services:  Now we focus on its http service on port 80. Access it by firefox browser(remember to modify your &#x2F;etc&#x2F;hosts):  It
+          htb_grannygetshell首先nmap扫一下端口：  发现为IIS 6.0，windows系统：  并且存在http-webdav。 上面可以看到支持PUT,MOVE等http方法，很自然想到put一个shell.txt，再通过MOVE来执行。 curl查看信息：  asp.net。 此处可以通过burp，发生PUT请求，上传一个txt文件，再move，也可以直接用工具davtest：
         </a>
       </p>
 
@@ -207,8 +207,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-26 15:10" pubdate>
-              2023-04-26
+            <time datetime="2023-05-04 10:58" pubdate>
+              2023-05-04
             </time>
           </div>
         
@@ -234,11 +234,450 @@
     </article>
   </div>
 
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/03/htb-knife/" target="_self">
+          htb_knife
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/03/htb-knife/" target="_self">
+          
+          htb_knifegetshell首先nmap扫描：  22，80端口开放，进行扫描结果如上。 火狐访问：  看起来是个静态页面，尝试目录爆破：  没有可用信息。 尝试curl  发现php&#x2F;8.1.0-dev，searchsploit搜索： 直接利用py脚本：  getshell。 privilege escalation使用上述脚本连接的shell不稳定，直接在ua里弹shell，n
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-03 21:35" pubdate>
+              2023-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/03/htb-netmon/" target="_self">
+          htb_netmon
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/03/htb-netmon/" target="_self">
+          
+          htb_netmon首先是nmap扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.152  ftp服务开放，ftp尝试匿名登录：  在public目录下发现user.txt. 接下来考虑http服务。 仔细扫一下80口：  发现为PRTG 18.1，火狐访问： 需要账号密码进行登录，尝试prtg默认密码prtgadmin&#x2F;prtgadmin失败，再次回
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-03 20:14" pubdate>
+              2023-05-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/02/htb-cap/" target="_self">
+          htb_cap
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/02/htb-cap/" target="_self">
+          
+          htb_capgetshell端口扫描： nmap -p- --min-rate&#x3D;1000 -T4 10.10.10.245  nmap -sC -sV -A -p 21,22,80 10.10.10.245  开放了21，22，80端口，首先尝试从80http服务突破，访问：  点击security snapshots：  发现url变为&#x2F;data&#x2F;1. 此时将url改为&amp;#
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-02 22:59" pubdate>
+              2023-05-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-legacy/" target="_self">
+          htb_legacy
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/01/htb-legacy/" target="_self">
+          
+          htb_legacynmap端口扫描：  扫服务：  开放135，139，445端口，考虑ms17010，先用nmap进行漏洞扫描： nmap -sC -sV -A -p 135,139,445 --script vuln 10.10.10.4  ms08-067 vulnerable。 msf：  getshell，system权限。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:57" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-lame/" target="_self">
+          htb_lame
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/01/htb-lame/" target="_self">
+          
+          htb_lamenmap扫描：  服务探测：  漏洞扫描：  没有直接发现可利用漏洞。 使用searchsploit搜索相关漏洞：  首先是vsftpd，找到一个后门，尝试后无果，跳过。 接下来是samba：  发现命令注入漏洞，但是在msf模块中，尽量避免使用msf：  直接查看rb脚本，发现CVE-2007-2447。 github搜索并git clone exp：   本地起监听，攻击成功，
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:56" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-jerry/" target="_self">
+          htb_jerry
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/01/htb-jerry/" target="_self">
+          
+          htb_jerrynmap先端口扫描：  8080的http服务，firefox访问看看：  tomcat。使用tomcat字典进行目录爆破，先查找tomcat字典：  爆破：  访问之后，发现只有manager可利用，为登录页面：  tomcat&#x2F;tomcat登录失败。此时点击cancel：  返回401页面，并包含了tomcat&#x2F;s3cret的一组账号密码：  成功登录。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:55" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/05/01/htb-blue/" target="_self">
+          htb_blue
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/01/htb-blue/" target="_self">
+          
+          htb_bluenmap端口扫描：  扫具体服务：  win7&#x2F;win2008，开放了139，445端口，ms17-010：  getshell，system权限。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-01 22:54" pubdate>
+              2023-05-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/28/htb-photobomb/" target="_self">
+          htb_photobomb
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/04/28/htb-photobomb/" target="_self">
+          
+          htb_photobombgetshell首先使用nmap简单扫一下端口：  加上参数扫服务：  火狐访问http服务，dns解析出错：  域名加到hosts文件：  成功：  to get started, please click here,点击超链：  弹出一个登录框，无法抓取流量，应该是前端校验。 尝试目录爆破：  也没有可利用内容。 查看源代码：  出现可疑js文件，photobomb.
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-28 13:32" pubdate>
+              2023-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/27/file-upload/" target="_self">
+          file_upload
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/04/27/file-upload/" target="_self">
+          
+          file_upload 介绍什么是文件上传漏洞简单来说，存在文件上传，就可能存在文件上传漏洞。上传文件时，如果未对上传的文件进行严格的验证和过滤，就可能导致传入非法文件，例如木马等等。 文件上传的危害上传漏洞与SQL注入或 XSS相比，其风险更大。 如果 Web应用程序存在上传漏洞，攻击者上传的文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本，就会导致代码执行。如果上传的文件是F
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-27 22:32" pubdate>
+              2023-04-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OWASP/">OWASP</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/file-upload/">file upload</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span>
+      <a class="extend prev" rel="prev" href="/page/3/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/5/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

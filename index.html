@@ -191,15 +191,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/cobalt%20strike%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" target="_self">
-          cobalt strike流量分析
+        <a href="/2024/07/23/java%E5%9F%BA%E7%A1%80-IO%E6%B5%81/" target="_self">
+          java基础-IO流
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/cobalt%20strike%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" target="_self">
+        <a href="/2024/07/23/java%E5%9F%BA%E7%A1%80-IO%E6%B5%81/" target="_self">
           
-          CS（检测与隐藏） Process Execution ——日志溯源一般windows失陷后，排查方法有查看隐藏用户，查看端口开放情况，外联情况，防火墙策略，windows日志等等，其中最主要的就是通过windows日志推理出大致的失陷过程，此处结合sysmon工具来查找CS利用的有关信息。 sysmon工具介绍系统监视器 [Sysmon][https:&#x2F;&#x2F;docs.microsoft.com&#x2F;e
+          java基础-IO流创建文件的方式根据路径创建File对象 方法new File(String filename)  12345678910111213141516171819package IOStream;import java.io.File;import java.io.IOException;public class CreateFileByPath &#123;    public s
         </a>
       </p>
 
@@ -207,7 +207,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:05" pubdate>
+            <time datetime="2024-07-23 15:00" pubdate>
               2024-07-23
             </time>
           </div>
@@ -216,7 +216,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/C2/">C2</a>
+              <a href="/categories/java/">java</a>
             
           </div>
         
@@ -224,7 +224,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C2/">C2</a>
+              <a href="/tags/java/">java</a>
             
           </div>
         
@@ -238,15 +238,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/" target="_self">
-          Bugbounty Automation 01——LFI自动化
+        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD/" target="_self">
+          java反序列化-类的动态加载
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/" target="_self">
+        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD/" target="_self">
           
-          在阅读了各类文章之后发现，其实针对各类漏洞的自动化挖掘都或多或少已经有一些脚本，但是原理和利用的工具都有所差异，因此决定自己动手实现。初步的设想是，依托于 redis 数据库的任务队列特性，自动化进行子域名挖掘，参数挖掘，js 文件泄露，漏洞检测等等功能，并进行消息的即时推送。 LFI 漏洞本地文件包含漏洞(Local File Inclusion)是一种常见的 web 安全漏洞。当应用程序将用户
+          java反序列化-类的动态加载类加载器定义类加载器是一个负责加载类的对象。ClassLoader 是一个抽象类。每个 Java 类都有一个引用指向加载它的 ClassLoader。不过，数组类不是通过 ClassLoader 创建的，而是 JVM 在需要的时候自动创建的，数组类通过getClassLoader()方法获取 ClassLoader 的时候和该数组的元素类型的 ClassLoader
         </a>
       </p>
 
@@ -254,7 +254,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:01" pubdate>
+            <time datetime="2024-07-23 14:30" pubdate>
               2024-07-23
             </time>
           </div>
@@ -263,7 +263,295 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnerability/">vulnerability</a>
+              <a href="/categories/java/">java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/java/">java</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%A6%82%E5%BF%B5/" target="_self">
+          java反序列化-反序列化概念&amp;&amp;URLDNS链
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%A6%82%E5%BF%B5/" target="_self">
+          
+          java反序列化-反序列化概念&amp;&amp;URLDNS链简单来说： 序列化：对象 -&gt; 字符串反序列化：字符串 -&gt; 对象 反序列化代码实现SerializationTest和UnserializeTest分别对Person类进行了序列化与反序列化操作。 注意：  序列化类的属性要 实现Serializable 接口 静态成员变量是不能被序列化 transient 标识的对象成
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 14:10" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/java/">java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/java/">java</a>
+            
+              <a href="/tags/urldns/">urldns</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" target="_self">
+          java反序列化-JDK动态代理
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" target="_self">
+          
+          java反序列化-JDK动态代理java代理模式静态代理java静态代理大概分为如下步骤：  定义业务接口； 被代理类实现业务接口； 定义代理类并实现业务接口； 最后便可通过客户端进行调用，也就是一个main的启动器。  业务接口：12345package Proxy.StaticProxy;public interface UserService &#123;    public void ad
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 14:00" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/java/">java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/java/">java</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8B)/" target="_self">
+          Java反序列化CommonsCollections-CC1链(下)
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8B)/" target="_self">
+          
+          Java反序列化CommonsCollections-CC1链(下)LazyMap版CC1链分析寻找链尾还是从InvokerTransformer中的transform方法看起，findusage：  看到LazyMap类中存在一个public的get方法，里面factory调用了transform。 寻找完整链子往上看看factory在哪里定义：  这里看到decorate方法，跟Transfo
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 13:50" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/java/">java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/java/">java</a>
+            
+              <a href="/tags/CC1/">CC1</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8A)/" target="_self">
+          Java反序列化CommonsCollections-CC1链(上)
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8A)/" target="_self">
+          
+          Java反序列化CommonsCollections-CC1链(上)环境搭建首先新建一个project，选择maven：  注意jdk为8u65，高版本无法复现，已修复。下载地址：https:&#x2F;&#x2F;blog.lupf.cn&#x2F;category&#x2F;jdkdl 添加依赖： 12345&lt;dependency&gt;            &lt;groupId&gt;commons-collection
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 13:40" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/java/">java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/java/">java</a>
+            
+              <a href="/tags/CC1/">CC1</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/hexo/" target="_self">
+          hexo+github搭建个人博客
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/hexo/" target="_self">
+          
+          hexo+github搭建个人博客nodejs，npm安装node.js不使用最新版本，而是选择v14.21.3，链接如下： Node.js — 下载 Node.js® (nodejs.org) 通过msi安装，同时包含了npm 6.14.18. 安装完成后查看版本：  hexo安装1npm install -g hexo-cli  安装完成后如下所示：  下面选择一个目录，创建hexo项目： 1
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 13:30" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/hexo/">hexo</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/hexo/">hexo</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/taocms_v3.0.2/" target="_self">
+          taocms_v3.0.2
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/taocms_v3.0.2/" target="_self">
+          
+          taocms_v3.0.2环境搭建taogogo&#x2F;taocms: taoCMS is an incredible tiny CMS( Content Management System) , writen in PHP and support MySQL&#x2F;Sqlite as the database(MIT License) (github.com) win11 php 5.6
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 13:20" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/php/">php</a>
             
           </div>
         
@@ -273,11 +561,7 @@
             
               <a href="/tags/vulnerability/">vulnerability</a>
             
-              <a href="/tags/SRC/">SRC</a>
-            
-              <a href="/tags/automation/">automation</a>
-            
-              <a href="/tags/LFI/">LFI</a>
+              <a href="/tags/php/">php</a>
             
           </div>
         
@@ -291,15 +575,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/vulnhub_kioptrix_2014/" target="_self">
-          vulnhub_kioptrix_2014
+        <a href="/2024/07/23/hacker101/" target="_self">
+          hacker101
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_kioptrix_2014/" target="_self">
+        <a href="/2024/07/23/hacker101/" target="_self">
           
-          vulnhub_kioptrix_2014Finally arrived at the last box of the Kioptrix series! EnumerationI’ll start by seeking for open ports on the target box.I prefer using masscan and namp for this initial task.  T
+          hacker101在 hackerone 中，如果 hacker101 的分数达到一定值，就有机会参加 private programs，因此记录一下 hacker101 的 walkthrough。Hacker101 CTF A little something to get you started查看源代码：访问&#x2F;background.png: Micro-CMS v1有 3 个功能
         </a>
       </p>
 
@@ -307,7 +591,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
+            <time datetime="2024-07-23 13:00" pubdate>
               2024-07-23
             </time>
           </div>
@@ -316,7 +600,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnhub/">vulnhub</a>
+              <a href="/categories/ctf/">ctf</a>
             
           </div>
         
@@ -324,9 +608,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
+              <a href="/tags/ctf/">ctf</a>
             
           </div>
         
@@ -340,15 +622,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/vulnhub_DC_9/" target="_self">
-          vulnhub_DC_9
+        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A705%E2%80%94%E2%80%940day%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
+          golang实现漏洞监控05——0day漏洞信息监控
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_DC_9/" target="_self">
+        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A705%E2%80%94%E2%80%940day%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
           
-          vulnhub_DC_9In this article, I’m going to crack the DC-9 box of DC series in vulnhub. portscan: 123456789101112131415┌──(root㉿kali)-[~&#x2F;Desktop]└─# nmap -sC -sV 192.168.122.20 Starting Nmap 7.94 ( http
+          golang实现漏洞监控05——0day漏洞信息监控近日在找漏洞相关信息时，看到了这个网站:https:&#x2F;&#x2F;sploitus.com  翻阅一番后发现，该平台是将多个源的漏洞进行了整合，例如github,exploit-db,0day.today,packetstorm,metasploit等等，其中大部分在crush项目中已经完成了覆盖，除了0day.today和packetstorm，与其爬取
         </a>
       </p>
 
@@ -356,7 +638,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
+            <time datetime="2024-07-23 12:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -365,7 +647,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnhub/">vulnhub</a>
+              <a href="/categories/crush/">crush</a>
             
           </div>
         
@@ -373,301 +655,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/vulnhub/">vulnhub</a>
+              <a href="/tags/crush/">crush</a>
             
-              <a href="/tags/walkthrough/">walkthrough</a>
+              <a href="/tags/golang/">golang</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/vulnhub_kioptrix_level_1/" target="_self">
-          vulnhub_kioptrix_level_1
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_kioptrix_level_1/" target="_self">
-          
-          vulnhub_kioptrix_level_1In the coming period, I will progressively update write-ups on various OSCP-LIKE machines, and this is my first write-up on vulnhub. Firstly, alter the machine’s network connec
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/vulnhub/">vulnhub</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/vulnhub_kioptrix_level_3/" target="_self">
-          vulnhub_kioptrix_level_3
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_kioptrix_level_3/" target="_self">
-          
-          vulnhub_kioptrix_level_3Here comes another walkthrough on KIOPTRIX series! First off, we ought to modify &#x2F;etc&#x2F;hosts file and add the following line: 1192.168.122.14 #your target ip  kioptrix
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/vulnhub/">vulnhub</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/vulnhub_kioptrix_level_4/" target="_self">
-          vulnhub_kioptrix_level_4
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_kioptrix_level_4/" target="_self">
-          
-          vulnhub_kioptrix_level_4Welcome to the 4th installment of the multi-level KIOPTRIX vulnhub series, and there’s only one box left. Let’s dive into level 4! Port scan with masscan:  Service and vul scan
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/vulnhub/">vulnhub</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/vulnhub_kioptrix_level_2/" target="_self">
-          Vulnhub-Kioptrix_level_2
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_kioptrix_level_2/" target="_self">
-          
-          Vulnhub-Kioptrix_level_2Default network connectivity of this machine is BRIDGE. I prefer using the NAT mode, however, I encountered an issue when attempting to modify the settings: after changing to N
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/vulnhub/">vulnhub</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/race_condition/" target="_self">
-          All-in-One—条件竞争漏洞
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/race_condition/" target="_self">
-          
-          All-in-One—条件竞争漏洞今天在逛medium的时候，发现《Smashing the state machine: the true potential of web race conditions》还是反复被提及，因此打算写一篇文章，结合james-kettle介绍的内容和一些hackerone的案例，来把条件竞争漏洞做一个总结。 条件竞争漏洞当网站在没有足够保护措施的情况下同时处理请求
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/vulnerability/">vulnerability</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vulnerability/">vulnerability</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/CVE-2023-7028_gitlab%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" target="_self">
-          CVE-2023-7028_gitlab 任意用户密码重置漏洞复现
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/CVE-2023-7028_gitlab%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" target="_self">
-          
-          CVE-2023-7028_gitlab 任意用户密码重置漏洞复现漏洞简介GitLab 是一个用于仓库管理系统的开源项目，其使用 Git 作为代码管理工具，可通过 Web 界面访问公开或私人项目。GitLab CE&#x2F;EE 中支持用户通过辅助电子邮件地址重置密码。GitLab CE&#x2F;EE 多个受影响版本中，由于电子邮件验证过程中存在错误，用户帐户密码重置电子邮件可以发送到未经验证
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/vulnerability/">vulnerability</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vulnerability/">vulnerability</a>
-            
-              <a href="/tags/CVE-2023-7028/">CVE-2023-7028</a>
+              <a href="/tags/0day-today/">0day.today</a>
             
           </div>
         
@@ -679,7 +671,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
