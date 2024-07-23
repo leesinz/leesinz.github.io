@@ -1,0 +1,591 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Portswigger Labs — File UploadToday, we are delving into the the exploitation techniques associated with file upload vulnerabilities.  Web shell upload via Content-Type restriction bypass To solve the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portswigger Labs — File Upload">
+<meta property="og:url" content="http://example.com/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AFile%20Upload/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="Portswigger Labs — File UploadToday, we are delving into the the exploitation techniques associated with file upload vulnerabilities.  Web shell upload via Content-Type restriction bypass To solve the">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130105339823.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130110700109.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130110933972.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130111122700.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130111944686.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130111959234.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130112541732.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130113230974.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130113336645.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130114018619.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130114828180.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130131017036.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231130132023900.png">
+<meta property="article:published_time" content="2024-07-23T12:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:56:30.485Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Portswigger Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/0231130105339823.png">
+  
+  
+  <title>Portswigger Labs — File Upload - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Portswigger Labs — File Upload">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      24 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Portswigger Labs — File Upload</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Portswigger-Labs-—-File-Upload"><a href="#Portswigger-Labs-—-File-Upload" class="headerlink" title="Portswigger Labs — File Upload"></a>Portswigger Labs — File Upload</h1><p>Today, we are delving into the the exploitation techniques associated with file upload vulnerabilities.</p>
+<p><img src="/2023/04/27/file-upload/0231130105339823.png" srcset="/img/loading.gif" lazyload alt="image-20231130105339823"></p>
+<h4 id="Web-shell-upload-via-Content-Type-restriction-bypass"><a href="#Web-shell-upload-via-Content-Type-restriction-bypass" class="headerlink" title="Web shell upload via Content-Type restriction bypass"></a>Web shell upload via Content-Type restriction bypass</h4><blockquote>
+<p>To solve the lab, upload a basic PHP web shell and use it to exfiltrate the contents of the file <code>/home/carlos/secret</code>. Submit this secret using the button provided in the lab banner.</p>
+</blockquote>
+<p>Initiate the login process first. Following successful login, attempt to upload shell.php with the content of <code>&lt;?php echo file_get_contents(&#39;/home/carlos/secret&#39;); ?&gt;</code> , only to encounter interception measures.</p>
+<p><img src="/2023/04/27/file-upload/0231130110700109.png" srcset="/img/loading.gif" lazyload alt="image-20231130110700109"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Sorry, file <span class="hljs-built_in">type</span> application/octet-stream is not allowed. Only image/jpeg and image/png are allowed.<br></code></pre></td></tr></table></figure>
+
+<p>That’ OK. Let’s switch value of the Content-Type to image&#x2F;jpeg and try again.</p>
+<p><img src="/2023/04/27/file-upload/0231130110933972.png" srcset="/img/loading.gif" lazyload alt="image-20231130110933972"></p>
+<p>Access the file and obtain the secret:</p>
+<p><img src="/2023/04/27/file-upload/0231130111122700.png" srcset="/img/loading.gif" lazyload alt="image-20231130111122700"></p>
+<h4 id="Web-shell-upload-via-path-traversal"><a href="#Web-shell-upload-via-path-traversal" class="headerlink" title="Web shell upload via path traversal"></a>Web shell upload via path traversal</h4><blockquote>
+<p>To solve the lab, upload a basic PHP web shell and use it to exfiltrate the contents of the file <code>*/home/carlos/secret*</code>. Submit this secret using the button provided in the lab banner.</p>
+</blockquote>
+<p>Although our upload request was not intercepted, accessing the file revealed that the php file was not parsed.</p>
+<p><img src="/2023/04/27/file-upload/0231130111944686.png" srcset="/img/loading.gif" lazyload alt="image-20231130111944686"></p>
+<p>It directly returned the content of the PHP code like following:</p>
+<p><img src="/2023/04/27/file-upload/0231130111959234.png" srcset="/img/loading.gif" lazyload alt="image-20231130111959234"></p>
+<p>Attempting ..&#x2F;shell.php, it returned the same response as earlier:</p>
+<p><img src="/2023/04/27/file-upload/0231130112541732.png" srcset="/img/loading.gif" lazyload alt="image-20231130112541732"></p>
+<p>Evidently, it didn’t work.</p>
+<p>Make a slight alteration, try URL encoding “..&#x2F;” and observe:</p>
+<p><img src="/2023/04/27/file-upload/0231130113230974.png" srcset="/img/loading.gif" lazyload alt="image-20231130113230974"></p>
+<p>The file avatars&#x2F;..&#x2F;shell.php has been uploaded. It reminds me that php file has been uploaded to another directory.</p>
+<p><img src="/2023/04/27/file-upload/0231130113336645.png" srcset="/img/loading.gif" lazyload alt="image-20231130113336645"></p>
+<p>Make it.</p>
+<h4 id="Web-shell-upload-via-extension-blacklist-bypass"><a href="#Web-shell-upload-via-extension-blacklist-bypass" class="headerlink" title="Web shell upload via extension blacklist bypass"></a>Web shell upload via extension blacklist bypass</h4><blockquote>
+<p>To solve the lab, upload a basic PHP web shell, then use it to exfiltrate the contents of the file <code>/home/carlos/secret</code>. Submit this secret using the button provided in the lab banner.</p>
+</blockquote>
+<p>In this segment, we need to break the blacklist restriction.</p>
+<p>First off, uploading  the php file directly, only to get a 403 code and a remind of “Sorry, php files are not allowed”.</p>
+<p><img src="/2023/04/27/file-upload/0231130114018619.png" srcset="/img/loading.gif" lazyload alt="image-20231130114018619"></p>
+<p>Server header in response captured my attention. Could the blacklist possibly overlooked .htaccess?</p>
+<p>I am attempting to upload the .htaccess file to manipulate the server into parsing other file formats as PHP, thereby gaining access to the secret information.</p>
+<p><img src="/2023/04/27/file-upload/0231130114828180.png" srcset="/img/loading.gif" lazyload alt="image-20231130114828180"></p>
+<p>It seems that we have successfully completed the first step.</p>
+<p>Let’s say something more about the file content:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;FilesMatch <span class="hljs-string">&quot;shell&quot;</span>&gt;</span><br><span class="hljs-attribute">SetHandler</span> application/x-httpd-php<br><span class="hljs-section">&lt;/FilesMatch&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>The term “shell” in this context appears to be a regular expression, indicating that this configuration block applies only to files with name containing “shell”.</p>
+<p>The “setHandler” directive instructs the server to use the PHP interpreter to process matching files.</p>
+<p>Therefore, by uploading a file named shell.jpg, we can exploit the blacklist filter while also having it parsed as PHP.</p>
+<p><img src="/2023/04/27/file-upload/0231130131017036.png" srcset="/img/loading.gif" lazyload alt="image-20231130131017036"></p>
+<h4 id="Web-shell-upload-via-obfuscated-file-extension"><a href="#Web-shell-upload-via-obfuscated-file-extension" class="headerlink" title="Web shell upload via obfuscated file extension"></a>Web shell upload via obfuscated file extension</h4><blockquote>
+<p>To solve the lab, upload a basic PHP web shell, then use it to exfiltrate the contents of the file <code>/home/carlos/secret</code>. Submit this secret using the button provided in the lab banner.</p>
+</blockquote>
+<p>Technique mentioned in this section is truly easily comprehensible.</p>
+<p>In fact, it utilizes null byte injection. The server might overlook the content after %00, interpreting it as PHP. However, this method also successfully navigates through the suffix check.</p>
+<p><img src="/2023/04/27/file-upload/0231130132023900.png" srcset="/img/loading.gif" lazyload alt="image-20231130132023900"></p>
+<p>Just switch shell.php to shell.php%00.jpg.</p>
+<p>It worked XD!</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AAuthentication/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Portswigger Labs — Portswigger Labs — Authentication</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8APath%20Traversal,%20Information%20disclosure,%20JWT/">
+                        <span class="hidden-mobile">Portswigger Labs — Path Traversal, Information disclosure, JWT</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

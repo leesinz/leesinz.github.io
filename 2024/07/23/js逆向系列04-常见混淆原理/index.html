@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="js 逆向系列04-常见混淆原理js混淆有两种：  变量  代码执行流程    混淆代码的执行流程一般通过控制流混淆来实现，下面主要介绍一下常见的变量混淆方式。 基本混淆方法将值放到新的变量中，再通过 window 来取：也可以结合 base64 编码，即（btoa，atob）先通过 atob(ry4n3[0])，即 YWJj 的 base64decode，解码得到 abc，再用 window[a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js 逆向系列04-常见混淆原理">
+<meta property="og:url" content="http://example.com/2024/07/23/js%E9%80%86%E5%90%91%E7%B3%BB%E5%88%9704-%E5%B8%B8%E8%A7%81%E6%B7%B7%E6%B7%86%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="js 逆向系列04-常见混淆原理js混淆有两种：  变量  代码执行流程    混淆代码的执行流程一般通过控制流混淆来实现，下面主要介绍一下常见的变量混淆方式。 基本混淆方法将值放到新的变量中，再通过 window 来取：也可以结合 base64 编码，即（btoa，atob）先通过 atob(ry4n3[0])，即 YWJj 的 base64decode，解码得到 abc，再用 window[a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240220174602364.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240220174639689.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240220175045911.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240220175146178.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221133328218.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221133551017.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221133832514.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221134134535.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221134510273.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221134518150.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221134527929.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221134615382.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221135955534.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221140253581.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221141132020.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240221141822501.png">
+<meta property="article:published_time" content="2024-07-23T08:40:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:30:32.767Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/240220174602364.png">
+  
+  
+  <title>js 逆向系列04-常见混淆原理 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="js 逆向系列04-常见混淆原理">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 16:40" pubdate>
+        2024年7月23日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">js 逆向系列04-常见混淆原理</h1>
+            
+            <div class="markdown-body">
+              <h1 id="js-逆向系列04-常见混淆原理"><a href="#js-逆向系列04-常见混淆原理" class="headerlink" title="js 逆向系列04-常见混淆原理"></a>js 逆向系列04-常见混淆原理</h1><p>js混淆有两种：</p>
+<ul>
+<li><p>变量</p>
+</li>
+<li><p>代码执行流程</p>
+</li>
+</ul>
+<p> 混淆代码的执行流程一般通过控制流混淆来实现，下面主要介绍一下常见的变量混淆方式。</p>
+<h2 id="基本混淆方法"><a href="#基本混淆方法" class="headerlink" title="基本混淆方法"></a>基本混淆方法</h2><p>将值放到新的变量中，再通过 window 来取：<br><img src="/2023/04/27/file-upload/240220174602364.png" srcset="/img/loading.gif" lazyload><br>也可以结合 base64 编码，即（btoa，atob）<br><img src="/2023/04/27/file-upload/240220174639689.png" srcset="/img/loading.gif" lazyload><br>先通过 atob(ry4n3[0])，即 YWJj 的 base64decode，解码得到 abc，再用 window[abc]来获取变量 abc 的值——“test”<br>也可以利用 eval 方法，例如 <code>eval(&quot;function xx()&#123;return 12&#125; xx()&quot;)</code>，结合上 base64：<br><img src="/2023/04/27/file-upload/240220175045911.png" srcset="/img/loading.gif" lazyload><br>如果是利用 eval 进行混淆，可以直接在 eval 处下断点，跟进虚拟机即可看到明文：<br><img src="/2023/04/27/file-upload/240220175146178.png" srcset="/img/loading.gif" lazyload></p>
+<p>js 默认支持 unicode 编码，因此可以支持生僻语言等等，AA 加密和 JJ 加密就是利用了这一点。</p>
+<h2 id="AA-加密"><a href="#AA-加密" class="headerlink" title="AA 加密"></a>AA 加密</h2><p>AA 加密和 JJ 加密都可以通过 sojson 网站进行。<br>sojson：<a target="_blank" rel="noopener" href="https://www.sojson.com/aaencode.html">JS加密，JS 安全加密， AAencode 加密 —在线加密 (sojson.com)</a><br><img src="/2023/04/27/file-upload/240221133328218.png" srcset="/img/loading.gif" lazyload><br>以 console.log(1)为例，加密后的代码如图所示，执行后成功打印出 1.</p>
+<h2 id="JJ-加密"><a href="#JJ-加密" class="headerlink" title="JJ 加密"></a>JJ 加密</h2><p>JJ 加密与 AA 加密类似，都是利用 js 支持 unicode 编码，并且都是通过 eval+Function 的方式进行，下面尝试对 JJ 加密进行调试。<br>同样以 console.log(1)为例：<br><img src="/2023/04/27/file-upload/240221133551017.png" srcset="/img/loading.gif" lazyload><br>首先这里可以直接运行出值。<br>最后一行代码为：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell">sojson.<span class="hljs-variable">$</span>(sojson.<span class="hljs-variable">$</span>(sojson.<span class="hljs-variable">$</span><span class="hljs-variable">$</span> + <span class="hljs-string">&quot;\&quot;</span><span class="hljs-string">&quot; + sojson.<span class="hljs-variable">$</span><span class="hljs-variable">$__</span> + sojson._<span class="hljs-variable">$</span> + &quot;</span>\\<span class="hljs-string">&quot; + sojson.__<span class="hljs-variable">$</span> + sojson.<span class="hljs-variable">$_</span><span class="hljs-variable">$</span> + sojson.<span class="hljs-variable">$</span><span class="hljs-variable">$_</span> + &quot;</span>\\<span class="hljs-string">&quot; + sojson.__<span class="hljs-variable">$</span> + sojson.<span class="hljs-variable">$</span><span class="hljs-variable">$_</span> + sojson._<span class="hljs-variable">$</span><span class="hljs-variable">$</span> + sojson._<span class="hljs-variable">$</span> + (![] + &quot;</span><span class="hljs-string">&quot;)[sojson._<span class="hljs-variable">$_</span>] + sojson.<span class="hljs-variable">$</span><span class="hljs-variable">$</span><span class="hljs-variable">$_</span> + &quot;</span>.<span class="hljs-string">&quot; + (![] + &quot;</span><span class="hljs-string">&quot;)[sojson._<span class="hljs-variable">$_</span>] + sojson._<span class="hljs-variable">$</span> + &quot;</span>\\<span class="hljs-string">&quot; + sojson.__<span class="hljs-variable">$</span> + sojson.<span class="hljs-variable">$__</span> + sojson.<span class="hljs-variable">$</span><span class="hljs-variable">$</span><span class="hljs-variable">$</span> + &quot;</span>(<span class="hljs-string">&quot; + sojson.__<span class="hljs-variable">$</span> + &quot;</span>)<span class="hljs-string">&quot; + &quot;</span>\<span class="hljs-string">&quot;&quot;</span>)())(sojson = &#123;<br>    ___: ++sojson,<br>    <span class="hljs-variable">$</span><span class="hljs-variable">$</span><span class="hljs-variable">$</span><span class="hljs-variable">$</span>: (![] + <span class="hljs-string">&quot;&quot;</span>)[<span class="hljs-type">sojson</span>]<br>&#125;);<br><br></code></pre></td></tr></table></figure>
+<p>这里执行了一个方法，肯定是在该方法运行之后，才完成了字符串的拼接以及整体代码的运行。<br><img src="/2023/04/27/file-upload/240221133832514.png" srcset="/img/loading.gif" lazyload><br>很明显这里是一个 Function，尝试改写 Function：<br><img src="/2023/04/27/file-upload/240221134134535.png" srcset="/img/loading.gif" lazyload><br>Function &#x3D; function(){debugger;}这里加上一个 debugger，类似于 hook 的形式，打上断点并运行，但是没有断住。<br>看看上一行代码：<br><img src="/2023/04/27/file-upload/240221134510273.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/04/27/file-upload/240221134518150.png" srcset="/img/loading.gif" lazyload><br><img src="/2023/04/27/file-upload/240221134527929.png" srcset="/img/loading.gif" lazyload><br>sojson 是一个 object，其实也就是 OBJECT[0].constructor.constructor，执行后就是 Function:<br><img src="/2023/04/27/file-upload/240221134615382.png" srcset="/img/loading.gif" lazyload><br>由于是直接从原型链取的，因此无法通过改写来 debug。<br><img src="/2023/04/27/file-upload/240221135955534.png" srcset="/img/loading.gif" lazyload><br>可以直接改写 sojson. $ ,（注意，先在 28 行打断点，执行，断住时，改写为 sojson.$&#x3D;function(){debugger;}），此时能够直接进到虚拟机里，即<br><code>sojson.$ = function()&#123;debugger;&#125;</code><br>通过 arguments 打印出此时的所有参数，可以看到<br><code>&quot;return&quot;co\156\163ole.lo\147(1)&quot;&quot;</code><br>这段内容还是经过简单的加密处理的，直接通过控制台还原一下：<br><img src="/2023/04/27/file-upload/240221140253581.png" srcset="/img/loading.gif" lazyload><br>最终结果即为 console.log(1)</p>
+<h2 id="jsfuck"><a href="#jsfuck" class="headerlink" title="jsfuck"></a>jsfuck</h2><p>javascript 是一种灵活的动态语言，其允许使用多种语法结构和运算符来实现具体逻辑，并且允许进行各种类型的数据转换，jsfuck 就是利用了这些特性，结合位运算操作实现的一种加密方式。<br>还是以 console.log(1)为例，同样可以直接运行，因为他没有改变代码的语法和形式等等，只是进行了混淆操作：<br><img src="/2023/04/27/file-upload/240221141132020.png" srcset="/img/loading.gif" lazyload><br>jsfuck 混淆之后的代码要进行调试较为麻烦，可以通过下面的代码来实现快速解密：</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs actionscript">Function.prototype.__defineGetter__(<span class="hljs-string">&#x27;constructor&#x27;</span>, <span class="hljs-keyword">function</span><span class="hljs-params">()</span> &#123;  <br><span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-rest_arg">...args</span>)</span> &#123;  <br>console.log(<span class="hljs-string">&#x27;code:&#x27;</span>, ...args);  <br><span class="hljs-keyword">return</span> Function(...args);  <br>&#125;;  <br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>这里定义了一个 getter 方法，该方法会在访问对象的 constructor 属性时被调用。在这个 getter 方法中，它重新定义了 constructor 属性，使得在访问 constructor 属性时，会执行一个自定义的函数。<br>该函数会接收传入的参数即…args ，然后打印出参数  args ，最后返回一个新的  Function  对象，该对象与原始的 Function 构造函数的行为相同。<br>JSFuck 加密后的代码执行时，通常会创建一个 Function 对象，然后对他进行调用。通过重定义 constructor 属性，并在访问时输出参数，我们可以获取到加密后的代码内容，并且还可以将其作为参数传递给新的 Function 对象，从而执行原始代码。<br>例如，我对下面代码进行 jsfuck 混淆：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-keyword">var</span> <span class="hljs-keyword">test</span>=<span class="hljs-string">&quot;123&quot;</span><br>console.<span class="hljs-built_in">log</span>(<span class="hljs-keyword">test</span>)<br></code></pre></td></tr></table></figure>
+<p><img src="/2023/04/27/file-upload/240221141822501.png" srcset="/img/loading.gif" lazyload><br>可以看到很多 escape 和 location，最终跳到了原始的明文代码，并且输出了结果 123.</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/js/">js</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/js/">js</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/js%E9%80%86%E5%90%91%E7%B3%BB%E5%88%9705-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8Cjs%E7%9A%84%E5%85%B3%E7%B3%BB/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">js 逆向系列05-浏览器和 js 的关系</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/js%E9%80%86%E5%90%91%E7%B3%BB%E5%88%9703-%E5%B8%B8%E8%A7%81%E5%8A%A0%E5%AF%86%E4%BA%8C/">
+                        <span class="hidden-mobile">js 逆向系列 03-常见加解密二</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

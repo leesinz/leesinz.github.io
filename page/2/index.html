@@ -191,15 +191,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A704%E2%80%94%E2%80%94seebug%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
-          golang 实现漏洞监控04——seebug 漏洞信息监控
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ACORS/" target="_self">
+          Portswigger Labs — CORS
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A704%E2%80%94%E2%80%94seebug%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ACORS/" target="_self">
           
-          golang 实现漏洞监控04——seebug 漏洞信息监控整体功能先看一段最简单的 get 请求： 123456789101112func main() &#123;      url :&#x3D; &quot;https:&#x2F;&#x2F;www.seebug.org&#x2F;vuldb&#x2F;vulnerabilities?page&#x3D;1&quot;      res, err :&#x3D; http.Get(url)      if
+          Portswigger Labs — CORS最常见的测试方法就是请求中添加Origin 标头： 1234GET &#x2F;sensitive-victim-data HTTP&#x2F;1.1Host: vulnerable-website.comOrigin: https:&#x2F;&#x2F;malicious-website.comCookie: sessionid&#x3D;...  1234HTTP&#x2F;1.1 200 OKAcces
         </a>
       </p>
 
@@ -207,7 +207,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:40" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -216,7 +216,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/crush/">crush</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -224,11 +224,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/crush/">crush</a>
-            
-              <a href="/tags/golang/">golang</a>
-            
-              <a href="/tags/seebug/">seebug</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -242,15 +238,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A703%E2%80%94%E2%80%94metasploit%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
-          golang 实现漏洞监控03——metasploit 漏洞信息监控
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ACSRF/" target="_self">
+          Portswigger Labs — CSRF
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A703%E2%80%94%E2%80%94metasploit%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ACSRF/" target="_self">
           
-          golang 实现漏洞监控03——metasploit 漏洞信息监控整体功能监控 metasploit 官方的 github 源，如果有更新，则通过脚本处理，筛选出是否为 exploit，是否有 cve 号等等，并通过邮件推送。 代码逻辑首先通过 init 参数，将 metasploit 仓库 clone 到本地，接着通过 monitor 参赛来进行日常监控。完整的流程如图所示，主要看一下 che
+          Portswigger Labs — CSRF没有任何防护的CSRF登录后点击update email，抓包：  没有csrf-token等限制，直接生成CSRF POC，并将html复制到exploit server：  deliver exploit to victim即可。 更改请求方法绕过验证更新邮件并抓包：  在body中有csrf-token。 修改csrf token后repeat：
         </a>
       </p>
 
@@ -258,7 +254,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:30" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -267,7 +263,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/crush/">crush</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -275,11 +271,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/crush/">crush</a>
-            
-              <a href="/tags/golang/">golang</a>
-            
-              <a href="/tags/msf/">msf</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -293,15 +285,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A702%E2%80%94%E2%80%94github%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%88%AC%E5%8F%96/" target="_self">
-          golang 实现漏洞监控02——github 历史漏洞信息爬取
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AAuthentication/" target="_self">
+          Portswigger Labs — Portswigger Labs — Authentication
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A702%E2%80%94%E2%80%94github%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%88%AC%E5%8F%96/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AAuthentication/" target="_self">
           
-          golang 实现漏洞监控02——github 历史漏洞信息爬取整体功能从 github 的相关 API 接口搜索关键字 CVE-{YEAR}，并且按照 best-match 进行排序，获取每年的 CVE 中前 1000 个，再进行判活，去重等等筛选，最终存入数据库。 代码实现getGithubHeader()1234567func getGithubHeader() map[string]str
+          Portswigger Labs — Portswigger Labs — Authentication通过不同响应枚举用户名输入test&#x2F;test，登录失败：  通过lab给出的用户名密码字典爆破：  用户名为puppet，同样的方法爆破密码：  成功登录：  简单的双因素认证绕过该lab中拥有wiener和carlos两个账户的用户名和密码，但是只能接收winner账户的邮件，需要绕
         </a>
       </p>
 
@@ -309,7 +301,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:25" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -318,7 +310,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/crush/">crush</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -326,11 +318,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/crush/">crush</a>
-            
-              <a href="/tags/golang/">golang</a>
-            
-              <a href="/tags/github/">github</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -344,15 +332,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A701%E2%80%94%E2%80%94exploit_db%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%88%AC%E5%8F%96/" target="_self">
-          golang实现漏洞监控01——exploit_db历史漏洞信息爬取
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AFile%20Upload/" target="_self">
+          Portswigger Labs — File Upload
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A701%E2%80%94%E2%80%94exploit_db%E5%8E%86%E5%8F%B2%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%88%AC%E5%8F%96/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AFile%20Upload/" target="_self">
           
-          golang实现漏洞监控01——exploit_db历史漏洞信息爬取整体功能爬取exploit_db，github，seebug，metasploit，vulhub等多个平台的漏洞信息，并且监控每日更新，后续进行邮件推送等等。  init参数用来初始化，包括爬取历史漏洞信息等等。 crawl参数用来获取每日更新，并进行推送。 exploit_db历史漏洞信息爬取主要分为两个模块：  漏洞信息爬取
+          Portswigger Labs — File UploadToday, we are delving into the the exploitation techniques associated with file upload vulnerabilities.  Web shell upload via Content-Type restriction bypass To solve the
         </a>
       </p>
 
@@ -360,7 +348,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:20" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -369,7 +357,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/crush/">crush</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -377,11 +365,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/crush/">crush</a>
-            
-              <a href="/tags/golang/">golang</a>
-            
-              <a href="/tags/exploit-db/">exploit-db</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -395,15 +379,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/gobyexample%E9%80%9A%E5%85%B3%E7%AC%94%E8%AE%B0/" target="_self">
-          gobyexample通关笔记
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8APath%20Traversal,%20Information%20disclosure,%20JWT/" target="_self">
+          Portswigger Labs — Path Traversal, Information disclosure, JWT
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/gobyexample%E9%80%9A%E5%85%B3%E7%AC%94%E8%AE%B0/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8APath%20Traversal,%20Information%20disclosure,%20JWT/" target="_self">
           
-          项目地址：Go by Example Hello World1234567package main    import &quot;fmt&quot;    func main() &#123;      fmt.Println(&quot;Hello World&quot;)  &#125; Values12345678910package main    import &quot;fmt&amp;qu
+          Portswigger Labs — Path Traversal, Information disclosure, JWTOver the upcoming period, I will update a series of articles related to Portswigger Labs, which will consist of my brief notes for future
         </a>
       </p>
 
@@ -411,7 +395,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:15" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -420,7 +404,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/golang/">golang</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -428,7 +412,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/golang/">golang</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -442,15 +426,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/bluecms_v1.6sp1/" target="_self">
-          bluecms_v1.6sp1
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AOAuth%20authentication/" target="_self">
+          Portswigger Labs — OAuth authentication
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/bluecms_v1.6sp1/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AOAuth%20authentication/" target="_self">
           
-          bluecms_v1.6sp1环境准备win11 MYSQL 5.6.26 PHP 5.4.45 Apche 2.4.39 VScode 1.81.1 在vscode中修改php版本： 设置-&gt;PHP-&gt;settings.json:  将对应的php.exe文件填入如下路径中：  中文显示乱码问题，安装插件即可：  安装cmsbluecms v1.6sp  https:&#x2F;&#x2F;zdown.
+          Portswigger Labs — OAuth authentication同步自Portswigger Labs — OAuth authentication | by Ry4nnnn | Nov, 2023 | Medium I’m gonna talk to you about oauth authentication and how to exploit it in this artic
         </a>
       </p>
 
@@ -458,7 +442,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:10" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -467,7 +451,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnerability/">vulnerability</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -475,9 +459,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/vulnerability/">vulnerability</a>
-            
-              <a href="/tags/php/">php</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -491,15 +473,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/cobalt%20strike%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" target="_self">
-          cobalt strike流量分析
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ASQL%20Injection/" target="_self">
+          Portswigger Labs — SQL Injection
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/cobalt%20strike%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ASQL%20Injection/" target="_self">
           
-          CS（检测与隐藏） Process Execution ——日志溯源一般windows失陷后，排查方法有查看隐藏用户，查看端口开放情况，外联情况，防火墙策略，windows日志等等，其中最主要的就是通过windows日志推理出大致的失陷过程，此处结合sysmon工具来查找CS利用的有关信息。 sysmon工具介绍系统监视器 [Sysmon][https:&#x2F;&#x2F;docs.microsoft.com&#x2F;e
+          Portswigger Labs — SQL Injection通过sql注入查看隐藏数据正常页面如下：  提示在category处存在sql注入，直接用’闭合，加上永真句：  过关。 通过sql注入绕过登录 这里是利用sql注入绕过登录，还是同样利用’闭合加永真：administrator&#39; or 1&#x3D;1-- 查询Oracle数据库的类型和版本这里要求查出oracle的数据库类型和版本。
         </a>
       </p>
 
@@ -507,7 +489,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:05" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -516,7 +498,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/C2/">C2</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -524,7 +506,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C2/">C2</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -538,15 +520,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/" target="_self">
-          Bugbounty Automation 01——LFI自动化
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%94Cross%20Site%20Scripting/" target="_self">
+          Portswigger Labs—Cross Site Scripting
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%94Cross%20Site%20Scripting/" target="_self">
           
-          在阅读了各类文章之后发现，其实针对各类漏洞的自动化挖掘都或多或少已经有一些脚本，但是原理和利用的工具都有所差异，因此决定自己动手实现。初步的设想是，依托于 redis 数据库的任务队列特性，自动化进行子域名挖掘，参数挖掘，js 文件泄露，漏洞检测等等功能，并进行消息的即时推送。 LFI 漏洞本地文件包含漏洞(Local File Inclusion)是一种常见的 web 安全漏洞。当应用程序将用户
+          Portswigger Labs—Cross Site ScriptingLab: Reflected XSS into HTML context with nothing encodedThis lab contains a simple reflected cross-site scripting vulnerability in the search functionality.To sol
         </a>
       </p>
 
@@ -554,7 +536,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:01" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -563,7 +545,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnerability/">vulnerability</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -571,13 +553,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/vulnerability/">vulnerability</a>
-            
-              <a href="/tags/SRC/">SRC</a>
-            
-              <a href="/tags/automation/">automation</a>
-            
-              <a href="/tags/LFI/">LFI</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -591,15 +567,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/vulnhub_kioptrix_2014/" target="_self">
-          vulnhub_kioptrix_2014
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AHTTP%20Host%20header%20attacks/" target="_self">
+          Portswigger Labs — HTTP Host header attacks
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_kioptrix_2014/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AHTTP%20Host%20header%20attacks/" target="_self">
           
-          vulnhub_kioptrix_2014Finally arrived at the last box of the Kioptrix series! EnumerationI’ll start by seeking for open ports on the target box.I prefer using masscan and namp for this initial task.  T
+          Portswigger Labs — HTTP Host header attacks密码重置中毒Lab: Basic password reset poisoning This lab is vulnerable to password reset poisoning. The user carlos will carelessly click on any links in emails th
         </a>
       </p>
 
@@ -607,7 +583,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -616,7 +592,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnhub/">vulnhub</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -624,9 +600,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -640,15 +614,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/vulnhub_DC_9/" target="_self">
-          vulnhub_DC_9
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%94%E2%80%8ASSRF/" target="_self">
+          Portswigger Labs— SSRF
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/vulnhub_DC_9/" target="_self">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%94%E2%80%8ASSRF/" target="_self">
           
-          vulnhub_DC_9In this article, I’m going to crack the DC-9 box of DC series in vulnhub. portscan: 123456789101112131415┌──(root㉿kali)-[~&#x2F;Desktop]└─# nmap -sC -sV 192.168.122.20 Starting Nmap 7.94 ( http
+          Portswigger Labs— SSRFPortswigger Labs— SSRF基础进入任意商品页面，点击check stock，会有如下报文：  将stockapi的值改为http:&#x2F;&#x2F;localhost&#x2F;admin：  成功访问，接下来request in browser获取删除user的接口，继续通过stockapi访问即可：  针对另一后端系统的Portswigger Labs—
         </a>
       </p>
 
@@ -656,7 +630,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:00" pubdate>
+            <time datetime="2024-07-23 20:50" pubdate>
               2024-07-23
             </time>
           </div>
@@ -665,7 +639,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/vulnhub/">vulnhub</a>
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -673,9 +647,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/vulnhub/">vulnhub</a>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -687,7 +659,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/#board">9</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

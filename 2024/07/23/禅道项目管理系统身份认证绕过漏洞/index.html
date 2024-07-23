@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="禅道项目管理系统身份认证绕过漏洞漏洞介绍禅道项目管理软件是国产的开源项目管理软件，专注研发项目管理，内置需求管理、任务管理、bug管理、缺陷管理、用例管理、计划发布等功能，完整覆盖了研发项目管理的核心流程。 禅道项目管理系统存在身份认证绕过漏洞，远程攻击者利用该漏洞可以绕过身份认证，调用任意API接口并修改管理员用户的密码，以管理员用户登录该系统，能够完全接管服务器。 影响版本16.x &lt;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="禅道项目管理系统身份认证绕过漏洞">
+<meta property="og:url" content="http://example.com/2024/07/23/%E7%A6%85%E9%81%93%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81%E7%BB%95%E8%BF%87%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="禅道项目管理系统身份认证绕过漏洞漏洞介绍禅道项目管理软件是国产的开源项目管理软件，专注研发项目管理，内置需求管理、任务管理、bug管理、缺陷管理、用例管理、计划发布等功能，完整覆盖了研发项目管理的核心流程。 禅道项目管理系统存在身份认证绕过漏洞，远程攻击者利用该漏洞可以绕过身份认证，调用任意API接口并修改管理员用户的密码，以管理员用户登录该系统，能够完全接管服务器。 影响版本16.x &lt;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428141753566.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428141944497.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428142106833.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428142343577.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428142837544.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428142912990.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428143009208.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428143412938.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428143438223.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428143545801.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428143612957.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428162620975.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430092323498.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240428150852468.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430092806656.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430092948705.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430104309094.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430104421564.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430105029582.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430111141591.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430112529558.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430113100106.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430112749465.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430115013394.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430151935366.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430152509787.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430152823057.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430153120785.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240430153325459.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507111638157.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507131835901.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507131937743.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507140451441.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507142526070.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507142644912.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507142745914.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507143156797.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507143901383.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507144916260.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507145208291.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240507145846398.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506134415992.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506134809504.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506134738029.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506135009514.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506135132638.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506135229353.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506141311412.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506141428829.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506154119709.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506154649127.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506155010040.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/mage-20240506155321292.png">
+<meta property="article:published_time" content="2024-07-23T12:40:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:49:44.566Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="vulnerability">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/mage-20240428141753566.png">
+  
+  
+  <title>禅道项目管理系统身份认证绕过漏洞 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="禅道项目管理系统身份认证绕过漏洞">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:40" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      13k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      109 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">禅道项目管理系统身份认证绕过漏洞</h1>
+            
+            <div class="markdown-body">
+              <h1 id="禅道项目管理系统身份认证绕过漏洞"><a href="#禅道项目管理系统身份认证绕过漏洞" class="headerlink" title="禅道项目管理系统身份认证绕过漏洞"></a>禅道项目管理系统身份认证绕过漏洞</h1><h2 id="漏洞介绍"><a href="#漏洞介绍" class="headerlink" title="漏洞介绍"></a>漏洞介绍</h2><p>禅道项目管理软件是国产的开源项目管理软件，专注研发项目管理，内置需求管理、任务管理、bug管理、缺陷管理、用例管理、计划发布等功能，完整覆盖了研发项目管理的核心流程。</p>
+<p>禅道项目管理系统存在身份认证绕过漏洞，远程攻击者利用该漏洞可以绕过身份认证，调用任意API接口并修改管理员用户的密码，以管理员用户登录该系统，能够完全接管服务器。</p>
+<h3 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h3><p>16.x &lt;&#x3D; 禅道项目管理系统&lt; 18.12（开源版）<br>6.x &lt;&#x3D; 禅道项目管理系统&lt; 8.12（企业版）<br>3.x &lt;&#x3D; 禅道项目管理系统&lt; 4.12（旗舰版）</p>
+<h2 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h2><p>近期禅道PMS曝出一个身份绕过漏洞，并且已经有poc公开，poc如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">id:</span> <span class="hljs-string">easycorp-zentao-pms-idor</span><br><br><span class="hljs-attr">info:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">禅道项目管理系统身份认证绕过漏洞</span><br>  <span class="hljs-attr">author:</span> <span class="hljs-string">GuoRong_X</span><br>  <span class="hljs-attr">severity:</span> <span class="hljs-string">critical</span><br>  <span class="hljs-attr">description:</span> <span class="hljs-string">|</span><br><span class="hljs-string">    - 禅道系统某些API设计为通过特定的鉴权函数进行验证，但在实际实现中，这个鉴权函数在鉴权失败后并不中断请求，而是仅返回一个错误标志，这个返回值在后续没有被适当处理。此外，该系统在处理某些API时未能有效检查用户身份，允许未认证的用户执行某些操作，从而绕过鉴权机制。</span><br><span class="hljs-string"></span>  <span class="hljs-attr">reference:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">https://mp.weixin.qq.com/s/hiGI_fQmXOHdkPqn6x00Jw</span><br>  <span class="hljs-attr">metadata:</span><br>    <span class="hljs-attr">verified:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">fofa-query:</span> <span class="hljs-string">title=&quot;用户登录-</span> <span class="hljs-string">禅道&quot;</span><br>  <span class="hljs-attr">tags:</span> <span class="hljs-string">zentao</span><br><br><span class="hljs-attr">http:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">method:</span> <span class="hljs-string">GET</span><br>    <span class="hljs-attr">path:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;<span class="hljs-template-variable">&#123;&#123;BaseURL&#125;&#125;</span>/api.php?m=testcase&amp;f=savexmindimport&amp;HTTP_X_REQUESTED_WITH=XMLHttpRequest&amp;productID=upkbbehwgfscwizoglpw&amp;branch=zqbcsfncxlpopmrvchsu&quot;</span><br><br>    <span class="hljs-attr">matchers-condition:</span> <span class="hljs-string">and</span><br>    <span class="hljs-attr">matchers:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">word</span><br>        <span class="hljs-attr">part:</span> <span class="hljs-string">header</span><br>        <span class="hljs-attr">words:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;Set-Cookie: zentaosid=&#x27;</span><br><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">status</span><br>        <span class="hljs-attr">status:</span><br>          <span class="hljs-bullet">-</span> <span class="hljs-number">200</span><br><span class="hljs-comment"># digest: 4a0a0047304502200b7a7cb58af457a9e566160cfdc539a99325db1513d5e4172a9a0a66f2f44e63022100fe0cc4ffd848c733eba3240bf102695253caa1420845a2b8aec5ca731e394759:58d4ffcb61df0489d6ab2fd018c17de6</span><br></code></pre></td></tr></table></figure>
+
+<p>检测逻辑是，通过向目标url发送一个GET请求，如果响应码为200，并且header中包含<code>set-cookie： zentaosid=</code>，即存在漏洞。</p>
+<p> 通过fofa找到几个目标，用nuclei扫描后手动尝试。先看看抓取的报文：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428141753566.png" srcset="/img/loading.gif" lazyload alt="image-20240428141753566"></p>
+<p>在response中确实带了zentaosid。</p>
+<p>把cookie加到请求header中：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428141944497.png" srcset="/img/loading.gif" lazyload alt="image-20240428141944497"></p>
+<p>而不带cookie时，响应如下：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428142106833.png" srcset="/img/loading.gif" lazyload alt="image-20240428142106833"></p>
+<p>由此可以判断，应该是利用成功了。</p>
+<p>而在提取攻击特征时，测试了几个不同的ip，发现对于参数<code>m=testcase&amp;f=savexmindimport&amp;HTTP_X_REQUESTED_WITH=XMLHttpRequest&amp;productID=upkbbehwgfscwizoglpw&amp;branch=zqbcsfncxlpopmrvchsu</code>，有些ip只需要前三个参数即可，而有些ip需要带上全部参数，否则会提示param_code_missing，虽然也有zentaosid，但是带入到请求头中之后，会发现响应401，unauthorized：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428142343577.png" srcset="/img/loading.gif" lazyload alt="image-20240428142343577"></p>
+<p>因此通过控制变量的方式似乎无法确定触发漏洞的点。</p>
+<p>下面通过本地搭建环境，结合上源码来分析一下该漏洞的成因。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>这里使用的是linux一键安装包，版本为18.11，在本地kali中搭建。</p>
+<p>下载地址如下：</p>
+<p><a target="_blank" rel="noopener" href="https://www.zentao.net/download/zentaopms18.11-83434.html">禅道18.11发布啦，内置12种AI小程序，全面兼容常用语言模型 - 禅道下载 - 禅道开源项目管理软件 (zentao.net)</a></p>
+<p>下载到&#x2F;opt目录下，解压：</p>
+<p><code>tar zxvf ZenTaoPMS-18.11-zbox_amd64.tar.gz</code></p>
+<p><img src="/2023/04/27/file-upload/mage-20240428142837544.png" srcset="/img/loading.gif" lazyload alt="image-20240428142837544"></p>
+<p><code>/opt/zbox/zbox start</code>即可开启全部服务：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428142912990.png" srcset="/img/loading.gif" lazyload alt="image-20240428142912990"></p>
+<p>输入ip:port，选择开源版本即可：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428143009208.png" srcset="/img/loading.gif" lazyload alt="image-20240428143009208"></p>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><h3 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h3><p><img src="/2023/04/27/file-upload/mage-20240428143412938.png" srcset="/img/loading.gif" lazyload alt="image-20240428143412938"></p>
+<h3 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h3><p>把cookie加到请求头中，添加用户，ry4n&#x2F;123456abc..</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428143438223.png" srcset="/img/loading.gif" lazyload alt="image-20240428143438223"></p>
+<p>虽然返回403，但是已经成功添加</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>用admin账户到后台查看：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428143545801.png" srcset="/img/loading.gif" lazyload alt="image-20240428143545801"></p>
+<p>已经多了ry4n用户。</p>
+<p>尝试登录：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428143612957.png" srcset="/img/loading.gif" lazyload alt="image-20240428143612957"></p>
+<p>成功登录。</p>
+<p>至此，成功绕过了身份验证，并且添加了用户，能够直接登录后台。</p>
+<h2 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h2><h3 id="poc分析"><a href="#poc分析" class="headerlink" title="poc分析"></a>poc分析</h3><p>这里部署的版本为18.11.</p>
+<p>主要的commit是在：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428162620975.png" srcset="/img/loading.gif" lazyload alt="image-20240428162620975"></p>
+<p>主要的改动在www&#x2F;api.php，module&#x2F;common&#x2F;model.php，framework&#x2F;base&#x2F;router.class.php和framework&#x2F;api&#x2F;entry.class.php文件中。</p>
+<p>一键部署的情况下，源码在&#x2F;opt&#x2F;zbox&#x2F;app&#x2F;zentao目录。</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430092323498.png" srcset="/img/loading.gif" lazyload alt="image-20240430092323498"></p>
+<p>在获取cookie时，是通过一个GET请求，访问api.php，重点看一下api.php。</p>
+<p>在differ中的修改如下：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240428150852468.png" srcset="/img/loading.gif" lazyload alt="image-20240428150852468"></p>
+<p>删除<code>$common-&gt;checkEntry();</code>，改成了<code>if(!$app-&gt;version) $common-&gt;checkEntry();</code></p>
+<p>直接访问&#x2F;api.php:</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430092806656.png" srcset="/img/loading.gif" lazyload alt="image-20240430092806656"></p>
+<p>报错EMPTY_ENTRY.直接到代码中搜索该字符串：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430092948705.png" srcset="/img/loading.gif" lazyload alt="image-20240430092948705"></p>
+<p>定位到module&#x2F;common&#x2F;model.php中的checkEntry方法，并且可以判断出$this-&gt;app-&gt;version是false，走到了Old version这个分支。</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430104309094.png" srcset="/img/loading.gif" lazyload alt="image-20240430104309094"></p>
+<p>打印一下$this-&gt;app-&gt;version，为一个空字符串，bool类型为false。	</p>
+<p>api.php中，第37行调用了该函数，从调试结果也可以看到同样的结果：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430104421564.png" srcset="/img/loading.gif" lazyload alt="image-20240430104421564"></p>
+<p>检查到空入口，代码到此终止。</p>
+<p>接下来直接访问触发漏洞的url：</p>
+<p><code>http://192.168.122.111/zentao/api.php?m=testcase&amp;f=savexmindimport&amp;HTTP_X_REQUESTED_WITH=XMLHttpRequest&amp;productID=upkbbehwgfscwizoglpw&amp;branch=zqbcsfncxlpopmrvchsu</code></p>
+<p><img src="/2023/04/27/file-upload/mage-20240430105029582.png" srcset="/img/loading.gif" lazyload alt="image-20240430105029582"></p>
+<p>这里是有一个报错，<code>Call to undefined method helper::end() in /opt/zbox/app/zentao/module/common/model.php:454</code>，是在deny()方法中，但是仍然能够利用成功。</p>
+<p>就从这个调用栈入手：</p>
+<ul>
+<li>www&#x2F;api.php(49): api-&gt;loadModule()</li>
+<li>framework&#x2F;api&#x2F;router.class.php(200): router-&gt;loadModule()</li>
+<li>framework&#x2F;router.class.php(716): baseRouter-&gt;loadModule()</li>
+<li>framework&#x2F;base&#x2F;router.class.php(2319): testcase-&gt;saveXmindImport()</li>
+<li>module&#x2F;testcase&#x2F;control.php(3163): commonModel-&gt;deny(‘testcase’, ‘importXmind’)</li>
+</ul>
+<p>deny()是被module&#x2F;testcase&#x2F;control.php中的saveXmindImport方法调用：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430111141591.png" srcset="/img/loading.gif" lazyload alt="image-20240430111141591"></p>
+<p>而saveXmindImport()方法，是在framework&#x2F;api&#x2F;router.class.php中的loadModule方法中，通过call_user_func_array()来调用：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430112529558.png" srcset="/img/loading.gif" lazyload alt="image-20240430112529558"></p>
+<p>调试打印出有关参数：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430113100106.png" srcset="/img/loading.gif" lazyload alt="image-20240430113100106"></p>
+<p>可以看到调用了savexmindimport方法，并且没有传入参数。</p>
+<p>在call方法前直接die，无法利用成功：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430112749465.png" srcset="/img/loading.gif" lazyload alt="image-20240430112749465"></p>
+<p>因此问题应该就出在call方法调用之后。</p>
+<p><code> if(!commonModel::hasPriv(&quot;testcase&quot;, &quot;importXmind&quot;)) $this-&gt;loadModel(&#39;common&#39;)-&gt;deny(&#39;testcase&#39;, &#39;importXmind&#39;);</code>在if判断中，进入到了deny方法，因此commonModel::hasPriv(“testcase”, “importXmind”)的返回值应该为false。</p>
+<p>直接在deny开头加上die：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430115013394.png" srcset="/img/loading.gif" lazyload alt="image-20240430115013394"></p>
+<p>此时依然能够获取cookie，但是将cookie带入后，无法利用成功。</p>
+<p>下面跟进deny中查看，整体的逻辑如下：</p>
+<p>首先尝试重新加载用户的权限信息，如果用户仍然没有权限访问指定的模块和方法，则将用户重定向到一个权限拒绝的页面。</p>
+<p>把$user打印出来看一下：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430151935366.png" srcset="/img/loading.gif" lazyload alt="image-20240430151935366"></p>
+<p>在权限重新加载之后，$user没有变化。通过die方法进行尝试，当die在<code>$this-&gt;session-&gt;set(&#39;user&#39;, $user);</code>之前时，获取到的cookie无效，如果在set之后，即可进行权限绕过：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430152509787.png" srcset="/img/loading.gif" lazyload alt="image-20240430152509787"></p>
+<p>修改代码，将后续的代码全部忽略，并且通过反射找到set()方法：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430152823057.png" srcset="/img/loading.gif" lazyload alt="image-20240430152823057"></p>
+<p><img src="/2023/04/27/file-upload/mage-20240430153120785.png" srcset="/img/loading.gif" lazyload alt="image-20240430153120785"></p>
+<p>去对应的文件里找set方法，代码如下：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240430153325459.png" srcset="/img/loading.gif" lazyload alt="image-20240430153325459"></p>
+<p>看看set方法的调用栈，并且打印出key和对应的value：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507111638157.png" srcset="/img/loading.gif" lazyload alt="image-20240507111638157"></p>
+<p>返回的结果如下：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><code class="hljs stylus">enter set method:<br>#<span class="hljs-number">0</span>  super-&gt;<span class="hljs-built_in">set</span>(company, stdClass Object (<span class="hljs-selector-attr">[id]</span> =&gt; <span class="hljs-number">1</span>,<span class="hljs-selector-attr">[name]</span> =&gt; 禅道软件,<span class="hljs-selector-attr">[phone]</span> =&gt; ,<span class="hljs-selector-attr">[fax]</span> =&gt; ,<span class="hljs-selector-attr">[address]</span> =&gt; ,<span class="hljs-selector-attr">[zipcode]</span> =&gt; ,<span class="hljs-selector-attr">[website]</span> =&gt; ,<span class="hljs-selector-attr">[backyard]</span> =&gt; ,<span class="hljs-selector-attr">[guest]</span> =&gt; <span class="hljs-number">0</span>,<span class="hljs-selector-attr">[admins]</span> =&gt; ,admin,,<span class="hljs-selector-attr">[deleted]</span> =&gt; <span class="hljs-number">0</span>)) called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/module/common/model.php:261]</span><br>#<span class="hljs-number">1</span>  commonModel-&gt;<span class="hljs-built_in">setCompany</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/module/common/model.php:29]</span><br>#<span class="hljs-number">2</span>  commonModel-&gt;<span class="hljs-built_in">__construct</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/framework/base/router.class.php:1490]</span><br>#<span class="hljs-number">3</span>  baseRouter-&gt;<span class="hljs-built_in">loadCommon</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/www/api.php:34]</span><br>**<span class="hljs-built_in">string</span>(<span class="hljs-number">7</span>) <span class="hljs-string">&quot;company&quot;</span><br>**<span class="hljs-selector-tag">object</span>(stdClass)<span class="hljs-number">#483</span> (<span class="hljs-number">11</span>) &#123;<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;id&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">int</span>(<span class="hljs-number">1</span>)<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;name&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">12</span>) <span class="hljs-string">&quot;禅道软件&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;phone&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;fax&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;address&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;zipcode&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;website&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;backyard&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;guest&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">1</span>) <span class="hljs-string">&quot;0&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;admins&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">7</span>) <span class="hljs-string">&quot;,admin,&quot;</span><br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;deleted&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">string</span>(<span class="hljs-number">1</span>) <span class="hljs-string">&quot;0&quot;</span><br>&#125;<br>**<span class="hljs-built_in">array</span>(<span class="hljs-number">1</span>) &#123;<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;company&quot;</span>]</span>=&gt;<br>  <span class="hljs-selector-tag">object</span>(stdClass)<span class="hljs-number">#483</span> (<span class="hljs-number">11</span>) &#123;<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;id&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">int</span>(<span class="hljs-number">1</span>)<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;name&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">12</span>) <span class="hljs-string">&quot;禅道软件&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;phone&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;fax&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;address&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;zipcode&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;website&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;backyard&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;guest&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">1</span>) <span class="hljs-string">&quot;0&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;admins&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">7</span>) <span class="hljs-string">&quot;,admin,&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;deleted&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">1</span>) <span class="hljs-string">&quot;0&quot;</span><br>  &#125;<br>&#125;<br><br><br>enter set method:<br>#<span class="hljs-number">0</span>  super-&gt;<span class="hljs-built_in">set</span>(user, stdClass Object (<span class="hljs-selector-attr">[rights]</span> =&gt; ,<span class="hljs-selector-attr">[groups]</span> =&gt; Array (),<span class="hljs-selector-attr">[admin]</span> =&gt; )) called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/module/common/model.php:431]</span><br>#<span class="hljs-number">1</span>  commonModel-&gt;<span class="hljs-built_in">deny</span>(testcase, importXmind) called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/module/testcase/control.php:3163]</span><br>#<span class="hljs-number">2</span>  testcase-&gt;<span class="hljs-built_in">saveXmindImport</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/framework/base/router.class.php:2319]</span><br>#<span class="hljs-number">3</span>  baseRouter-&gt;<span class="hljs-built_in">loadModule</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/framework/router.class.php:716]</span><br>#<span class="hljs-number">4</span>  router-&gt;<span class="hljs-built_in">loadModule</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/framework/api/router.class.php:200]</span><br>#<span class="hljs-number">5</span>  api-&gt;<span class="hljs-built_in">loadModule</span>() called at <span class="hljs-selector-attr">[/opt/zbox/app/zentao/www/api.php:49]</span><br>**<span class="hljs-built_in">string</span>(<span class="hljs-number">4</span>) <span class="hljs-string">&quot;user&quot;</span><br>**<span class="hljs-selector-tag">object</span>(stdClass)<span class="hljs-number">#672</span> (<span class="hljs-number">3</span>) &#123;<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;rights&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">bool</span>(false)<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;groups&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">array</span>(<span class="hljs-number">0</span>) &#123;<br>  &#125;<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;admin&quot;</span>]</span>=&gt;<br>  <span class="hljs-built_in">bool</span>(false)<br>&#125;<br>**<span class="hljs-built_in">array</span>(<span class="hljs-number">2</span>) &#123;<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;company&quot;</span>]</span>=&gt;<br>  <span class="hljs-selector-tag">object</span>(stdClass)<span class="hljs-number">#483</span> (<span class="hljs-number">11</span>) &#123;<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;id&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">int</span>(<span class="hljs-number">1</span>)<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;name&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">12</span>) <span class="hljs-string">&quot;禅道软件&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;phone&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;fax&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;address&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;zipcode&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;website&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;backyard&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">0</span>) <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;guest&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">1</span>) <span class="hljs-string">&quot;0&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;admins&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">7</span>) <span class="hljs-string">&quot;,admin,&quot;</span><br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;deleted&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">string</span>(<span class="hljs-number">1</span>) <span class="hljs-string">&quot;0&quot;</span><br>  &#125;<br>  <span class="hljs-selector-attr">[<span class="hljs-string">&quot;user&quot;</span>]</span>=&gt;<br>  <span class="hljs-selector-tag">object</span>(stdClass)<span class="hljs-number">#672</span> (<span class="hljs-number">3</span>) &#123;<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;rights&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">bool</span>(false)<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;groups&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">array</span>(<span class="hljs-number">0</span>) &#123;<br>    &#125;<br>    <span class="hljs-selector-attr">[<span class="hljs-string">&quot;admin&quot;</span>]</span>=&gt;<br>    <span class="hljs-built_in">bool</span>(false)<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看到set方法有两次调用，流程大致如下 ：</p>
+<p>![Drawing 2024-05-07 11.20.24.excalidraw](zentaoauth&#x2F;Drawing 2024-05-07 11.20.24.excalidraw.png)</p>
+<p>这里有两处调用了set方法。</p>
+<p>第一处是loadCommon，在构造方法中，调用了setCompany方法，并且通过<code>$this-&gt;session-&gt;set(&#39;company&#39;,$company)</code>，设置了company的内容。注意到在setCompany方法后，跟了一个setUser方法：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507131835901.png" srcset="/img/loading.gif" lazyload alt="image-20240507131835901"></p>
+<p>跟进去添加echo语句进行调试，发现if判断全部为false，没有执行：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507131937743.png" srcset="/img/loading.gif" lazyload alt="image-20240507131937743"></p>
+<p>很明显，重点在于第二处set的调用。</p>
+<p>在api.php中，首先有$app-&gt;loadModule，跟到loadModule方法中，再调用父类方法，通过call_user_func_array调用saveXmindImport方法，if语句为true（<code>if(!commonModel::hasPriv(&quot;testcase&quot;, &quot;importXmind&quot;)) $this-&gt;loadModel(&#39;common&#39;)-&gt;deny(&#39;testcase&#39;, &#39;importXmind&#39;);</code>），最终进到deny，调用set方法（<code>$this-&gt;session-&gt;set(&#39;user&#39;, $user);</code>），设置了user，并且通过返回的cookie，即可进行未授权操作。</p>
+<p>回到在漏洞复现时遇到的问题：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dts">对于参数`m=testcase<span class="hljs-variable">&amp;f</span>=savexmindimport<span class="hljs-variable">&amp;</span>HTTP_X_REQUESTED_WITH=XMLHttpRequest<span class="hljs-variable">&amp;</span>productID=upkbbehwgfscwizoglpw<span class="hljs-variable">&amp;branch</span>=zqbcsfncxlpopmrvchsu`，有些ip只需要前三个参数即可，而有些ip需要带上全部参数，否则会提示param_code_missing，虽然也有zentaosid，但是带入到请求头中之后，会发现响应<span class="hljs-number">401</span>，unauthorized<br></code></pre></td></tr></table></figure>
+
+<p>目前已经明确的是，需要通过m&#x3D;testcase&amp;f&#x3D;savexmindimport参数，来调用saveXmindImport方法，进而最终进入deny()-&gt;set()，而后面的HTTP_X_REQUESTED_WITH,productID和branch参数暂时未知，下面具体看看这些参数。</p>
+<p>直接搜索HTTP_X_REQUESTED_WITH：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507140451441.png" srcset="/img/loading.gif" lazyload alt="image-20240507140451441"></p>
+<p>简单筛选之后，基本可以确认就是在isAjaxRequest方法中。</p>
+<p>直接打印调用栈查看：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507142526070.png" srcset="/img/loading.gif" lazyload alt="image-20240507142526070"></p>
+<p>可以看到，首先是在api.php中，$app-&gt;loadModule()，进到setParams：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507142644912.png" srcset="/img/loading.gif" lazyload alt="image-20240507142644912"></p>
+<p>再到new $className():</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507142745914.png" srcset="/img/loading.gif" lazyload alt="image-20240507142745914"></p>
+<p>这里创建了一个control类的实例，可以通过调试看到，className就是testcase，最终跟到testcase的construct：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507143156797.png" srcset="/img/loading.gif" lazyload alt="image-20240507143156797"></p>
+<p>跟前面提到的saveXmindImport相对应：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507143901383.png" srcset="/img/loading.gif" lazyload alt="image-20240507143901383"></p>
+<p>也就是说，在进入到saveXmindImport方法，执行deny之前，需要先进行实例化，而HTTP_X_REQUESTED_WITH参数就是在实例化的过程中，进行判断。</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507144916260.png" srcset="/img/loading.gif" lazyload alt="image-20240507144916260"></p>
+<p>首先在外层的if语句中，!isonlybody为true，进入到内层逻辑，通过var_dump((bool))可以看到empty($products)为true，而整个if condition为false，因此不会执行return print(xxx)：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507145208291.png" srcset="/img/loading.gif" lazyload alt="image-20240507145208291"></p>
+<p>如果if为true，执行了locate，就会跳转到”<a target="_blank" rel="noopener" href="http://192.168.122.111/zentao/index.php?m=product&f=showErrorNone&t=json&moduleName=qa&activeMenu=testcase&objectID=0%22%E4%B9%9F%E5%B0%B1%E6%98%AF%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E7%95%8C%E9%9D%A2%EF%BC%8C%E8%87%B3%E6%AD%A4%EF%BC%8C%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%A4%B1%E8%B4%A5%EF%BC%8C%E5%B9%B6%E4%B8%94%E5%90%8E%E7%BB%AD%E7%9A%84saveXmindImport()-%3Edeny()%E4%B9%9F%E5%85%A8%E9%83%A8%E4%B8%AD%E6%96%AD%E3%80%82">http://192.168.122.111/zentao/index.php?m=product&amp;f=showErrorNone&amp;t=json&amp;moduleName=qa&amp;activeMenu=testcase&amp;objectID=0&quot;也就是用户登录界面，至此，实例化失败，并且后续的saveXmindImport()-&gt;deny()也全部中断。</a></p>
+<p>因此isAjaxRequest()必须为true，结合代码如下：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240507145846398.png" srcset="/img/loading.gif" lazyload alt="image-20240507145846398"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-variable">$isAjax</span> = (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;HTTP_X_REQUESTED_WITH&#x27;</span>]) &amp;&amp; <span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;HTTP_X_REQUESTED_WITH&#x27;</span>] === <span class="hljs-string">&#x27;XMLHttpRequest&#x27;</span>) || (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;HTTP_X_REQUESTED_WITH&#x27;</span>]) &amp;&amp; <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;HTTP_X_REQUESTED_WITH&#x27;</span>] === <span class="hljs-string">&#x27;XMLHttpRequest&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>因此，||两边有一个为真即可，可以在url中添加HTTP_X_REQUESTED_WITH&#x3D;XMLHttpRequest，也可以添加到请求头中.</p>
+<h4 id="新的利用方式"><a href="#新的利用方式" class="headerlink" title="新的利用方式"></a>新的利用方式</h4><p>经过测试，两种方法均可利用成功：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">GET</span> /zentao/api.php?m=testcase&amp;f=savexmindimport HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span><br><span class="hljs-attribute">Host</span>: <span class="hljs-number">192.168.122.111</span><br><span class="hljs-attribute">Upgrade</span>-Insecure-Requests: <span class="hljs-number">1</span><br><span class="hljs-attribute">X</span>-Requested-With: XMLHttpRequest<br><span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; Win64; x64) AppleWebKit/<span class="hljs-number">537</span>.<span class="hljs-number">36</span> (KHTML, like Gecko) Chrome/<span class="hljs-number">116</span>.<span class="hljs-number">0</span>.<span class="hljs-number">5845</span>.<span class="hljs-number">111</span> Safari/<span class="hljs-number">537</span>.<span class="hljs-number">36</span><br><span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,application/signed-exchange;v=b3;q=<span class="hljs-number">0</span>.<span class="hljs-number">7</span><br><span class="hljs-attribute">Accept</span>-Encoding: gzip, deflate, br<br><span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span><br><span class="hljs-attribute">Connection</span>: close<br><br><span class="hljs-attribute">GET</span> /zentao/api.php?m=testcase&amp;f=savexmindimport&amp;HTTP_X_REQUESTED_WITH=XMLHttpRequest HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span><br><span class="hljs-attribute">Host</span>: <span class="hljs-number">192.168.122.111</span><br><span class="hljs-attribute">Upgrade</span>-Insecure-Requests: <span class="hljs-number">1</span><br><span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; Win64; x64) AppleWebKit/<span class="hljs-number">537</span>.<span class="hljs-number">36</span> (KHTML, like Gecko) Chrome/<span class="hljs-number">116</span>.<span class="hljs-number">0</span>.<span class="hljs-number">5845</span>.<span class="hljs-number">111</span> Safari/<span class="hljs-number">537</span>.<span class="hljs-number">36</span><br><span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,application/signed-exchange;v=b3;q=<span class="hljs-number">0</span>.<span class="hljs-number">7</span><br><span class="hljs-attribute">Accept</span>-Encoding: gzip, deflate, br<br><span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span><br><span class="hljs-attribute">Connection</span>: close<br><br><br></code></pre></td></tr></table></figure>
+
+<p>综上，只需要testcase,savexmindimport和XMLHttpRequest参数满足即可，保证代码能够顺利实例化testcase的control，并且进入到deny，set添加user属性即可。</p>
+<h3 id="代码differ"><a href="#代码differ" class="headerlink" title="代码differ"></a>代码differ</h3><p>下面针对补丁来进行分析。</p>
+<p>身份验证绕过漏洞，要么是在给出cookie的时候出问题，要么是在拿到cookie之后，鉴权的时候出问题。</p>
+<p>也就是如下两个url：</p>
+<ul>
+<li>&#x2F;zentao&#x2F;api.php?m&#x3D;testcase&amp;f&#x3D;savexmindimport&amp;HTTP_X_REQUESTED_WITH&#x3D;XMLHttpRequest</li>
+<li>&#x2F;zentao&#x2F;api.php&#x2F;v1&#x2F;users</li>
+</ul>
+<h4 id="zentao-api-php-m-testcase-f-savexmindimport-HTTP-X-REQUESTED-WITH-XMLHttpRequest"><a href="#zentao-api-php-m-testcase-f-savexmindimport-HTTP-X-REQUESTED-WITH-XMLHttpRequest" class="headerlink" title="&#x2F;zentao&#x2F;api.php?m&#x3D;testcase&amp;f&#x3D;savexmindimport&amp;HTTP_X_REQUESTED_WITH&#x3D;XMLHttpRequest"></a>&#x2F;zentao&#x2F;api.php?m&#x3D;testcase&amp;f&#x3D;savexmindimport&amp;HTTP_X_REQUESTED_WITH&#x3D;XMLHttpRequest</h4><p>首先是&#x2F;zentao&#x2F;api.php?m&#x3D;testcase&amp;f&#x3D;savexmindimport&amp;HTTP_X_REQUESTED_WITH&#x3D;XMLHttpRequest，在前面已经分析过，在checkEntry中，$this-&gt;app-&gt;version为false，因此本来也不会进入if语句进行判断，此处修改并没有改变执行逻辑：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506134415992.png" srcset="/img/loading.gif" lazyload alt="image-20240506134415992"></p>
+<p>下面是同一个文件中的checkNewEntry方法：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506134809504.png" srcset="/img/loading.gif" lazyload alt="image-20240506134809504"></p>
+<p>commit之后，直接删除了checkNewEntry方法，而该方法仅仅是在checkEntry中，当$this-&gt;app-&gt;version为true时，会进行调用：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506134738029.png" srcset="/img/loading.gif" lazyload alt="image-20240506134738029"></p>
+<p>此处改动也没有影响执行逻辑。</p>
+<p>往下就到了startSession()：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506135009514.png" srcset="/img/loading.gif" lazyload alt="image-20240506135009514"></p>
+<p>主要的改动是在if条件判断中，直接在代码中加入如下调试语句：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506135132638.png" srcset="/img/loading.gif" lazyload alt="image-20240506135132638"></p>
+<p>再次访问后结果如下：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506135229353.png" srcset="/img/loading.gif" lazyload alt="image-20240506135229353"> </p>
+<p>(isset($_GET[$this-&gt;config-&gt;sessionVar]))和(isset($_SERVER[‘HTTP_TOKEN’]))都为false，同样没有影响代码的执行逻辑。</p>
+<p>最后一处commit在framework&#x2F;api&#x2F;entry.class.php中：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506141311412.png" srcset="/img/loading.gif" lazyload alt="image-20240506141311412"></p>
+<p>分别在__construct()和checkPriv()方法中加入类似下面的调试语句：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506141428829.png" srcset="/img/loading.gif" lazyload alt="image-20240506141428829"></p>
+<p>刷新之后并没有任何print，因此并没有调用这两个方法。</p>
+<p>很明显，commit修改的部分，主要是在鉴权的阶段。</p>
+<h4 id="zentao-api-php-v1-users"><a href="#zentao-api-php-v1-users" class="headerlink" title="&#x2F;zentao&#x2F;api.php&#x2F;v1&#x2F;users"></a>&#x2F;zentao&#x2F;api.php&#x2F;v1&#x2F;users</h4><p>在访问&#x2F;v1&#x2F;users时，$this-&gt;app-&gt;version为v1，因此会进入到checkNewEntry中，并且返回false。</p>
+<p>而startSession和checkPriv同上，暂时跳过。</p>
+<p>最后就剩下构造方法：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506154119709.png" srcset="/img/loading.gif" lazyload alt="image-20240506154119709"></p>
+<p>存在漏洞的代码为：</p>
+<p><code>if(!isset($this-&gt;app-&gt;user) or $this-&gt;app-&gt;user-&gt;account == &#39;guest&#39;) throw EndResponseException::create($this-&gt;sendError(401, &#39;Unauthorized&#39;));</code></p>
+<p>而修改之后的代码为：</p>
+<p><code>if(!isset($this-&gt;app-&gt;user-&gt;account) or $this-&gt;app-&gt;user-&gt;account == &#39;guest&#39;) throw EndResponseException::create($this-&gt;sendError(401, &#39;Unauthorized&#39;));</code></p>
+<p>在代码中加上var_dump((bool)xxx)，刷新后查看：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506154649127.png" srcset="/img/loading.gif" lazyload alt="image-20240506154649127"></p>
+<p>可以看到，在漏洞修复之后，if条件语句的值由false变为了true，成功走到了<code>throw EndResponseException::create($this-&gt;sendError(401, &#39;Unauthorized&#39;))</code>，抛出异常，并且返回了401未授权。</p>
+<p>将原先的代码注释掉，跑一遍修复后的代码：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506155010040.png" srcset="/img/loading.gif" lazyload alt="image-20240506155010040"></p>
+<p>401，unauthorized。</p>
+<p>可见，问题就出在构造方法，在其中进行权限判断时出现了错误。</p>
+<p>将$this-&gt;app-&gt;user打印出来：</p>
+<p><img src="/2023/04/27/file-upload/mage-20240506155321292.png" srcset="/img/loading.gif" lazyload alt="image-20240506155321292"></p>
+<p>user对象存在，所以<code>!isset($this-&gt;app-&gt;user)</code>为false，而user-&gt;account为NULL，<code>$this-&gt;app-&gt;user-&gt;account == &#39;guest&#39;</code>也为false，导致整个condition为false，跳过了sendError。</p>
+<p>而在修改之后，先检查了user-&gt;account是否存在，如果account不存在，或者account&#x3D;&#x3D;guest，就抛出异常，终止程序。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/php/">php</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vulnerability/">vulnerability</a>
+                    
+                      <a class="hover-with-bg" href="/tags/php/">php</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ARace%20conditions/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Portswigger Labs — Race conditions</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/seacms_v1.0/">
+                        <span class="hidden-mobile">seacms_v1.0</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

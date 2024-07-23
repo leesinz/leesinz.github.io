@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Portswigger Labs — OAuth authentication同步自Portswigger Labs — OAuth authentication | by Ry4nnnn | Nov, 2023 | Medium I’m gonna talk to you about oauth authentication and how to exploit it in this artic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portswigger Labs — OAuth authentication">
+<meta property="og:url" content="http://example.com/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AOAuth%20authentication/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="Portswigger Labs — OAuth authentication同步自Portswigger Labs — OAuth authentication | by Ry4nnnn | Nov, 2023 | Medium I’m gonna talk to you about oauth authentication and how to exploit it in this artic">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122135316994.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180118224.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180136713.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180152388.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180205266.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180223732.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180235187.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180247342.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180258448.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180356090.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180407421.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180427807.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180444953.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231122180456716.png">
+<meta property="article:published_time" content="2024-07-23T12:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:57:58.795Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Portswigger Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/20231122135316994.png">
+  
+  
+  <title>Portswigger Labs — OAuth authentication - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Portswigger Labs — OAuth authentication">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Portswigger Labs — OAuth authentication</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Portswigger-Labs-—-OAuth-authentication"><a href="#Portswigger-Labs-—-OAuth-authentication" class="headerlink" title="Portswigger Labs — OAuth authentication"></a>Portswigger Labs — OAuth authentication</h1><p>同步自<a target="_blank" rel="noopener" href="https://medium.com/@rynnnn617/portswigger-labs-oauth-authentication-f5863e57303f">Portswigger Labs — OAuth authentication | by Ry4nnnn | Nov, 2023 | Medium</a></p>
+<p>I’m gonna talk to you about oauth authentication and how to exploit it in this article.</p>
+<p><img src="/2023/04/27/file-upload/20231122135316994.png" srcset="/img/loading.gif" lazyload alt="image-20231122135316994"></p>
+<h2 id="Authentication-bypass-via-OAuth-implicit-flow"><a href="#Authentication-bypass-via-OAuth-implicit-flow" class="headerlink" title="Authentication bypass via OAuth implicit flow"></a>Authentication bypass via OAuth implicit flow</h2><blockquote>
+<p>To solve the lab, log in to Carlos’s account. His email address is <code>carlos@carlos-montoya.net</code>.</p>
+</blockquote>
+<p>Logging in with winner&#x2F;peter, inspecting the history traffic in burp reveals a notable POST request with the path <code>/authenticate.</code></p>
+<p><img src="/2023/04/27/file-upload/20231122180118224.png" srcset="/img/loading.gif" lazyload alt="image-20231122180118224"></p>
+<p>Let’s change email param to calos and right-click the request, choosing request in browser in original session:</p>
+<p><img src="/2023/04/27/file-upload/20231122180136713.png" srcset="/img/loading.gif" lazyload alt="image-20231122180136713"></p>
+<p>Congratulations!</p>
+<p><img src="/2023/04/27/file-upload/20231122180152388.png" srcset="/img/loading.gif" lazyload alt="image-20231122180152388"></p>
+<h2 id="Forced-OAuth-profile-linking"><a href="#Forced-OAuth-profile-linking" class="headerlink" title="Forced OAuth profile linking"></a>Forced OAuth profile linking</h2><blockquote>
+<p>To solve the lab, use a <a target="_blank" rel="noopener" href="https://portswigger.net/web-security/csrf">CSRF attack</a> to attach your own social media profile to the admin user’s account on the blog website, then access the admin panel and delete <code>carlos</code>.</p>
+</blockquote>
+<p>In this segment, we can login with traditianal username&#x2F;password. Finishing that, logging in with social media is available.</p>
+<p>Let’s commence from the beginning:</p>
+<p><img src="/2023/04/27/file-upload/20231122180205266.png" srcset="/img/loading.gif" lazyload alt="image-20231122180205266"></p>
+<p>Successfully login with winner&#x2F;peter.</p>
+<p>Click on attach a social profile and you will be redirected to the following page:</p>
+<p><img src="/2023/04/27/file-upload/20231122180223732.png" srcset="/img/loading.gif" lazyload alt="image-20231122180223732"></p>
+<p>Inspecting the traffic, we can identify a <code>/oauth-linking</code> request. This request is utilized for account binding, providing a crucial gateway for further access.</p>
+<p><img src="/2023/04/27/file-upload/20231122180235187.png" srcset="/img/loading.gif" lazyload alt="image-20231122180235187"></p>
+<p>At this step, our goal is to manipulate the above packet.</p>
+<p>Let’s click the attach a social profile one more time.</p>
+<p>Turn on the intercept, forward and forward and forward, until come across <code>/oauth-linking</code>.</p>
+<p>Right-click and select copy url, and then drop this packet, preventing it from binding to our own account.</p>
+<p>Go to the exploit server and create an <code>iframe</code> in which the <code>src</code> attribute points to the URL we just copied.</p>
+<p><img src="/2023/04/27/file-upload/20231122180247342.png" srcset="/img/loading.gif" lazyload alt="image-20231122180247342"></p>
+<p>Click on deliver exploit to victim and go back to the homepage, attaching a social profile, and the result should look something like this:</p>
+<p><img src="/2023/04/27/file-upload/20231122180258448.png" srcset="/img/loading.gif" lazyload alt="image-20231122180258448"></p>
+<p>Now we successfully bound to the admin account.</p>
+<p>Next section.</p>
+<h2 id="OAuth-account-hijacking-via-redirect-uri"><a href="#OAuth-account-hijacking-via-redirect-uri" class="headerlink" title="OAuth account hijacking via redirect_uri"></a>OAuth account hijacking via redirect_uri</h2><blockquote>
+<p>To solve the lab, steal an authorization code associated with the admin user, then use it to access their account and delete the user <code>carlos</code>.</p>
+</blockquote>
+<p>The provided login credentials remain as wiener&#x2F;peter. Upon logging in with these credentials, click on LOG OUT. Subsequently, click on my account again, and you’ll observe a direct successful login.</p>
+<p>Inspecting the traffic in burp, a GET request with the path <code>/auth?client_id=xxx&amp;redirect_uri=xxx</code> is evident.</p>
+<p><img src="/2023/04/27/file-upload/20231122180356090.png" srcset="/img/loading.gif" lazyload alt="image-20231122180356090"></p>
+<p>Modifying the redirect_uri parameter to <code>exploit-server</code> results in a successful access log entry, confirming our fully control over this parameter.</p>
+<p><img src="/2023/04/27/file-upload/20231122180407421.png" srcset="/img/loading.gif" lazyload alt="image-20231122180407421"></p>
+<p>Our strategy involves redirecting with the redirect_uri parameter modified to the exploit-server during redirection. This will prompt the admin user to access the link, allowing us to obtain the admin login credentials in the form of a code.</p>
+<p><img src="/2023/04/27/file-upload/20231122180427807.png" srcset="/img/loading.gif" lazyload alt="image-20231122180427807"></p>
+<p>Check access log and secret code is presented.</p>
+<p>Subsequently, we can utilize this code to log in to the admin account by modifying the parameter like this:</p>
+<p><img src="/2023/04/27/file-upload/20231122180444953.png" srcset="/img/loading.gif" lazyload alt="image-20231122180444953"></p>
+<p>Admin privilege:</p>
+<p><img src="/2023/04/27/file-upload/20231122180456716.png" srcset="/img/loading.gif" lazyload alt="image-20231122180456716"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8APath%20Traversal,%20Information%20disclosure,%20JWT/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Portswigger Labs — Path Traversal, Information disclosure, JWT</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ASQL%20Injection/">
+                        <span class="hidden-mobile">Portswigger Labs — SQL Injection</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

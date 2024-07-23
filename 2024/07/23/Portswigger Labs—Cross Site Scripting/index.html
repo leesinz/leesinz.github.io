@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Portswigger Labs—Cross Site ScriptingLab: Reflected XSS into HTML context with nothing encodedThis lab contains a simple reflected cross-site scripting vulnerability in the search functionality.To sol">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portswigger Labs—Cross Site Scripting">
+<meta property="og:url" content="http://example.com/2024/07/23/Portswigger%20Labs%E2%80%94Cross%20Site%20Scripting/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="Portswigger Labs—Cross Site ScriptingLab: Reflected XSS into HTML context with nothing encodedThis lab contains a simple reflected cross-site scripting vulnerability in the search functionality.To sol">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104163634723.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104163918102.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104164900732.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104165630012.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104165701653.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104165731634.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104170001915.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104170638098.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104171032151.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104174329209.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104175240494.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104180022234.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240104180809326.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240204162707852.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240204162844046.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240204162610567.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205133210875.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205133337460.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205140533303.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205140636712.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205140811478.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205140900274.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205142339567.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205151702352.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240205151746886.png">
+<meta property="article:published_time" content="2024-07-23T12:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T10:03:20.529Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Portswigger Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/240104163634723.png">
+  
+  
+  <title>Portswigger Labs—Cross Site Scripting - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Portswigger Labs—Cross Site Scripting">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      58 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Portswigger Labs—Cross Site Scripting</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Portswigger-Labs—Cross-Site-Scripting"><a href="#Portswigger-Labs—Cross-Site-Scripting" class="headerlink" title="Portswigger Labs—Cross Site Scripting"></a>Portswigger Labs—Cross Site Scripting</h1><h2 id="Lab-Reflected-XSS-into-HTML-context-with-nothing-encoded"><a href="#Lab-Reflected-XSS-into-HTML-context-with-nothing-encoded" class="headerlink" title="Lab: Reflected XSS into HTML context with nothing encoded"></a>Lab: Reflected XSS into HTML context with nothing encoded</h2><p>This lab contains a simple reflected cross-site scripting vulnerability in the search functionality.<br>To solve the lab, perform a cross-site scripting attack that calls the <code>alert</code> function.<br>这个 lab 没有任何编码过滤等等，直接输入 payload <code>&lt;script&gt;alert()&lt;/script&gt;</code> 即可弹窗：<br><img src="/2023/04/27/file-upload/240104163634723.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Lab-Stored-XSS-into-HTML-context-with-nothing-encoded"><a href="#Lab-Stored-XSS-into-HTML-context-with-nothing-encoded" class="headerlink" title="Lab: Stored XSS into HTML context with nothing encoded"></a>Lab: Stored XSS into HTML context with nothing encoded</h2><p>This lab contains a stored cross-site scripting vulnerability in the comment functionality.<br>To solve this lab, submit a comment that calls the <code>alert</code> function when the blog post is viewed.<br>同样没有过滤，存储型 xss，直接插入 payload 即可：<br><img src="/2023/04/27/file-upload/240104163918102.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Lab-DOM-XSS-in-document-write-sink-using-source-location-search"><a href="#Lab-DOM-XSS-in-document-write-sink-using-source-location-search" class="headerlink" title="Lab: DOM XSS in document.write sink using source location.search"></a>Lab: DOM XSS in document.write sink using source location.search</h2><p>This lab contains a DOM-based cross-site scripting vulnerability in the search query tracking functionality. It uses the JavaScript <code>document.write</code> function, which writes data out to the page. The <code>document.write</code> function is called with data from <code>location.search</code>, which you can control using the website URL.<br>To solve this lab, perform a cross-site scripting attack that calls the <code>alert</code> function.<br>DOM 型 XSS，先输入 aaaaaa，审查元素或者直接 CTRL+F 找到 aaaaaa 的位置：<br><img src="/2023/04/27/file-upload/240104164900732.png" srcset="/img/loading.gif" lazyload><br><code>&lt;img src=&quot;/resources/images/tracker.gif?searchTerms=aaaaaa&quot;&gt;</code><br>可以通过闭合”来实现 xss，payload 为 <code>1234&quot; onerror=alert()</code>，插入后未弹窗，查看：<br><img src="/2023/04/27/file-upload/240104165630012.png" srcset="/img/loading.gif" lazyload><br>修改 payload：<br><img src="/2023/04/27/file-upload/240104165701653.png" srcset="/img/loading.gif" lazyload><br>成功闭合，但是仍然未弹窗，使用 onload：<br><img src="/2023/04/27/file-upload/240104165731634.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Lab-DOM-XSS-in-innerHTML-sink-using-source-location-search"><a href="#Lab-DOM-XSS-in-innerHTML-sink-using-source-location-search" class="headerlink" title="Lab: DOM XSS in innerHTML sink using source location.search"></a>Lab: DOM XSS in <code>innerHTML</code> sink using source <code>location.search</code></h2><p>This lab contains a DOM-based cross-site scripting vulnerability in the search blog functionality. It uses an <code>innerHTML</code> assignment, which changes the HTML contents of a <code>div</code> element, using data from <code>location.search</code>.<br>To solve this lab, perform a cross-site scripting attack that calls the <code>alert</code> function.<br>尝试前一关的 payload <code>&lt;img src=1 onerror=alert(1)&gt;</code>:<br><img src="/2023/04/27/file-upload/240104170001915.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Lab-DOM-XSS-in-jQuery-anchor-href-attribute-sink-using-location-search-source"><a href="#Lab-DOM-XSS-in-jQuery-anchor-href-attribute-sink-using-location-search-source" class="headerlink" title="Lab: DOM XSS in jQuery anchor href attribute sink using location.search source"></a>Lab: DOM XSS in jQuery anchor <code>href</code> attribute sink using <code>location.search</code> source</h2><p>This lab contains a DOM-based cross-site scripting vulnerability in the submit feedback page. It uses the jQuery library’s <code>$</code> selector function to find an anchor element, and changes its <code>href</code> attribute using data from <code>location.search</code>.<br>To solve this lab, make the “back” link alert <code>document.cookie</code>.<br>这一关的要求是在点击 back 按钮时触发 xss，检查元素：<br><img src="/2023/04/27/file-upload/240104170638098.png" srcset="/img/loading.gif" lazyload><br>这里是 href 标签，并且参数值是通过 returnPath 传入，尝试 javascript：<br><code>javascript:alert(document.cookie)</code><br><img src="/2023/04/27/file-upload/240104171032151.png" srcset="/img/loading.gif" lazyload><br>成功触发。</p>
+<h2 id="Lab-DOM-XSS-in-jQuery-selector-sink-using-a-hashchange-event"><a href="#Lab-DOM-XSS-in-jQuery-selector-sink-using-a-hashchange-event" class="headerlink" title="Lab: DOM XSS in jQuery selector sink using a hashchange event"></a>Lab: DOM XSS in jQuery selector sink using a hashchange event</h2><p>This lab contains a DOM-based cross-site scripting vulnerability on the home page. It uses jQuery’s <code>$()</code> selector function to auto-scroll to a given post, whose title is passed via the <code>location.hash</code> property.<br>To solve the lab, deliver an exploit to the victim that calls the <code>print()</code> function in their browser.<br>将 payload 填入 body 字段，deliver 即可：<code>&lt;iframe src=&quot;xxx.web-security-academy.net/#&quot; onload=&quot;this.src+=&#39;&lt;img src=x onerror=confirm()&gt;&#39;&quot;&gt;&lt;/iframe&gt; </code></p>
+<h2 id="Lab-Reflected-XSS-into-attribute-with-angle-brackets-HTML-encoded"><a href="#Lab-Reflected-XSS-into-attribute-with-angle-brackets-HTML-encoded" class="headerlink" title="Lab: Reflected XSS into attribute with angle brackets HTML-encoded"></a>Lab: Reflected XSS into attribute with angle brackets HTML-encoded</h2><p>This lab contains a reflected cross-site scripting vulnerability in the search blog functionality where angle brackets are HTML-encoded. To solve this lab, perform a cross-site scripting attack that injects an attribute and calls the <code>alert</code> function.<br>尝试 aaaaaa，寻找在代码中的位置：<br><img src="/2023/04/27/file-upload/240104174329209.png" srcset="/img/loading.gif" lazyload><br><code>&lt;input type=&quot;text&quot; placeholder=&quot;Search the blog...&quot; name=&quot;search&quot; value=&quot;aaaaaa&quot;&gt;</code><br>lab 提示尖括号转义，使用不带尖括号的 payload 即可：<br>&#96;&#96;”onmousemove&#x3D;”alert()<br><img src="/2023/04/27/file-upload/240104175240494.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Lab-Stored-XSS-into-anchor-href-attribute-with-double-quotes-HTML-encoded"><a href="#Lab-Stored-XSS-into-anchor-href-attribute-with-double-quotes-HTML-encoded" class="headerlink" title="Lab: Stored XSS into anchor href attribute with double quotes HTML-encoded"></a>Lab: Stored XSS into anchor <code>href</code> attribute with double quotes HTML-encoded</h2><p>This lab contains a stored cross-site scripting vulnerability in the comment functionality. To solve this lab, submit a comment that calls the <code>alert</code> function when the comment author name is clicked.<br>这一关是 href 属性，并且双引号会被编码，javascript 即可：<br><code>javascript:alert()</code><br>点击访问 url 即可触发：<br><img src="/2023/04/27/file-upload/240104180022234.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Lab-Reflected-XSS-into-a-JavaScript-string-with-angle-brackets-HTML-encoded"><a href="#Lab-Reflected-XSS-into-a-JavaScript-string-with-angle-brackets-HTML-encoded" class="headerlink" title="Lab: Reflected XSS into a JavaScript string with angle brackets HTML encoded"></a>Lab: Reflected XSS into a JavaScript string with angle brackets HTML encoded</h2><p>This lab contains a reflected cross-site scripting vulnerability in the search query tracking functionality where angle brackets are encoded. The reflection occurs inside a JavaScript string. To solve this lab, perform a cross-site scripting attack that breaks out of the JavaScript string and calls the <code>alert</code> function.<br>这一关在 js 中会进行编码，闭合’构造一个新的语句即可：<br><code>&#39;;alert();&#39;</code><br><img src="/2023/04/27/file-upload/240104180809326.png" srcset="/img/loading.gif" lazyload><br>使用-同样可以，<code>&#39;-alert()-&#39;</code></p>
+<h2 id="Lab-DOM-XSS-in-document-write-sink-using-source-location-search-inside-a-select-element"><a href="#Lab-DOM-XSS-in-document-write-sink-using-source-location-search-inside-a-select-element" class="headerlink" title="Lab: DOM XSS in document.write sink using source location.search inside a select element"></a>Lab: DOM XSS in document.write sink using source location.search inside a select element</h2><p>This lab contains a DOM-based cross-site scripting vulnerability in the stock checker functionality. It uses the JavaScript <code>document.write</code> function, which writes data out to the page. The <code>document.write</code> function is called with data from <code>location.search</code> which you can control using the website URL. The data is enclosed within a select element.<br>To solve this lab, perform a cross-site scripting attack that breaks out of the select element and calls the <code>alert</code> function.</p>
+<p><img src="/2023/04/27/file-upload/240204162707852.png" srcset="/img/loading.gif" lazyload alt="image-20240204162707852"></p>
+<p>这里checkstock的选项，是通过storeId参数，GET请求时添加上的。</p>
+<p><img src="/2023/04/27/file-upload/240204162844046.png" srcset="/img/loading.gif" lazyload alt="image-20240204162844046"></p>
+<p>只需要将select闭合即可：</p>
+<p><code>&lt;/select&gt;&lt;iframe src=javascript:alert(111)&gt;&lt;/iframe&gt;</code>：</p>
+<p><img src="/2023/04/27/file-upload/240204162610567.png" srcset="/img/loading.gif" lazyload alt="image-20240204162610567"></p>
+<h2 id="Lab-DOM-XSS-in-AngularJS-expression-with-angle-brackets-and-double-quotes-HTML-encoded"><a href="#Lab-DOM-XSS-in-AngularJS-expression-with-angle-brackets-and-double-quotes-HTML-encoded" class="headerlink" title="Lab: DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded"></a>Lab: DOM XSS in AngularJS expression with angle brackets and double quotes HTML-encoded</h2><p>This lab contains a DOM-based cross-site scripting vulnerability in a AngularJS expression within the search functionality.</p>
+<p>AngularJS is a popular JavaScript library, which scans the contents of HTML nodes containing the <code>ng-app</code> attribute (also known as an AngularJS directive). When a directive is added to the HTML code, you can execute JavaScript expressions within double curly braces. This technique is useful when angle brackets are being encoded.</p>
+<p>To solve this lab, perform a cross-site scripting attack that executes an AngularJS expression and calls the <code>alert</code> function.</p>
+<p>输入aaaaaaa，搜索，查找输入内容：</p>
+<p><img src="/2023/04/27/file-upload/240205133210875.png" srcset="/img/loading.gif" lazyload alt="image-20240205133210875"></p>
+<p>发现其被ng-app包裹，利用AngularJS表达式：<code>&#123;&#123;$on.constructor('alert(1)')()&#125;&#125;</code></p>
+<p><img src="/2023/04/27/file-upload/240205133337460.png" srcset="/img/loading.gif" lazyload alt="image-20240205133337460"></p>
+<h2 id="Lab-Reflected-DOM-XSS"><a href="#Lab-Reflected-DOM-XSS" class="headerlink" title="Lab: Reflected DOM XSS"></a>Lab: Reflected DOM XSS</h2><p>This lab demonstrates a reflected DOM vulnerability. Reflected DOM vulnerabilities occur when the server-side application processes data from a request and echoes the data in the response. A script on the page then processes the reflected data in an unsafe way, ultimately writing it to a dangerous sink.</p>
+<p>To solve this lab, create an injection that calls the <code>alert()</code> function.</p>
+<p>这一关搜索的内容会以json的形式返回：</p>
+<p><img src="/2023/04/27/file-upload/240205140533303.png" srcset="/img/loading.gif" lazyload alt="image-20240205140533303"></p>
+<p>并且过滤了双引号。</p>
+<p>在history中可以看到searchResults.js，其中在处理json响应时，用到了eval函数：</p>
+<p><img src="/2023/04/27/file-upload/240205140636712.png" srcset="/img/loading.gif" lazyload alt="image-20240205140636712"></p>
+<p>最终payload如下：<code>\&quot;-alert(1)&#125;//</code></p>
+<p><img src="/2023/04/27/file-upload/240205140811478.png" srcset="/img/loading.gif" lazyload alt="image-20240205140811478"></p>
+<p>json响应为：</p>
+<p><img src="/2023/04/27/file-upload/240205140900274.png" srcset="/img/loading.gif" lazyload alt="image-20240205140900274"></p>
+<p>下面分析一下payload：</p>
+<p>站点本身没有转移<code>\</code>，当 JSON 响应尝试转义<code>&quot;</code>时，会再加上一个反斜，因此双反斜杠会导致转义被抵消，导致语句的闭合。</p>
+<p>然后用运算符来分割语句，进行alert，最后加上<code>//</code>注释，响应生成如下：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir">&#123;<span class="hljs-string">&quot;searchTerm&quot;</span><span class="hljs-symbol">:<span class="hljs-string">&quot;\\&quot;</span>-alert</span>(<span class="hljs-number">1</span>)&#125;//<span class="hljs-string">&quot;, &quot;</span>results<span class="hljs-string">&quot;:[]&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Lab-Stored-DOM-XSS"><a href="#Lab-Stored-DOM-XSS" class="headerlink" title="Lab: Stored DOM XSS"></a>Lab: Stored DOM XSS</h2><p>This lab demonstrates a stored DOM vulnerability in the blog comment functionality. To solve this lab, exploit this vulnerability to call the <code>alert()</code> function.</p>
+<p>这一关利用JavaScript <code>replace()</code> 函数对尖括号进行编码。但是，当第一个参数是字符串时，该函数仅替换第一次出现的位置。</p>
+<p>payload：<code>&lt;&gt;&lt;iframe src=javascript:alert(111)&gt;&lt;/iframe&gt;</code></p>
+<p><img src="/2023/04/27/file-upload/240205142339567.png" srcset="/img/loading.gif" lazyload alt="image-20240205142339567"></p>
+<h2 id="Lab-Reflected-XSS-into-HTML-context-with-most-tags-and-attributes-blocked"><a href="#Lab-Reflected-XSS-into-HTML-context-with-most-tags-and-attributes-blocked" class="headerlink" title="Lab: Reflected XSS into HTML context with most tags and attributes blocked"></a>Lab: Reflected XSS into HTML context with most tags and attributes blocked</h2><p>This lab contains a reflected XSS vulnerability in the search functionality but uses a web application firewall (WAF) to protect against common XSS vectors.</p>
+<p>To solve the lab, perform a cross-site scripting attack that bypasses the WAF and calls the <code>print()</code> function.</p>
+<p>这一关有waf过滤，采用的是爆破的方式筛选出可行的tag和event。</p>
+<p>先爆破tag：</p>
+<p><img src="/2023/04/27/file-upload/240205151702352.png" srcset="/img/loading.gif" lazyload alt="image-20240205151702352"></p>
+<p>body可行，再爆破event：</p>
+<p><code>?search=%3Cbody%20§11§=1%3E</code></p>
+<p><img src="/2023/04/27/file-upload/240205151746886.png" srcset="/img/loading.gif" lazyload alt="image-20240205151746886"></p>
+<p>再一个一个尝试即可，最终利用onresize成功过关。</p>
+<h2 id="Lab-Reflected-XSS-into-HTML-context-with-all-tags-blocked-except-custom-ones"><a href="#Lab-Reflected-XSS-into-HTML-context-with-all-tags-blocked-except-custom-ones" class="headerlink" title="Lab: Reflected XSS into HTML context with all tags blocked except custom ones"></a>Lab: Reflected XSS into HTML context with all tags blocked except custom ones</h2><p>This lab blocks all HTML tags except custom ones.</p>
+<p>To solve the lab, perform a cross-site scripting attack that injects a custom tag and automatically alerts <code>document.cookie</code>.</p>
+<p>这一关只有自定义标签没被过滤，先创建一个 ID 为 x 的自定义标记，其中包含触发 alert 函数的 onfocus 事件处理程序。页面加载后，URL 末尾的哈希就会集中在该元素上，从而导致调用 alert。</p>
+<p>payload：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;script&gt;</span><br><span class="hljs-attribute">location</span> = &#x27;https://xxx.web-security-academy.net/?search=%<span class="hljs-number">3</span>Cxss+id%<span class="hljs-number">3</span>Dx+onfocus%<span class="hljs-number">3</span>Dalert%<span class="hljs-number">28</span>document.cookie%<span class="hljs-number">29</span>%<span class="hljs-number">20</span>tabindex=<span class="hljs-number">1</span>%<span class="hljs-number">3</span>E#x&#x27;;<br><span class="hljs-section">&lt;/script&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="Lab-Reflected-XSS-with-some-SVG-markup-allowed"><a href="#Lab-Reflected-XSS-with-some-SVG-markup-allowed" class="headerlink" title="Lab: Reflected XSS with some SVG markup allowed"></a>Lab: Reflected XSS with some SVG markup allowed</h2><p>This lab has a simple reflected XSS vulnerability. The site is blocking common tags but misses some SVG tags and events.</p>
+<p>To solve the lab, perform a cross-site scripting attack that calls the <code>alert()</code> function.</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ASQL%20Injection/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Portswigger Labs — SQL Injection</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AHTTP%20Host%20header%20attacks/">
+                        <span class="hidden-mobile">Portswigger Labs — HTTP Host header attacks</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="禅道项目管理系统18.5后台RCE前言最近在看各漏洞源更新时，发现禅道18.5爆出了一个新的RCE，poc有两个请求，分别如下： 123456789101112131415POST &#x2F;zentaopms&#x2F;www&#x2F;index.php?m&#x3D;custom&amp;f&#x3D;ajaxSaveCustomFields&amp;module&#x3D;common§ion&#x3D;features&amp;key&#x3D;apiGetMod">
+<meta property="og:type" content="article">
+<meta property="og:title" content="禅道项目管理系统18.5后台RCE">
+<meta property="og:url" content="http://example.com/2024/07/23/%E7%A6%85%E9%81%93%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F18.5%E5%90%8E%E5%8F%B0RCE/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="禅道项目管理系统18.5后台RCE前言最近在看各漏洞源更新时，发现禅道18.5爆出了一个新的RCE，poc有两个请求，分别如下： 123456789101112131415POST &#x2F;zentaopms&#x2F;www&#x2F;index.php?m&#x3D;custom&amp;f&#x3D;ajaxSaveCustomFields&amp;module&#x3D;common§ion&#x3D;features&amp;key&#x3D;apiGetMod">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620164926479.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620165052928.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620163849276.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620165820477.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620170319435.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620170628537.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620171057346.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620171203959.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620171720531.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620172044063.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620172545159.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620172907032.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620172950409.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620175524507.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240620180451505.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240621101247925.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240621101417998.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240621101721238.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240621101812321.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240621102111602.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624145601397.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624145924977.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624161300293.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624151115116.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624151359856.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624162654731.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624163657675.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624163632348.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624163615166.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624164228339.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624164344919.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/age-20240624165147119.png">
+<meta property="article:published_time" content="2024-07-23T12:30:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:48:41.760Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="vulnerability">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/age-20240620164926479.png">
+  
+  
+  <title>禅道项目管理系统18.5后台RCE - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="禅道项目管理系统18.5后台RCE">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:30" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      38 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">禅道项目管理系统18.5后台RCE</h1>
+            
+            <div class="markdown-body">
+              <h1 id="禅道项目管理系统18-5后台RCE"><a href="#禅道项目管理系统18-5后台RCE" class="headerlink" title="禅道项目管理系统18.5后台RCE"></a>禅道项目管理系统18.5后台RCE</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在看各漏洞源更新时，发现禅道18.5爆出了一个新的RCE，poc有两个请求，分别如下：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">POST</span> <span class="hljs-string">/zentaopms/www/index.php?m=custom&amp;f=ajaxSaveCustomFields&amp;module=common§ion=features&amp;key=apiGetModel</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>192.168.234.128<br><span class="hljs-attribute">Content-Length</span><span class="hljs-punctuation">: </span>11<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>application/json, text/javascript, */*; q=0.01<br><span class="hljs-attribute">X-Requested-With</span><span class="hljs-punctuation">: </span>XMLHttpRequest<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/x-www-form-urlencoded; charset=UTF-8<br><span class="hljs-attribute">Origin</span><span class="hljs-punctuation">: </span>http://192.168.234.128<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>http://192.168.234.128/zentaopms/www/index.php?m=projectstory&amp;f=story&amp;projectID=1<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>zh-CN,zh-TW;q=0.9,zh;q=0.8,en-US;q=0.7,en;q=0.6<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>zentaosid=t33hnj6nnkdkjcid7rp3bdl63e;<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><br><span class="language-ini"><span class="hljs-attr">fields</span>=<span class="hljs-literal">true</span></span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">POST</span> <span class="hljs-string">/zentaopms/www/index.php?m=api&amp;f=getModel&amp;moduleName=repo&amp;methodName=checkConnection</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>192.168.234.128<br><span class="hljs-attribute">accept</span><span class="hljs-punctuation">: </span>*/*<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>zh-CN,zh-TW;q=0.9,zh;q=0.8,en-US;q=0.7,en;q=0.6<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>http://192.168.234.128/zentaopms/www/index.php<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>zentaosid=t33hnj6nnkdkjcid7rp3bdl63e;<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/x-www-form-urlencoded<br><span class="hljs-attribute">Content-Length</span><span class="hljs-punctuation">: </span>30<br><br><span class="language-ini"><span class="hljs-attr">client</span>=calc.exe&amp;SCM=Subversion</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/age-20240620164926479.png" srcset="/img/loading.gif" lazyload alt="image-20240620164926479"></p>
+<p>请求之后并没有执行命令，提示apiGetModel被禁用，直接到config目录下找找：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620165052928.png" srcset="/img/loading.gif" lazyload alt="image-20240620165052928"></p>
+<p>在config.php中，默认$config-&gt;features-&gt;apiGetModel是false，这里改为true，再次执行第二个请求，成功弹出了计算器。</p>
+<p>至此，以为该漏洞需要受害者手动修改默认配置，才能进行利用，非常鸡肋，但是想到第一个请求似乎没有任何作用，于是打算仔细分析一下两个poc以及整个利用过程。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>调试环境搭建部分具体可见：</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/qOlAplk_i66WRJ1Zf9ZWAw">phpstorm+xdebug调试环境搭建</a></p>
+<p>zentaopms v18.5源码下载：</p>
+<p><a target="_blank" rel="noopener" href="https://www.zentao.net/download/zentaopms18.5-82695.html">禅道18.5发布啦！优化常用列表的性能，修复Bug - 禅道下载 - 禅道开源项目管理软件 (zentao.net)</a></p>
+<p><img src="/2023/04/27/file-upload/age-20240620163849276.png" srcset="/img/loading.gif" lazyload alt="image-20240620163849276"></p>
+<p>根据不同php版本下载对应安装包即可。</p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在修改配置之后，能够成功执行命令，就先分析第二个请求。</p>
+<p>直接看一下命令执行的触发过程。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs http">POST /zentaopms/www/index.php?m=api&amp;f=getModel&amp;moduleName=repo&amp;methodName=checkConnection<br>...<br>...<br>client=calc.exe&amp;SCM=Subversion<br></code></pre></td></tr></table></figure>
+
+<p>首先看&#x2F;zentaopms&#x2F;www&#x2F;index.php：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620165820477.png" srcset="/img/loading.gif" lazyload alt="image-20240620165820477"></p>
+<p>前面都是与安装，更新相关的判断，直接跳过，到最后几行分别打上断点，借此判断从哪里步入。</p>
+<p>这里让浏览器走burp的代理，在repeater中发送poc：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620170319435.png" srcset="/img/loading.gif" lazyload alt="image-20240620170319435"></p>
+<p>如图，成功断住，往下不断执行：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620170628537.png" srcset="/img/loading.gif" lazyload alt="image-20240620170628537"></p>
+<p>在最后一个断点之后，继续执行，弹出计算器，因此步入<code>echo $app-&gt;outputPage();</code></p>
+<p><strong>tips:在测试中发现，如果直接把get请求改为poc，无法成功执行命令，比较两个request发现poc中必须带有referer头</strong></p>
+<p><img src="/2023/04/27/file-upload/age-20240620171057346.png" srcset="/img/loading.gif" lazyload alt="image-20240620171057346"></p>
+<p>步入跟进之后发现，$this-&gt;loadModule执行之后，命令就被成功执行，继续步入：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620171203959.png" srcset="/img/loading.gif" lazyload alt="image-20240620171203959"></p>
+<p>跟到loadModule函数的<code>call_user_function_array</code>，<code>call_user_func_array(array($module, $this-&gt;methodName), $this-&gt;params);</code>这里调用了$module的$this-&gt;methodName方法，并且将$this-&gt;params作为参数传入。</p>
+<p><img src="/2023/04/27/file-upload/age-20240620171720531.png" srcset="/img/loading.gif" lazyload alt="image-20240620171720531"></p>
+<p>params为一个数组，moduleName和MethodName通过url传入，而$this-&gt;methodName为getmodel。</p>
+<p>步入：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620172044063.png" srcset="/img/loading.gif" lazyload alt="image-20240620172044063"></p>
+<p>在877行执行之后就会弹出计算器，打断点，此时的methodName为checkConnection，这里应该是调用了module的checkConnection方法，无参。继续步入：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620172545159.png" srcset="/img/loading.gif" lazyload alt="image-20240620172545159"></p>
+<p>下面到了最关键的部分，checkConnection函数。如果scm&#x3D;&#x3D;’Subversion’，就会执行一个exec，而执行的命令为<code>$client --version --quiet 2&gt;&amp;1</code>，$client即为post中传入的client，如果post body为<code>client=calc.exe&amp;SCM=Subversion</code>，就能成功进入if语句，并且拼接命令，执行<code>calc.exe --version --quiet 2&gt;&amp;1</code>，弹出计算器。</p>
+<p>步过：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620172907032.png" srcset="/img/loading.gif" lazyload alt="image-20240620172907032"></p>
+<p>成功执行。</p>
+<p>但是在不打断点的情况下，通过poc会执行两次命令，继续步过查看：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620172950409.png" srcset="/img/loading.gif" lazyload alt="image-20240620172950409"></p>
+<p>在1551行同样有一个exec，其中$command均是由$client拼接而成，跟前者类似，到这里漏洞的触发点已经明确了。</p>
+<p>由此尝试往前进行推导，发现大都是通过<code>call_user_function_array</code>进行调用，并且模块较多，暂不查找其他利用方式，仅针对poc进行分析。</p>
+<p>整个的调用链如下：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620175524507.png" srcset="/img/loading.gif" lazyload alt="image-20240620175524507"></p>
+<p>下面来分析不修改config配置时的情况。</p>
+<p>在简单的debug之后发现，在getModel中，开头的一个if判断，由于apiGetModel为false，就直接返回了错误信息，因此没能往下执行到checkConnection，进而调用exec()执行命令：</p>
+<p><img src="/2023/04/27/file-upload/age-20240620180451505.png" srcset="/img/loading.gif" lazyload alt="image-20240620180451505"></p>
+<p>关键就在于<code>$config-&gt;features-&gt;apiGetModel</code>配置项是否打开，如果打开即可执行命令，但是默认情况下为关闭。</p>
+<p>结合第一个poc中<code>key=apiGetModel</code>，<code>field=true</code>，应该是在修改配置，下面进代码进行分析。</p>
+<p>在整个index.php中，主要有如下几行代码：</p>
+<p><img src="/2023/04/27/file-upload/age-20240621101247925.png" srcset="/img/loading.gif" lazyload alt="image-20240621101247925"></p>
+<p>1、加载</p>
+<p>2、解析请求</p>
+<p>3、设置参数</p>
+<p>如果直接发送第一个poc的请求(其实哪个请求都可以，主要为了看config在哪里配置)，会在第72行return。</p>
+<p><img src="/2023/04/27/file-upload/age-20240621101417998.png" srcset="/img/loading.gif" lazyload alt="image-20240621101417998"></p>
+<p>往前一步下断点，此时apiGetModel已经是false，继续往前断，到loadCommon():</p>
+<p><img src="/2023/04/27/file-upload/age-20240621101721238.png" srcset="/img/loading.gif" lazyload alt="image-20240621101721238"></p>
+<p>这里依然已经是false，但是前面都是无关代码，跟进步入：</p>
+<p><img src="/2023/04/27/file-upload/age-20240621101812321.png" srcset="/img/loading.gif" lazyload alt="image-20240621101812321"></p>
+<p>baseRouter中的loadCommon，最终return new extCommonModel。</p>
+<p>跟进：</p>
+<p><img src="/2023/04/27/file-upload/age-20240621102111602.png" srcset="/img/loading.gif" lazyload alt="image-20240621102111602"></p>
+<p>在构造方法中，唯一跟config有关的就是loadConfigFromDB，打断点步入：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624145601397.png" srcset="/img/loading.gif" lazyload alt="image-20240624145601397"></p>
+<p>loadConfigFromDB函数中，会首先从配置文件中读取配置信息，然后到mergeConfig：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624145924977.png" srcset="/img/loading.gif" lazyload alt="image-20240624145924977"></p>
+<p>这里的config为全局变量，会从数据库读取配置项进行覆盖。因此，只要能覆盖apiGetModel，使其为true，即可在默认配置为false的情况下，实现命令执行。</p>
+<p>下面分析如何覆盖。</p>
+<p>先查看数据库中的内容，结合config.php：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624161300293.png" srcset="/img/loading.gif" lazyload alt="image-20240624161300293"></p>
+<p>如果要覆盖apiGetModel参数，就要使得module为common，section为features，key为apiGetModel，然后在loadCommon时，在构造方法中调用mergeConfig即可。</p>
+<p>继续看下代码的commit:<a target="_blank" rel="noopener" href="https://github.com/easysoft/zentaopms/commit/24b3fba6c0077bfc7bcc94af505d43856377186b">+ custom: limit the items user can save to db to prevent command exec… · easysoft&#x2F;zentaopms@24b3fba (github.com)</a></p>
+<p><img src="/2023/04/27/file-upload/age-20240624151115116.png" srcset="/img/loading.gif" lazyload alt="image-20240624151115116"></p>
+<p>最主要的改动在于control.php中的ajaxSaveCustomFields方法，而poc_1中也是利用了该方法<code>/zentaopms/www/index.php?m=custom&amp;f=ajaxSaveCustomFields&amp;module=common§ion=features&amp;key=apiGetModel</code></p>
+<p>定位到该函数：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624151359856.png" srcset="/img/loading.gif" lazyload alt="image-20240624151359856"></p>
+<p>获取账户信息之后，从POST请求中读取fields值，再进行自定义内容的修改。因此，只要先通过该方法，将apiGetModel修改为true，再通过mergeConfig从数据库读取参数值进行覆盖即可。</p>
+<p>直接搜索：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624162654731.png" srcset="/img/loading.gif" lazyload alt="image-20240624162654731"></p>
+<p>都是在html.php中，没有有效信息，应该都是通过call的方式进行调用。</p>
+<p>尝试直接构造一个请求来调用该方法：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624163657675.png" srcset="/img/loading.gif" lazyload alt="image-20240624163657675"></p>
+<p>调用custom下的ajaxSaveCustomFields，module，section和key的值在前面已经都分析过，发送请求之后成功断住：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624163632348.png" srcset="/img/loading.gif" lazyload alt="image-20240624163632348"></p>
+<p>在执行setItem之后，到数据库中查看：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624163615166.png" srcset="/img/loading.gif" lazyload alt="image-20240624163615166"></p>
+<p>已经多了一条数据。</p>
+<p>在mergeConfig下断点：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624164228339.png" srcset="/img/loading.gif" lazyload alt="image-20240624164228339"></p>
+<p>可以看到，此时person的配置里，已经出现了刚刚添加的一条数据，并且值为true，但是此时$this-&gt;config-&gt;features-&gt;apiGetModel依然为false（从配置文件读取的）。</p>
+<p>继续往下，当把这条数据覆盖掉之后，$this-&gt;config-&gt;features-&gt;apiGetModel变成了true：</p>
+<p><img src="/2023/04/27/file-upload/age-20240624164344919.png" srcset="/img/loading.gif" lazyload alt="image-20240624164344919"></p>
+<p>下面发送poc_2:</p>
+<p><img src="/2023/04/27/file-upload/age-20240624165147119.png" srcset="/img/loading.gif" lazyload alt="image-20240624165147119"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/php/">php</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vulnerability/">vulnerability</a>
+                    
+                      <a class="hover-with-bg" href="/tags/php/">php</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/seacms_v1.0/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">seacms_v1.0</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/phpstorm+xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+                        <span class="hidden-mobile">phpstorm+xdebug调试环境搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

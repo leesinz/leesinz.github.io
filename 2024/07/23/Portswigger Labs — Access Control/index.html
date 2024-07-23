@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Portswigger Labs — Portswigger Labs — Access Control Control未经保护的admin页面访问&#x2F;robots.txt:  拼接，即可直接访问管理员页面：  未经保护的admin页面（URL不可预测）查看页面源代码，发现&#x2F;admin-4mbdyv：  该url即为管理页面：  通过请求参数控制用户角色登录wiener账户后，访">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portswigger Labs — Portswigger Labs — Access Control Control">
+<meta property="og:url" content="http://example.com/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AAccess%20Control/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="Portswigger Labs — Portswigger Labs — Access Control Control未经保护的admin页面访问&#x2F;robots.txt:  拼接，即可直接访问管理员页面：  未经保护的admin页面（URL不可预测）查看页面源代码，发现&#x2F;admin-4mbdyv：  该url即为管理页面：  通过请求参数控制用户角色登录wiener账户后，访">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213132217926.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213132241617.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213132958548.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213133037056.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213133446926.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213133526067.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213133637783.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213134132011.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213134200320.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213134444326.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213135406741.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213135836272.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213140344532.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213140319106.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213141048126.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213141639191.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213141710680.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213142343516.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213142410502.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213143101228.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213143123629.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213143320255.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213155308640.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213155327920.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213155401529.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213155426409.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213160615826.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213161407968.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20231213161521984.png">
+<meta property="article:published_time" content="2024-07-23T12:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:51:45.798Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Portswigger Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/-20231213132217926.png">
+  
+  
+  <title>Portswigger Labs — Portswigger Labs — Access Control Control - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Portswigger Labs — Portswigger Labs — Access Control Control">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Portswigger Labs — Portswigger Labs — Access Control Control</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Portswigger-Labs-—-Portswigger-Labs-—-Access-Control-Control"><a href="#Portswigger-Labs-—-Portswigger-Labs-—-Access-Control-Control" class="headerlink" title="Portswigger Labs — Portswigger Labs — Access Control Control"></a>Portswigger Labs — Portswigger Labs — Access Control Control</h1><h2 id="未经保护的admin页面"><a href="#未经保护的admin页面" class="headerlink" title="未经保护的admin页面"></a>未经保护的admin页面</h2><p>访问&#x2F;robots.txt:</p>
+<p><img src="/2023/04/27/file-upload/-20231213132217926.png" srcset="/img/loading.gif" lazyload alt="image-20231213132217926"></p>
+<p>拼接，即可直接访问管理员页面：</p>
+<p><img src="/2023/04/27/file-upload/-20231213132241617.png" srcset="/img/loading.gif" lazyload alt="image-20231213132241617"></p>
+<h2 id="未经保护的admin页面（URL不可预测）"><a href="#未经保护的admin页面（URL不可预测）" class="headerlink" title="未经保护的admin页面（URL不可预测）"></a>未经保护的admin页面（URL不可预测）</h2><p>查看页面源代码，发现&#x2F;admin-4mbdyv：</p>
+<p><img src="/2023/04/27/file-upload/-20231213132958548.png" srcset="/img/loading.gif" lazyload alt="image-20231213132958548"></p>
+<p>该url即为管理页面：</p>
+<p><img src="/2023/04/27/file-upload/-20231213133037056.png" srcset="/img/loading.gif" lazyload alt="image-20231213133037056"></p>
+<h2 id="通过请求参数控制用户角色"><a href="#通过请求参数控制用户角色" class="headerlink" title="通过请求参数控制用户角色"></a>通过请求参数控制用户角色</h2><p>登录wiener账户后，访问admin：</p>
+<p><img src="/2023/04/27/file-upload/-20231213133446926.png" srcset="/img/loading.gif" lazyload alt="image-20231213133446926"></p>
+<p>401未授权，只有admin才能访问。注意在cookie字段中有admin&#x3D;false，将false改为true再次访问：</p>
+<p><img src="/2023/04/27/file-upload/-20231213133526067.png" srcset="/img/loading.gif" lazyload alt="image-20231213133526067"></p>
+<p>成功访问管理界面。再次发包：<br><img src="/2023/04/27/file-upload/-20231213133637783.png" srcset="/img/loading.gif" lazyload alt="image-20231213133637783"></p>
+<p>成功删除。</p>
+<h2 id="用户角色可在用户配置文件中修改"><a href="#用户角色可在用户配置文件中修改" class="headerlink" title="用户角色可在用户配置文件中修改"></a>用户角色可在用户配置文件中修改</h2><p>登录后，修改邮箱，发现在提交修改的返回包中存在roleid，值为1：</p>
+<p><img src="/2023/04/27/file-upload/-20231213134132011.png" srcset="/img/loading.gif" lazyload alt="image-20231213134132011"></p>
+<p>重新修改邮箱，尝试修改服务器返回包，将roleid改为2：</p>
+<p><img src="/2023/04/27/file-upload/-20231213134200320.png" srcset="/img/loading.gif" lazyload alt="image-20231213134200320"></p>
+<p>再次访问&#x2F;admin，失败：</p>
+<p><img src="/2023/04/27/file-upload/-20231213134444326.png" srcset="/img/loading.gif" lazyload alt="image-20231213134444326"></p>
+<p>在更改邮箱的请求包中添加roleid:2 </p>
+<p><img src="/2023/04/27/file-upload/-20231213135406741.png" srcset="/img/loading.gif" lazyload alt="image-20231213135406741"></p>
+<p>成功访问&#x2F;admin。</p>
+<h2 id="通过请求参数控制用户ID"><a href="#通过请求参数控制用户ID" class="headerlink" title="通过请求参数控制用户ID"></a>通过请求参数控制用户ID</h2><p>用wiener登录后，会得到wiener的API key。</p>
+<p>将请求包中的id改为carlos，即可获取carlos的API key：</p>
+<p><img src="/2023/04/27/file-upload/-20231213135836272.png" srcset="/img/loading.gif" lazyload alt="image-20231213135836272"></p>
+<h2 id="用户ID由请求参数控制（用户ID不可预测）"><a href="#用户ID由请求参数控制（用户ID不可预测）" class="headerlink" title="用户ID由请求参数控制（用户ID不可预测）"></a>用户ID由请求参数控制（用户ID不可预测）</h2><p>重复上面的步骤，发现userid变成了随机数：</p>
+<p><img src="/2023/04/27/file-upload/-20231213140344532.png" srcset="/img/loading.gif" lazyload alt="image-20231213140344532"></p>
+<p>在post中找一个carlos发布的，点击查看其id：</p>
+<p><img src="/2023/04/27/file-upload/-20231213140319106.png" srcset="/img/loading.gif" lazyload alt="image-20231213140319106"></p>
+<p>修改id，获取carlos的API key.</p>
+<h2 id="请求参数控制用户ID（重定向时数据泄露）"><a href="#请求参数控制用户ID（重定向时数据泄露）" class="headerlink" title="请求参数控制用户ID（重定向时数据泄露）"></a>请求参数控制用户ID（重定向时数据泄露）</h2><p>将id改为carlos即可，可以在302跳转页面中看到carlos的API key：</p>
+<p><img src="/2023/04/27/file-upload/-20231213141048126.png" srcset="/img/loading.gif" lazyload alt="image-20231213141048126"></p>
+<h2 id="请求参数控制用户ID（密码泄露）"><a href="#请求参数控制用户ID（密码泄露）" class="headerlink" title="请求参数控制用户ID（密码泄露）"></a>请求参数控制用户ID（密码泄露）</h2><p>登录wiener账户，发现存在密码：</p>
+<p><img src="/2023/04/27/file-upload/-20231213141639191.png" srcset="/img/loading.gif" lazyload alt="image-20231213141639191"></p>
+<p>id改为administrator，将password的type改为text：</p>
+<p><img src="/2023/04/27/file-upload/-20231213141710680.png" srcset="/img/loading.gif" lazyload alt="image-20231213141710680"></p>
+<p>成功。</p>
+<h2 id="不安全的直接对象引用"><a href="#不安全的直接对象引用" class="headerlink" title="不安全的直接对象引用"></a>不安全的直接对象引用</h2><p>点击live chat，view transcript:</p>
+<p><img src="/2023/04/27/file-upload/-20231213142343516.png" srcset="/img/loading.gif" lazyload alt="image-20231213142343516"></p>
+<p>发现下载的文件命名为数字.txt，并且递增。</p>
+<p>爆破文件名：</p>
+<p><img src="/2023/04/27/file-upload/-20231213142410502.png" srcset="/img/loading.gif" lazyload alt="image-20231213142410502"></p>
+<p>成功得到密码。</p>
+<h2 id="可绕过的基于-URL-的访问控制"><a href="#可绕过的基于-URL-的访问控制" class="headerlink" title="可绕过的基于 URL 的访问控制"></a>可绕过的基于 URL 的访问控制</h2><p>直接访问&#x2F;admin：</p>
+<p><img src="/2023/04/27/file-upload/-20231213143101228.png" srcset="/img/loading.gif" lazyload alt="image-20231213143101228"></p>
+<p>权限不足。</p>
+<p>将url改为&#x2F;，添加X-Original-URL头：</p>
+<p><img src="/2023/04/27/file-upload/-20231213143123629.png" srcset="/img/loading.gif" lazyload alt="image-20231213143123629"></p>
+<p>request in browser获取删除的接口，放到X-Original-Url中，成功删除：</p>
+<p><img src="/2023/04/27/file-upload/-20231213143320255.png" srcset="/img/loading.gif" lazyload alt="image-20231213143320255"></p>
+<h2 id="可绕过的基于方法的访问控制"><a href="#可绕过的基于方法的访问控制" class="headerlink" title="可绕过的基于方法的访问控制"></a>可绕过的基于方法的访问控制</h2><p>使用administrator账号登录：</p>
+<p><img src="/2023/04/27/file-upload/-20231213155308640.png" srcset="/img/loading.gif" lazyload alt="image-20231213155308640"></p>
+<p>点击admin panel，并且将carlos升级，查看数据包：</p>
+<p><img src="/2023/04/27/file-upload/-20231213155327920.png" srcset="/img/loading.gif" lazyload alt="image-20231213155327920"></p>
+<p>在无痕窗口登录wiener账号，将wiener的cookie替换到上述请求中：</p>
+<p><img src="/2023/04/27/file-upload/-20231213155401529.png" srcset="/img/loading.gif" lazyload alt="image-20231213155401529"></p>
+<p>401未授权。</p>
+<p>将方法改为GET，修改username为wiener：</p>
+<p><img src="/2023/04/27/file-upload/-20231213155426409.png" srcset="/img/loading.gif" lazyload alt="image-20231213155426409"></p>
+<p>成功。</p>
+<h2 id="多步骤流程，一步无访问控制"><a href="#多步骤流程，一步无访问控制" class="headerlink" title="多步骤流程，一步无访问控制"></a>多步骤流程，一步无访问控制</h2><p>和前一个模块相同，不过无需更改请求方法，直接替换cookie即可：</p>
+<p><img src="/2023/04/27/file-upload/-20231213160615826.png" srcset="/img/loading.gif" lazyload alt="image-20231213160615826"></p>
+<h2 id="基于referer的访问控制"><a href="#基于referer的访问控制" class="headerlink" title="基于referer的访问控制"></a>基于referer的访问控制</h2><p>这里提升权限的请求如下：</p>
+<p><img src="/2023/04/27/file-upload/-20231213161407968.png" srcset="/img/loading.gif" lazyload alt="image-20231213161407968"></p>
+<p>如果直接将url复制到wiener的账户访问，会提示401未授权，因为做了referer校验。</p>
+<p>同样替换cookie即可解决：</p>
+<p><img src="/2023/04/27/file-upload/-20231213161521984.png" srcset="/img/loading.gif" lazyload alt="image-20231213161521984"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%E5%85%AC%E4%BC%97%E5%8F%B7%E6%96%87%E7%AB%A0%E6%8E%A8%E9%80%81/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">半自动化实现公众号文章推送</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AApi-testing/">
+                        <span class="hidden-mobile">Portswigger Labs — Portswigger Labs — Api-testing-testing</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

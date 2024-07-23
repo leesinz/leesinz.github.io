@@ -191,15 +191,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/java%E5%9F%BA%E7%A1%80-IO%E6%B5%81/" target="_self">
-          java基础-IO流
+        <a href="/2024/07/23/XXE/" target="_self">
+          XXE漏洞&amp;CVE-2021-29447
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/java%E5%9F%BA%E7%A1%80-IO%E6%B5%81/" target="_self">
+        <a href="/2024/07/23/XXE/" target="_self">
           
-          java基础-IO流创建文件的方式根据路径创建File对象 方法new File(String filename)  12345678910111213141516171819package IOStream;import java.io.File;import java.io.IOException;public class CreateFileByPath &#123;    public s
+          XXEXXE漏洞介绍XXE漏洞（XML External Entity）是一种安全漏洞，出现在使用XML解析器的应用程序中。当应用程序使用XML解析器解析XML文档时，如果未正确配置解析器，攻击者可以通过在XML文档中插入恶意实体来执行攻击。这些实体可以是外部的，允许攻击者读取本地文件、发起远程HTTP请求等操作。 XXE漏洞可能导致敏感数据泄露、服务器端请求伪造（SSRF）、拒绝服务（DoS）等
         </a>
       </p>
 
@@ -207,7 +207,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 15:00" pubdate>
+            <time datetime="2024-07-23 22:00" pubdate>
               2024-07-23
             </time>
           </div>
@@ -216,342 +216,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/java/">java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/java/">java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD/" target="_self">
-          java反序列化-类的动态加载
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD/" target="_self">
-          
-          java反序列化-类的动态加载类加载器定义类加载器是一个负责加载类的对象。ClassLoader 是一个抽象类。每个 Java 类都有一个引用指向加载它的 ClassLoader。不过，数组类不是通过 ClassLoader 创建的，而是 JVM 在需要的时候自动创建的，数组类通过getClassLoader()方法获取 ClassLoader 的时候和该数组的元素类型的 ClassLoader
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 14:30" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/java/">java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/java/">java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%A6%82%E5%BF%B5/" target="_self">
-          java反序列化-反序列化概念&amp;&amp;URLDNS链
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%A6%82%E5%BF%B5/" target="_self">
-          
-          java反序列化-反序列化概念&amp;&amp;URLDNS链简单来说： 序列化：对象 -&gt; 字符串反序列化：字符串 -&gt; 对象 反序列化代码实现SerializationTest和UnserializeTest分别对Person类进行了序列化与反序列化操作。 注意：  序列化类的属性要 实现Serializable 接口 静态成员变量是不能被序列化 transient 标识的对象成
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 14:10" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/java/">java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/java/">java</a>
-            
-              <a href="/tags/urldns/">urldns</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" target="_self">
-          java反序列化-JDK动态代理
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JDK%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" target="_self">
-          
-          java反序列化-JDK动态代理java代理模式静态代理java静态代理大概分为如下步骤：  定义业务接口； 被代理类实现业务接口； 定义代理类并实现业务接口； 最后便可通过客户端进行调用，也就是一个main的启动器。  业务接口：12345package Proxy.StaticProxy;public interface UserService &#123;    public void ad
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 14:00" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/java/">java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/java/">java</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8B)/" target="_self">
-          Java反序列化CommonsCollections-CC1链(下)
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8B)/" target="_self">
-          
-          Java反序列化CommonsCollections-CC1链(下)LazyMap版CC1链分析寻找链尾还是从InvokerTransformer中的transform方法看起，findusage：  看到LazyMap类中存在一个public的get方法，里面factory调用了transform。 寻找完整链子往上看看factory在哪里定义：  这里看到decorate方法，跟Transfo
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 13:50" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/java/">java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/java/">java</a>
-            
-              <a href="/tags/CC1/">CC1</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8A)/" target="_self">
-          Java反序列化CommonsCollections-CC1链(上)
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96CommonsCollections-CC1%E9%93%BE(%E4%B8%8A)/" target="_self">
-          
-          Java反序列化CommonsCollections-CC1链(上)环境搭建首先新建一个project，选择maven：  注意jdk为8u65，高版本无法复现，已修复。下载地址：https:&#x2F;&#x2F;blog.lupf.cn&#x2F;category&#x2F;jdkdl 添加依赖： 12345&lt;dependency&gt;            &lt;groupId&gt;commons-collection
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 13:40" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/java/">java</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/java/">java</a>
-            
-              <a href="/tags/CC1/">CC1</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/hexo/" target="_self">
-          hexo+github搭建个人博客
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/hexo/" target="_self">
-          
-          hexo+github搭建个人博客nodejs，npm安装node.js不使用最新版本，而是选择v14.21.3，链接如下： Node.js — 下载 Node.js® (nodejs.org) 通过msi安装，同时包含了npm 6.14.18. 安装完成后查看版本：  hexo安装1npm install -g hexo-cli  安装完成后如下所示：  下面选择一个目录，创建hexo项目： 1
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 13:30" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/hexo/">hexo</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/hexo/">hexo</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/07/23/taocms_v3.0.2/" target="_self">
-          taocms_v3.0.2
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2024/07/23/taocms_v3.0.2/" target="_self">
-          
-          taocms_v3.0.2环境搭建taogogo&#x2F;taocms: taoCMS is an incredible tiny CMS( Content Management System) , writen in PHP and support MySQL&#x2F;Sqlite as the database(MIT License) (github.com) win11 php 5.6
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 13:20" pubdate>
-              2024-07-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/php/">php</a>
+              <a href="/categories/vulnerability/">vulnerability</a>
             
           </div>
         
@@ -561,7 +226,7 @@
             
               <a href="/tags/vulnerability/">vulnerability</a>
             
-              <a href="/tags/php/">php</a>
+              <a href="/tags/CVE-2021-29447/">CVE-2021-29447</a>
             
           </div>
         
@@ -575,15 +240,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/hacker101/" target="_self">
-          hacker101
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B81/" target="_self">
+          SRC漏洞挖掘--SRC挖掘日常1
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/hacker101/" target="_self">
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B81/" target="_self">
           
-          hacker101在 hackerone 中，如果 hacker101 的分数达到一定值，就有机会参加 private programs，因此记录一下 hacker101 的 walkthrough。Hacker101 CTF A little something to get you started查看源代码：访问&#x2F;background.png: Micro-CMS v1有 3 个功能
+          SRC挖掘日常1越权在新增插件模块，可以对插件进行授权更改：  如图，可以选择将其授权给全部用户，并且授权范围也能更改。 抓包：  修改全部用户授权范围，发现其对应的就是permissionType参数，将dataId修改，即可更改对应插件的权限，使所有人都能对其进行编辑。 如图所示，已经获得了对他人插件的编辑权限。遍历id即可获取所有插件的权限。  存储xss同样的站点，还可以上传知识库：  在
         </a>
       </p>
 
@@ -591,7 +256,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 13:00" pubdate>
+            <time datetime="2024-07-23 21:00" pubdate>
               2024-07-23
             </time>
           </div>
@@ -600,7 +265,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/ctf/">ctf</a>
+              <a href="/categories/SRC/">SRC</a>
             
           </div>
         
@@ -608,7 +273,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/ctf/">ctf</a>
+              <a href="/tags/SRC/">SRC</a>
             
           </div>
         
@@ -622,15 +287,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A705%E2%80%94%E2%80%940day%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
-          golang实现漏洞监控05——0day漏洞信息监控
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B82/" target="_self">
+          SRC挖掘日常2
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/golang%E5%AE%9E%E7%8E%B0%E6%BC%8F%E6%B4%9E%E7%9B%91%E6%8E%A705%E2%80%94%E2%80%940day%E6%BC%8F%E6%B4%9E%E4%BF%A1%E6%81%AF%E7%9B%91%E6%8E%A7/" target="_self">
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B82/" target="_self">
           
-          golang实现漏洞监控05——0day漏洞信息监控近日在找漏洞相关信息时，看到了这个网站:https:&#x2F;&#x2F;sploitus.com  翻阅一番后发现，该平台是将多个源的漏洞进行了整合，例如github,exploit-db,0day.today,packetstorm,metasploit等等，其中大部分在crush项目中已经完成了覆盖，除了0day.today和packetstorm，与其爬取
+          信息泄露该漏洞是通过 ARL 灯塔发现的，配置好策略和任务之后会在邮箱进行更新推送。获取到新域名之后，到文件泄露模块查看，发现&#x2F;metrics，&#x2F;debug&#x2F;vars，&#x2F;health 等页面：springboot 信息泄露的具体利用方式可以参考 https:&#x2F;&#x2F;github.com&#x2F;LandGrey&#x2F;SpringBootVulExploit扫描工具可以参考
         </a>
       </p>
 
@@ -638,7 +303,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 12:50" pubdate>
+            <time datetime="2024-07-23 21:00" pubdate>
               2024-07-23
             </time>
           </div>
@@ -647,7 +312,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/crush/">crush</a>
+              <a href="/categories/SRC/">SRC</a>
             
           </div>
         
@@ -655,11 +320,329 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/crush/">crush</a>
+              <a href="/tags/SRC/">SRC</a>
             
-              <a href="/tags/golang/">golang</a>
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B84/" target="_self">
+          SRC挖掘日常4
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B84/" target="_self">
+          
+          SRC挖掘日常4某网站后台存在组织设置功能，如下：  可以设置组织logo。 上传一张图片，抓包：  这里的logo图片地址完全可控，想到结合csrf进行利用。 到个人中心处，发现能够绑定微信：  扫描，拦包，在手机点击确认后会抓到如下报文：  关键点在于此处的code值，只要任意用户访问带上code的&#x2F;auth&#x2F;weixin&#x2F;….就会将我的微信绑定到他的账号。 把这
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 21:00" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
             
-              <a href="/tags/0day-today/">0day.today</a>
+              <a href="/categories/SRC/">SRC</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SRC/">SRC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/SRC%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98--sessionkey%E5%88%A9%E7%94%A8/" target="_self">
+          SRC漏洞挖掘--sessionkey利用
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/SRC%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98--sessionkey%E5%88%A9%E7%94%A8/" target="_self">
+          
+          SRC漏洞挖掘–sessionkey利用介绍微信小程序官方提供了一套微信快捷登录的登录逻辑，用户授权手机号快捷登录时，会将本地的手机号使用sessionkey和iv进行aes加密，后端解密后返回该手机号的登录凭证。当sessionkey发生泄露时，攻击者便可以伪造手机号进行任意用户登录。 微信开发者文档中描述如下：  签名校验以及数据加解密涉及用户的会话密钥 session_key。 开发者应该事
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 21:00" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/SRC/">SRC</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SRC/">SRC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/SRC%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98--%E5%B9%B6%E5%8F%91/" target="_self">
+          SRC漏洞挖掘--并发
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/SRC%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98--%E5%B9%B6%E5%8F%91/" target="_self">
+          
+          SRC漏洞挖掘–并发简介并发漏洞是一类涉及多线程、多用户或多进程环境下的安全漏洞，其独特性质在于攻击者能够利用系统同时处理多个请求的特点，以获取未授权访问、篡改数据或实施拒绝服务攻击。相较于传统漏洞，它们的复杂性在于在同一时间内处理多个请求可能导致数据不一致性和竞争条件。 危害数据不一致性并发漏洞可能导致系统中的数据不一致性。当多个请求同时修改共享数据时，如果没有合适的同步机制，数据可能会处于不一
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 21:00" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/SRC/">SRC</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SRC/">SRC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B83/" target="_self">
+          SRC挖掘日常3
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/SRC%E6%8C%96%E6%8E%98%E6%97%A5%E5%B8%B83/" target="_self">
+          
+          SRC挖掘日常3越权首先是一个越权。 网站是一个后台管理，有工单处理的功能点。  可以处理工单，转派工单，关单，暂停等等。 以转派为例：  post参数有orderNo，servideMode等参数，这里的orderNo就是当前操作的工单号。 用小号同样创建一个工单，拿到工单号，目前的状态是已解决：  替换id，关单：  成功关闭：  此外，评论，转移工单等等都存在该问题，只需要工单号，即可进行接
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 21:00" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/SRC/">SRC</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/SRC/">SRC</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%E5%85%AC%E4%BC%97%E5%8F%B7%E6%96%87%E7%AB%A0%E6%8E%A8%E9%80%81/" target="_self">
+          半自动化实现公众号文章推送
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/%E5%8D%8A%E8%87%AA%E5%8A%A8%E5%8C%96%E5%AE%9E%E7%8E%B0%E5%85%AC%E4%BC%97%E5%8F%B7%E6%96%87%E7%AB%A0%E6%8E%A8%E9%80%81/" target="_self">
+          
+          随着 crush_v3.0 版本发布，一直在思考通过何种方式，将漏洞更新信息推送给有需要，但是无法在本地进行项目搭建的人，于是有了这篇文章。 总体流程之所以称之为半自动化推送，是因为能够通过脚本，利用 API 自动化完成文章内容编辑，新建草稿，封面配图等步骤，但是无法实现文章发表，只能进行文章发布（发布的文章只有自己能看到），因此，使用脚本将草稿写好后，需要手动到 app 或者网页端进行文章推送。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 21:00" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/misc/">misc</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AAccess%20Control/" target="_self">
+          Portswigger Labs — Portswigger Labs — Access Control Control
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AAccess%20Control/" target="_self">
+          
+          Portswigger Labs — Portswigger Labs — Access Control Control未经保护的admin页面访问&#x2F;robots.txt:  拼接，即可直接访问管理员页面：  未经保护的admin页面（URL不可预测）查看页面源代码，发现&#x2F;admin-4mbdyv：  该url即为管理页面：  通过请求参数控制用户角色登录wiener账户后，访
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 20:50" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AApi-testing/" target="_self">
+          Portswigger Labs — Portswigger Labs — Api-testing-testing
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8AApi-testing/" target="_self">
+          
+          Portswigger Labs — Portswigger Labs — Api-testing-testing利用Portswigger Labs — Api-testing文档攻击直接在url后拼接并访问&#x2F;Portswigger Labs — Api-testing:  DELETE方法，user为carlos：  成功删除用户。 利用查询语句进行服务器参数污染Lab: Explo
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-23 20:50" pubdate>
+              2024-07-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Portswigger-Labs/">Portswigger Labs</a>
             
           </div>
         
@@ -671,7 +654,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/#board">9</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

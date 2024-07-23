@@ -1,0 +1,575 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="js逆向系列08-DNS.com 首先输入随机账号，密码为123456，进行尝试：  共有5个参数，email_or_phone，password，type，redirectTo，_token。除了redirectTo，其余均为加密。 首先看password参数。 直接搜索字符串：  共有34个匹配结果。 下个XHR断点看看。  看一下调用栈：  可以看到在dispatch时，并没有passwor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js逆向系列08-DNS.com">
+<meta property="og:url" content="http://example.com/2024/07/23/js%E9%80%86%E5%90%91%E7%B3%BB%E5%88%9708-DNS.com/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="js逆向系列08-DNS.com 首先输入随机账号，密码为123456，进行尝试：  共有5个参数，email_or_phone，password，type，redirectTo，_token。除了redirectTo，其余均为加密。 首先看password参数。 直接搜索字符串：  共有34个匹配结果。 下个XHR断点看看。  看一下调用栈：  可以看到在dispatch时，并没有passwor">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516140103736.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516140205846.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516140557486.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516140713045.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516140927487.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516141022191.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516144558438.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516145715349.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516145837980.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516145922177.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516151421731.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/240516151538134.png">
+<meta property="article:published_time" content="2024-07-23T10:10:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T09:34:25.244Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/240516140103736.png">
+  
+  
+  <title>js逆向系列08-DNS.com - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="js逆向系列08-DNS.com">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 18:10" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">js逆向系列08-DNS.com</h1>
+            
+            <div class="markdown-body">
+              <h1 id="js逆向系列08-DNS-com"><a href="#js逆向系列08-DNS-com" class="headerlink" title="js逆向系列08-DNS.com"></a>js逆向系列08-DNS.com</h1><p><img src="/2023/04/27/file-upload/240516140103736.png" srcset="/img/loading.gif" lazyload alt="image-20240516140103736"></p>
+<p>首先输入随机账号，密码为123456，进行尝试：</p>
+<p><img src="/2023/04/27/file-upload/240516140205846.png" srcset="/img/loading.gif" lazyload alt="image-20240516140205846"></p>
+<p>共有5个参数，email_or_phone，password，type，redirectTo，_token。除了redirectTo，其余均为加密。</p>
+<p>首先看password参数。</p>
+<p>直接搜索字符串：</p>
+<p><img src="/2023/04/27/file-upload/240516140557486.png" srcset="/img/loading.gif" lazyload alt="image-20240516140557486"></p>
+<p>共有34个匹配结果。</p>
+<p>下个XHR断点看看。</p>
+<p><img src="/2023/04/27/file-upload/240516140713045.png" srcset="/img/loading.gif" lazyload alt="image-20240516140713045"></p>
+<p>看一下调用栈：</p>
+<p><img src="/2023/04/27/file-upload/240516140927487.png" srcset="/img/loading.gif" lazyload alt="image-20240516140927487"></p>
+<p>可以看到在dispatch时，并没有password参数的信息，但是能看到此时的type为明文字符串submit。</p>
+<p>查看下一个调用栈，到匿名这里，obj里包含了登录请求中的所有参数：</p>
+<p><img src="/2023/04/27/file-upload/240516141022191.png" srcset="/img/loading.gif" lazyload alt="image-20240516141022191"></p>
+<p>接下来就重点关注login.html中的obj。</p>
+<p>直接搜索obj，依次往上找：</p>
+<p><img src="/2023/04/27/file-upload/240516144558438.png" srcset="/img/loading.gif" lazyload alt="image-20240516144558438"></p>
+<p>代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> obj = &#123;<br>                <span class="hljs-string">&#x27;email_or_phone&#x27;</span>: <span class="hljs-title function_">aes</span>($(<span class="hljs-string">&quot;.formAccount .email_or_phone&quot;</span>).<span class="hljs-title function_">val</span>()),<br>                <span class="hljs-string">&#x27;password&#x27;</span>: <span class="hljs-title function_">aes</span>($(<span class="hljs-string">&quot;.formAccount .password&quot;</span>).<span class="hljs-title function_">val</span>()),<br>                <span class="hljs-string">&#x27;type&#x27;</span>: <span class="hljs-title function_">aes</span>(<span class="hljs-string">&#x27;account&#x27;</span>),<br>                <span class="hljs-string">&#x27;redirectTo&#x27;</span>: <span class="hljs-string">&#x27;https://www.dns.com/dashboard&#x27;</span>,<br>                <span class="hljs-string">&#x27;_token&#x27;</span>: _token<br>            &#125;<br></code></pre></td></tr></table></figure>
+
+<p>首先是通过$(…)选择器选中表单元素，再通过aes进行加密，加密的关键点应该就在aes()中。</p>
+<p>通过console.log()确认一下传入的参数是不是输入的明文值：</p>
+<p><img src="/2023/04/27/file-upload/240516145715349.png" srcset="/img/loading.gif" lazyload alt="image-20240516145715349"></p>
+<p>一致。</p>
+<p>其实这里在通过XHR定位到大概的位置之后，直接搜索password也能很快找到：</p>
+<p><img src="/2023/04/27/file-upload/240516145837980.png" srcset="/img/loading.gif" lazyload alt="image-20240516145837980"></p>
+<p>或者搜索123456等可能的密钥：</p>
+<p><img src="/2023/04/27/file-upload/240516145922177.png" srcset="/img/loading.gif" lazyload alt="image-20240516145922177"></p>
+<p>只有两个结果，并且直接跟到了aes函数内部。</p>
+<p>将js代码改为python实现，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> Crypto.Cipher <span class="hljs-keyword">import</span> AES<br><span class="hljs-keyword">import</span> base64<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">pad_zero_padding</span>(<span class="hljs-params">data, block_size</span>):<br>    padding_len = block_size - (<span class="hljs-built_in">len</span>(data) % block_size)<br>    <span class="hljs-keyword">return</span> data + (<span class="hljs-string">b&#x27;\0&#x27;</span> * padding_len)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">aes</span>(<span class="hljs-params">val</span>):<br>    key = <span class="hljs-string">b&#x27;1234567890abcDEF&#x27;</span><br>    iv = <span class="hljs-string">b&#x27;1234567890abcDEF&#x27;</span><br>    <br>    <span class="hljs-comment"># Create AES cipher with CBC mode</span><br>    cipher = AES.new(key, AES.MODE_CBC, iv)<br>    <br>    <span class="hljs-comment"># Pad the input value with zero padding</span><br>    padded_val = pad_zero_padding(val.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>), AES.block_size)<br>    <br>    <span class="hljs-comment"># Encrypt the padded value</span><br>    encrypted_bytes = cipher.encrypt(padded_val)<br>    <br>    <span class="hljs-comment"># Encode the encrypted bytes to base64 to get a string representation</span><br>    enc = base64.b64encode(encrypted_bytes).decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    <br>    <span class="hljs-built_in">print</span>(val,enc)<br><br>aes(<span class="hljs-string">&quot;13888888888&quot;</span>)<br>aes(<span class="hljs-string">&quot;123456&quot;</span>)<br>aes(<span class="hljs-string">&quot;account&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>需要注意，JavaScript代码使用的是ZeroPadding，而Python代码使用的是iso7816填充，因此需要在python中也利用zeropadding的方式进行加密。</p>
+<p><img src="/2023/04/27/file-upload/240516151421731.png" srcset="/img/loading.gif" lazyload alt="image-20240516151421731"></p>
+<p>加密结果与请求中的payload一致。</p>
+<p>最后还剩下_token，直接全局搜索，发现在login.html中是写死的：</p>
+<p><img src="/2023/04/27/file-upload/240516151538134.png" srcset="/img/loading.gif" lazyload alt="image-20240516151538134"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/js/">js</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/js/">js</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/js%E9%80%86%E5%90%91%E7%B3%BB%E5%88%9709-WPS/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">js逆向系列09-WPS</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/js%E9%80%86%E5%90%91%E7%B3%BB%E5%88%9707-%E4%BA%BA%E4%BA%BA%E7%BD%91%E5%AE%9E%E6%88%98/">
+                        <span class="hidden-mobile">js逆向系列07-人人网实战</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

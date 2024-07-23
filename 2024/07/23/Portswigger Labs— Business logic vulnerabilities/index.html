@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Portswigger Labs— Business logic vulnerabilities直接修改商品金额在添加商品时存在如下请求，将price改为1337：  send：  成功修改单价，支付成功：  修改商品数量为负添加商品到购物车，报文如下：  添加另一件商品，查看购物车：  此时将添加商品的报文发送到repeater，quantity参数改为负数，发送数据包：  成功将购买价格降低到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Portswigger Labs— Business logic vulnerabilities">
+<meta property="og:url" content="http://example.com/2024/07/23/Portswigger%20Labs%E2%80%94%E2%80%8ABusiness%20logic%20vulnerabilities/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="Portswigger Labs— Business logic vulnerabilities直接修改商品金额在添加商品时存在如下请求，将price改为1337：  send：  成功修改单价，支付成功：  修改商品数量为负添加商品到购物车，报文如下：  添加另一件商品，查看购物车：  此时将添加商品的报文发送到repeater，quantity参数改为负数，发送数据包：  成功将购买价格降低到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205114451057.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205114422739.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205114438810.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205120108647.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205120145721.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205120027633.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205120307968.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205121232548.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205121318141.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205121329829.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205121755136.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205122132773.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205122125085.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205122158772.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205130454122.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205130525340.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205130553655.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205131128407.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205132833527.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205132856880.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205133036923.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205133102742.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205133508985.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205133601957.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205133629596.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205134122670.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205134858730.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205134940689.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205135853480.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205135916877.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/20231205140216421.png">
+<meta property="article:published_time" content="2024-07-23T12:50:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T10:02:16.163Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Portswigger Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/20231205114451057.png">
+  
+  
+  <title>Portswigger Labs— Business logic vulnerabilities - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Portswigger Labs— Business logic vulnerabilities">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 20:50" pubdate>
+        2024年7月23日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Portswigger Labs— Business logic vulnerabilities</h1>
+            
+            <div class="markdown-body">
+              <h1 id="Portswigger-Labs—-Business-logic-vulnerabilities"><a href="#Portswigger-Labs—-Business-logic-vulnerabilities" class="headerlink" title="Portswigger Labs— Business logic vulnerabilities"></a>Portswigger Labs— Business logic vulnerabilities</h1><h2 id="直接修改商品金额"><a href="#直接修改商品金额" class="headerlink" title="直接修改商品金额"></a>直接修改商品金额</h2><p>在添加商品时存在如下请求，将price改为1337：</p>
+<p><img src="/2023/04/27/file-upload/20231205114451057.png" srcset="/img/loading.gif" lazyload alt="image-20231205114451057"></p>
+<p>send：</p>
+<p><img src="/2023/04/27/file-upload/20231205114422739.png" srcset="/img/loading.gif" lazyload alt="image-20231205114422739"></p>
+<p>成功修改单价，支付成功：</p>
+<p><img src="/2023/04/27/file-upload/20231205114438810.png" srcset="/img/loading.gif" lazyload alt="image-20231205114438810"></p>
+<h2 id="修改商品数量为负"><a href="#修改商品数量为负" class="headerlink" title="修改商品数量为负"></a>修改商品数量为负</h2><p>添加商品到购物车，报文如下：</p>
+<p><img src="/2023/04/27/file-upload/20231205120108647.png" srcset="/img/loading.gif" lazyload alt="image-20231205120108647"></p>
+<p>添加另一件商品，查看购物车：</p>
+<p><img src="/2023/04/27/file-upload/20231205120145721.png" srcset="/img/loading.gif" lazyload alt="image-20231205120145721"></p>
+<p>此时将添加商品的报文发送到repeater，quantity参数改为负数，发送数据包：</p>
+<p><img src="/2023/04/27/file-upload/20231205120027633.png" srcset="/img/loading.gif" lazyload alt="image-20231205120027633"></p>
+<p>成功将购买价格降低到100以内，购买：</p>
+<p><img src="/2023/04/27/file-upload/20231205120307968.png" srcset="/img/loading.gif" lazyload alt="image-20231205120307968"></p>
+<h2 id="不一致的安全控制"><a href="#不一致的安全控制" class="headerlink" title="不一致的安全控制"></a>不一致的安全控制</h2><p>直接访问&#x2F;admin：</p>
+<p><img src="/2023/04/27/file-upload/20231205121232548.png" srcset="/img/loading.gif" lazyload alt="image-20231205121232548"></p>
+<p>会提示只有dontwannacry用户能够访问。</p>
+<p>注册一个新用户，将email改为<a href="mailto:&#97;&#97;&#64;&#x64;&#111;&#110;&#116;&#119;&#97;&#x6e;&#110;&#x61;&#99;&#114;&#121;&#46;&#99;&#x6f;&#109;">&#97;&#97;&#64;&#x64;&#111;&#110;&#116;&#119;&#97;&#x6e;&#110;&#x61;&#99;&#114;&#121;&#46;&#99;&#x6f;&#109;</a>:</p>
+<p><img src="/2023/04/27/file-upload/20231205121318141.png" srcset="/img/loading.gif" lazyload alt="image-20231205121318141"></p>
+<p>成功访问：</p>
+<p><img src="/2023/04/27/file-upload/20231205121329829.png" srcset="/img/loading.gif" lazyload alt="image-20231205121329829"></p>
+<h2 id="优惠券复用"><a href="#优惠券复用" class="headerlink" title="优惠券复用"></a>优惠券复用</h2><p>在页面顶部会提示有一张优惠券NEWCUST5，填写底部sign up可获得第二张优惠券 SIGNUP30：</p>
+<p><img src="/2023/04/27/file-upload/20231205121755136.png" srcset="/img/loading.gif" lazyload alt="image-20231205121755136"></p>
+<p>如果重复使用优惠券，会提示already applied：</p>
+<p><img src="/2023/04/27/file-upload/20231205122132773.png" srcset="/img/loading.gif" lazyload alt="image-20231205122132773"></p>
+<p>但是如果交替使用两个优惠券，即可无限叠加：</p>
+<p><img src="/2023/04/27/file-upload/20231205122125085.png" srcset="/img/loading.gif" lazyload alt="image-20231205122125085"></p>
+<p>成功购买：</p>
+<p><img src="/2023/04/27/file-upload/20231205122158772.png" srcset="/img/loading.gif" lazyload alt="image-20231205122158772"></p>
+<h2 id="整数溢出"><a href="#整数溢出" class="headerlink" title="整数溢出"></a>整数溢出</h2><p>添加商品到购物车，此时的quantity最多设置为99：</p>
+<p><img src="/2023/04/27/file-upload/20231205130454122.png" srcset="/img/loading.gif" lazyload alt="image-20231205130454122"></p>
+<p>尝试通过整数溢出来低价购买商品，将请求发送到intruder，并且设置为continue indefinitely:<img src="/2023/04/27/file-upload/20231205130525340.png" srcset="/img/loading.gif" lazyload alt="image-20231205130525340"></p>
+<p>刷新购物车，发现价格变为负数：</p>
+<p><img src="/2023/04/27/file-upload/20231205130553655.png" srcset="/img/loading.gif" lazyload alt="image-20231205130553655"></p>
+<p>如果支付会提示支付金额小于0，接下来通过调整数量将金额精准控制在0-100即可：</p>
+<p><img src="/2023/04/27/file-upload/20231205131128407.png" srcset="/img/loading.gif" lazyload alt="image-20231205131128407"></p>
+<h2 id="对异常输入的处理不一致"><a href="#对异常输入的处理不一致" class="headerlink" title="对异常输入的处理不一致"></a>对异常输入的处理不一致</h2><p>注册一个用户，邮箱为<a href="mailto:&#x61;&#97;&#97;&#46;&#46;&#x2e;&#x61;&#x61;&#97;&#97;&#x74;&#x74;&#x61;&#99;&#107;&#x65;&#x72;&#x40;&#101;&#x78;&#x70;&#x6c;&#x6f;&#105;&#x74;&#45;&#x30;&#97;&#97;&#52;&#x30;&#48;&#x31;&#102;&#x30;&#51;&#x32;&#x61;&#x39;&#x62;&#55;&#x65;&#56;&#x35;&#x61;&#49;&#49;&#x32;&#x34;&#x32;&#48;&#x31;&#55;&#48;&#48;&#x30;&#100;&#x36;&#x2e;&#101;&#x78;&#112;&#108;&#111;&#x69;&#x74;&#x2d;&#115;&#101;&#x72;&#118;&#101;&#114;&#46;&#x6e;&#101;&#x74;">&#x61;&#97;&#97;&#46;&#46;&#x2e;&#x61;&#x61;&#97;&#97;&#x74;&#x74;&#x61;&#99;&#107;&#x65;&#x72;&#x40;&#101;&#x78;&#x70;&#x6c;&#x6f;&#105;&#x74;&#45;&#x30;&#97;&#97;&#52;&#x30;&#48;&#x31;&#102;&#x30;&#51;&#x32;&#x61;&#x39;&#x62;&#55;&#x65;&#56;&#x35;&#x61;&#49;&#49;&#x32;&#x34;&#x32;&#48;&#x31;&#55;&#48;&#48;&#x30;&#100;&#x36;&#x2e;&#101;&#x78;&#112;&#108;&#111;&#x69;&#x74;&#x2d;&#115;&#101;&#x72;&#118;&#101;&#114;&#46;&#x6e;&#101;&#x74;</a>（一个超长字符串），邮箱验证后登录：</p>
+<p><img src="/2023/04/27/file-upload/20231205132833527.png" srcset="/img/loading.gif" lazyload alt="image-20231205132833527"></p>
+<p>邮箱被截断为256字符。尝试访问&#x2F;admin：</p>
+<p><img src="/2023/04/27/file-upload/20231205132856880.png" srcset="/img/loading.gif" lazyload alt="image-20231205132856880"></p>
+<p>利用截断的特性，注册一个<a href="mailto:&#x61;&#97;&#x61;&#x2e;&#46;&#46;&#46;&#97;&#x61;&#97;&#64;&#100;&#x6f;&#x6e;&#116;&#x77;&#97;&#110;&#110;&#x61;&#x63;&#x72;&#121;&#x2e;&#99;&#x6f;&#x6d;&#x2e;&#101;&#x78;&#112;&#108;&#x6f;&#x69;&#x74;&#x2d;&#x30;&#x61;&#97;&#x34;&#48;&#48;&#49;&#102;&#48;&#x33;&#x32;&#x61;&#57;&#98;&#55;&#x65;&#x38;&#53;&#97;&#x31;&#x31;&#x32;&#52;&#50;&#48;&#49;&#x37;&#48;&#x30;&#48;&#100;&#54;&#x2e;&#101;&#120;&#x70;&#x6c;&#111;&#x69;&#x74;&#45;&#115;&#101;&#x72;&#118;&#101;&#x72;&#46;&#110;&#x65;&#x74;">&#x61;&#97;&#x61;&#x2e;&#46;&#46;&#46;&#97;&#x61;&#97;&#64;&#100;&#x6f;&#x6e;&#116;&#x77;&#97;&#110;&#110;&#x61;&#x63;&#x72;&#121;&#x2e;&#99;&#x6f;&#x6d;&#x2e;&#101;&#x78;&#112;&#108;&#x6f;&#x69;&#x74;&#x2d;&#x30;&#x61;&#97;&#x34;&#48;&#48;&#49;&#102;&#48;&#x33;&#x32;&#x61;&#57;&#98;&#55;&#x65;&#x38;&#53;&#97;&#x31;&#x31;&#x32;&#52;&#50;&#48;&#49;&#x37;&#48;&#x30;&#48;&#100;&#54;&#x2e;&#101;&#120;&#x70;&#x6c;&#111;&#x69;&#x74;&#45;&#115;&#101;&#x72;&#118;&#101;&#x72;&#46;&#110;&#x65;&#x74;</a>即可，保证dontwannacry.com正好被截断：</p>
+<p><img src="/2023/04/27/file-upload/20231205133036923.png" srcset="/img/loading.gif" lazyload alt="image-20231205133036923"></p>
+<p>此时即可成功访问：</p>
+<p><img src="/2023/04/27/file-upload/20231205133102742.png" srcset="/img/loading.gif" lazyload alt="image-20231205133102742"></p>
+<h2 id="账户绑定验证不足"><a href="#账户绑定验证不足" class="headerlink" title="账户绑定验证不足"></a>账户绑定验证不足</h2><p>更改密码的请求包如下：</p>
+<p><img src="/2023/04/27/file-upload/20231205133508985.png" srcset="/img/loading.gif" lazyload alt="image-20231205133508985"></p>
+<p>尝试删除current-password参数：</p>
+<p><img src="/2023/04/27/file-upload/20231205133601957.png" srcset="/img/loading.gif" lazyload alt="image-20231205133601957"></p>
+<p>用户wiener同样可以成功登录。</p>
+<p>将username改为administrator，修改密码：</p>
+<p><img src="/2023/04/27/file-upload/20231205133629596.png" srcset="/img/loading.gif" lazyload alt="image-20231205133629596"></p>
+<p>成功删除carlos账户：</p>
+<p><img src="/2023/04/27/file-upload/20231205134122670.png" srcset="/img/loading.gif" lazyload alt="image-20231205134122670"></p>
+<h2 id="购买状态绕过"><a href="#购买状态绕过" class="headerlink" title="购买状态绕过"></a>购买状态绕过</h2><p>首先尝试购买jacket，失败，余额不足。</p>
+<p>尝试成功购买一件商品，在burp中发现一个&#x2F;cart&#x2F;order-confirmation?order-confirmed&#x3D;true请求，可能是用来确认购买状态：</p>
+<p><img src="/2023/04/27/file-upload/20231205134858730.png" srcset="/img/loading.gif" lazyload alt="image-20231205134858730"></p>
+<p>将该请求发送到repeater，并且添加一件jacket到购物车中，send repeater：</p>
+<p><img src="/2023/04/27/file-upload/20231205134940689.png" srcset="/img/loading.gif" lazyload alt="image-20231205134940689"></p>
+<p>成功购买。</p>
+<h2 id="丢包绕过身份验证"><a href="#丢包绕过身份验证" class="headerlink" title="丢包绕过身份验证"></a>丢包绕过身份验证</h2><p>在登录后，首先需要选择角色：</p>
+<p><img src="/2023/04/27/file-upload/20231205135853480.png" srcset="/img/loading.gif" lazyload alt="image-20231205135853480"></p>
+<p>选择后访问&#x2F;admin，均提示无法访问：</p>
+<p><img src="/2023/04/27/file-upload/20231205135916877.png" srcset="/img/loading.gif" lazyload alt="image-20231205135916877"></p>
+<p>退出登录，在选择角色页面将请求drop：</p>
+<p><img src="/2023/04/27/file-upload/20231205140216421.png" srcset="/img/loading.gif" lazyload alt="image-20231205140216421"></p>
+<p>再次访问&#x2F;admin，成功删除carlos。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Portswigger-Labs/">Portswigger Labs</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%94%E2%80%8ASSRF/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Portswigger Labs— SSRF</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Portswigger%20Labs%E2%80%8A%E2%80%94%E2%80%8ARace%20conditions/">
+                        <span class="hidden-mobile">Portswigger Labs — Race conditions</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
