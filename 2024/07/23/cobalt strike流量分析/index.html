@@ -1,0 +1,796 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="CS（检测与隐藏） Process Execution ——日志溯源一般windows失陷后，排查方法有查看隐藏用户，查看端口开放情况，外联情况，防火墙策略，windows日志等等，其中最主要的就是通过windows日志推理出大致的失陷过程，此处结合sysmon工具来查找CS利用的有关信息。 sysmon工具介绍系统监视器 [Sysmon][https:&#x2F;&#x2F;docs.microsoft.com&#x2F;e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cobalt strike流量分析">
+<meta property="og:url" content="http://example.com/2024/07/23/cobalt%20strike%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="CS（检测与隐藏） Process Execution ——日志溯源一般windows失陷后，排查方法有查看隐藏用户，查看端口开放情况，外联情况，防火墙策略，windows日志等等，其中最主要的就是通过windows日志推理出大致的失陷过程，此处结合sysmon工具来查找CS利用的有关信息。 sysmon工具介绍系统监视器 [Sysmon][https:&#x2F;&#x2F;docs.microsoft.com&#x2F;e">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/40723154614207.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/fig.jpg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/jpg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/.jpg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/jpg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/jpg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/pg">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/g">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/">
+<meta property="article:published_time" content="2024-07-23T04:05:00.000Z">
+<meta property="article:modified_time" content="2024-07-23T07:48:43.278Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="C2">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/40723154614207.png">
+  
+  
+  <title>cobalt strike流量分析 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="cobalt strike流量分析">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-07-23 12:05" pubdate>
+        2024年7月23日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.7k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      65 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">cobalt strike流量分析</h1>
+            
+            <div class="markdown-body">
+              <h1 id="CS（检测与隐藏）"><a href="#CS（检测与隐藏）" class="headerlink" title="CS（检测与隐藏）"></a>CS（检测与隐藏）</h1><p><img src="/2023/04/27/file-upload/40723154614207.png" srcset="/img/loading.gif" lazyload alt="image-20240723154614207"></p>
+<h2 id="Process-Execution-——日志溯源"><a href="#Process-Execution-——日志溯源" class="headerlink" title="Process Execution ——日志溯源"></a>Process Execution ——日志溯源</h2><p>一般windows失陷后，排查方法有查看隐藏用户，查看端口开放情况，外联情况，防火墙策略，windows日志等等，其中最主要的就是通过windows日志推理出大致的失陷过程，此处结合sysmon工具来查找CS利用的有关信息。</p>
+<h3 id="sysmon工具介绍"><a href="#sysmon工具介绍" class="headerlink" title="sysmon工具介绍"></a>sysmon工具介绍</h3><p>系统监视器 [Sysmon][<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon]">https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon]</a> 是一种 Windows 系统服务和设备驱动程序，一旦安装在系统上，它就会在系统重新启动后保持驻留，以监视系统活动并将其记录到 Windows 事件日志中。它提供有关进程创建、网络连接和文件创建时间更改的详细信息，并且用完整的命令行记录下子进程和父进程的创建行为。</p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220331142950513"></p>
+<p>下载后通过<code>sysmon.exe -accepteula -i</code>进行安装，表示接受Eula，更多情况下会使用自定义的配置文件，推荐<a target="_blank" rel="noopener" href="https://github.com/SwiftOnSecurity/sysmon-config/blob/master/sysmonconfig-export.xml">sysmonconfig-export.xml</a>，已经预定义了高质量的事件跟踪模板。</p>
+<p><code>sysmon64.exe -accepteula -i sysmonconfig-export.xml</code></p>
+<p><img src="/2023/04/27/file-upload/fig.jpg" srcset="/img/loading.gif" lazyload alt="image-20220331143237855"></p>
+<p>查看sysmon路径：打开eventvwr.msc，Applications and Services Logs&#x2F;Microsoft&#x2F;Windows&#x2F;Sysmon&#x2F;Operational</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220331165302171"></p>
+<p>可以看到commandline,currentdirectory,parentimage等敏感信息。</p>
+<p>再介绍一个sysmon tool,[sysmon view][<a target="_blank" rel="noopener" href="https://github.com/nshalabi/SysmonTools]">https://github.com/nshalabi/SysmonTools]</a></p>
+<p>exe直接打开，通过命令<code>WEVTUtil query-events &quot;Microsoft-Windows-Sysmon/Operational&quot; /format:xml /e:sysmonview &gt; eventlog.xml</code>导出log文件，sysmon view加载，即可实现更好的可视化效果。</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220331170008115"></p>
+<h3 id="CS-行为分析"><a href="#CS-行为分析" class="headerlink" title="CS 行为分析"></a>CS 行为分析</h3><p>新建监听器，端口为80，生成一个reverse_http的后门，在win10主机中运行，并通过shell，powershell，hashdump等命令进行测试。</p>
+<p>接下来通过sysmon查看日志：</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220401145701128"></p>
+<p>可以看到，sysmon标注了set注册表值，创建进程，网络连接，创建管道等等任务。</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220401150205440"></p>
+<p>查看详细信息，可以看到commandline,currentdirectory,parentimage等信息。</p>
+<p>通过sysmon view查看，可以发现其间有artifact.exe,cmd.exe,ipconfig.exe等等运行，并且给出了image path以及GUID。</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220401171617902"></p>
+<p>首先查看后门文件artifact.exe：</p>
+<p><img src="/2023/04/27/file-upload/jpg" srcset="/img/loading.gif" lazyload alt="image-20220401172113629"></p>
+<p>可以看到首先创建了进程，接着有创建通信管道，连接管道，联网，创建远程线程等等操作：</p>
+<p><img src="/2023/04/27/file-upload/.jpg" srcset="/img/loading.gif" lazyload alt="image-20220401172427459"></p>
+<p>从日志分析可以看出，连接的远程ip为192.168.111.160:80，从CreateRemoteThread事件也能大致判断出，后门文件在试图进程注入到rundll32.exe中。</p>
+<p>接下来通过powershell.exe和cmd.exe来验证CS的shell和powershell命令。以cmd.exe为例：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220401173554196"></p>
+<p>cmd.exe一共对应了3个session，分别为artifact.exe和rundll32.exe的进程创建。而期间没有手动运行过cmd，结合前面artifact的进程注入， 这三个process应该都是执行shell命令时所创建。</p>
+<p>查看rundll32.exe,可以看到都是由父进程artifact发起，并且rundll32本身也在尝试进一步注入到lsass.exe。</p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220401174003369"></p>
+<p>CS中执行的命令为shell whoami，最后查看whoami.exe:</p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220401174218212"></p>
+<p>whoami.exe由cmd.exe拉起，执行的命令为cmd.exe &#x2F;C whoami,进而创建了进程4392，运行了whoami.exe。结合前面的分析，artifact.exe在运行之后，创建了进程和管道，并进行管道连接，进程注入等，接着开始DNS查询并且上线了目标主机，当CS客户端执行命令时(shell举例)，后门文件直接拉起cmd.exe，并通过cmd执行命令。</p>
+<h3 id="清除与混淆"><a href="#清除与混淆" class="headerlink" title="清除与混淆"></a>清除与混淆</h3><p><strong>手动清除日志</strong></p>
+<p><strong>命令行清除Windows事件日志</strong></p>
+<ul>
+<li><p>PowerShell -Command “&amp; {Clear-Eventlog -Log Application,System,Security}”</p>
+</li>
+<li><p>Get-WinEvent -ListLog Application,Setup,Security -Force | % {Wevtutil.exe cl $_.Logname}</p>
+</li>
+</ul>
+<p><strong>第三方脚本</strong></p>
+<p>[Invoke-Phant0m][<a target="_blank" rel="noopener" href="https://github.com/hlldz/Invoke-Phant0m]">https://github.com/hlldz/Invoke-Phant0m]</a></p>
+<p>通过遍历事件日志服务进程（专用svchost.exe）的线程堆栈，并标识事件日志线程以结束事件日志服务线程。借此阻止系统进行正常的日志收集。</p>
+<p><strong>Windows日志伪造</strong></p>
+<ul>
+<li>eventcreate -l system -so administrator -t warning -d “fake log” -id 500</li>
+</ul>
+<h2 id="默认端口"><a href="#默认端口" class="headerlink" title="默认端口"></a><strong>默认端口</strong></h2><p>cobalt strike默认端口为50050：</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220402143719173"></p>
+<p>Team server is up on 50050。</p>
+<p>端口特征可以通过编辑teamserver进行修改：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220402143314260"></p>
+<p>-Dcobaltstrike.server_port&#x3D;50050,在此将端口改为自定义值：</p>
+<p><img src="/2023/04/27/file-upload/jpg" srcset="/img/loading.gif" lazyload alt="image-20220402143933136"></p>
+<p>端口特征已经消失。</p>
+<h2 id="证书特征"><a href="#证书特征" class="headerlink" title="证书特征"></a><strong>证书特征</strong></h2><p>Keytool 是一个Java数据证书的管理工具 ,Keytool 将密钥(key)和证书(certificates)存在一个称为keystore的文件中。在keystore里，包含<br>密钥实体(Key entity)和可信任的证书实体(trusted certificate entries)。</p>
+<p>查看CS目录下的文件，使用keytool查看证书：</p>
+<CS src="CS/dir.jpg" alt="image-20220324140030951" style="zoom:50%;" />
+
+<p>命令如下：</p>
+<p><code>keytool -list -v -keystore cobaltstrike.store</code></p>
+<p>密码初始为123456</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220324134547989"></p>
+<p>可以发现有很明显的证书特征，在另一台kali上查看，发现同样如此：</p>
+<p><img src="/2023/04/27/file-upload/jpg" srcset="/img/loading.gif" lazyload alt="image-20220324134803598"></p>
+<h3 id="nmap发现"><a href="#nmap发现" class="headerlink" title="nmap发现"></a>nmap发现</h3><p>首先，使用nmap -A 扫描160主机（默认证书），可以从commanName,organizationName等明显看出为CS的服务器，结果如下：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220324135044513"></p>
+<p>扫描时发现，160主机会有如下报错，但是不影响使用：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220324135318187"></p>
+<p>使用keytool命令修改161主机的默认keystore，<code>keytool -keystore cobaltstrike_new.store -storepass 123456 -keypass 123456 -genkey -keyalg RSA -alias 360.com -dname &quot;CN=US, OU=360.com, O=Software, L=Somewhere, ST=Cyberspace, C=CN&quot;</code></p>
+<p>此外还可以通过向[Let’s Encrypt][<a target="_blank" rel="noopener" href="https://letsencrypt.org/]%E7%94%B3%E8%AF%B7%E4%B8%80%E4%B8%AA%E5%85%8D%E8%B4%B9%E8%AF%81%E4%B9%A6%E5%B9%B6%E6%89%93%E5%8C%85%E4%B8%BAkeystore%EF%BC%8C%E7%94%A8%E6%9D%A5%E6%9B%BF%E6%8D%A2CS%E8%87%AA%E5%B8%A6%E7%9A%84https%E8%AF%81%E4%B9%A6%E3%80%82">https://letsencrypt.org/]申请一个免费证书并打包为keystore，用来替换CS自带的https证书。</a></p>
+<p>修改之后对161主机进行nmap -A扫描，发现ssl-cert扫描出的commonName等内容已经变成了手动生成的内容，不再有Cobalt Strike特征。</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220324141858497"></p>
+<h3 id="测绘引擎发现"><a href="#测绘引擎发现" class="headerlink" title="测绘引擎发现"></a>测绘引擎发现</h3><p>根据上面的信息，通过fofa引擎进行搜索：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">port</span>=<span class="hljs-string">&quot;50050&quot;</span> &amp;&amp; cert=<span class="hljs-string">&quot;cobaltstrike&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220402135324371"></p>
+<p>可以发现2000+CS服务器存活。通过censys同样能找到很多CS证书的主机(默认keystore的指纹SHA256)：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">7B49FC589E7E738E3457859D269996ECEF83F693570B0AC482C426B1FA04BD73<br></code></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220402140226767"></p>
+<h2 id="伪造上线"><a href="#伪造上线" class="headerlink" title="伪造上线"></a>伪造上线</h2><p>首先简单介绍cobalt strike最常用的两种后门：</p>
+<p>Windows Executable &amp; Windows Executable(S)</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220410155803086"></p>
+<p>其中第一种是阶段传输，上线之后从特定url下载得到完整的后门文件，而第二种是不分段传输，直接上传完整payload，两种后门文件的大小如下：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220410160047252"></p>
+<p>CS的上线流程大概如下图所示：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="ch"></p>
+<p>其中Stager向Beacon Staging Server请求下载体积较大更复杂的Stage到本地，Beacon Staging Server会校验Url的合法性，Stage解密并解析Beacon配置信息（比如公钥PublicKey、C2 Server信息，接着Stage通过公钥PublicKey加密主机的元数据并发送至C2 Server，C2 Server用私钥解密数据获取主机元数据。</p>
+<h3 id="Checksum8"><a href="#Checksum8" class="headerlink" title="Checksum8"></a>Checksum8</h3><p>360团队先前公布了关于CS中URL校验的算法，也就是checksum8，大概内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">generate_checksum</span>(<span class="hljs-params"><span class="hljs-built_in">input</span></span>):<br>    trial = <span class="hljs-string">&quot;&quot;</span><br>    total = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">while</span> total != <span class="hljs-built_in">input</span>:<br>        total = <span class="hljs-number">0</span><br>        trial=<span class="hljs-string">&#x27; &#x27;</span>.join(random.choice(<span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyzQWERTYUIOPLKJHGFDSAZXCVBNM1234567890&quot;</span>)  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>))<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">4</span>):<br>            total = (total + <span class="hljs-built_in">ord</span>(trial[i:i+<span class="hljs-number">1</span>])) % <span class="hljs-number">256</span><br>    <span class="hljs-keyword">return</span> trial<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    uri_x86 = generate_checksum(<span class="hljs-number">92</span>)<br>    uri_x64 = generate_checksum(<span class="hljs-number">93</span>)<br>    <span class="hljs-built_in">print</span> uri_x86<br>    <span class="hljs-built_in">print</span> uri_x64<br></code></pre></td></tr></table></figure>
+
+<p>运行脚本，并运行Server端，通过请求<code>server_ip/url_x86/x64</code>，可以得到图中所示的文件，也就是完整的payload，具体内容如下：</p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220410215346701"></p>
+<p>在报文中体现为：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220410220103034"></p>
+<p><strong>因此，此处可能可以通过对简单的4位url进行处理，进而判断是否是在通过server下载完整后门文件</strong></p>
+<h4 id="隐藏方法"><a href="#隐藏方法" class="headerlink" title="隐藏方法"></a>隐藏方法</h4><p>修改WebServer.class中的此次函数校验的值，修改92，93为其他值，该默认脚本就无法识别。</p>
+<p><strong>检测方法：</strong></p>
+<p>因为只修改校验值，而算法限制校验值有大小限制，因此最多枚举256次就枚举出来。</p>
+<h3 id="解密算法"><a href="#解密算法" class="headerlink" title="解密算法"></a>解密算法</h3><ul>
+<li><p>[cobaltstrikescan][<a target="_blank" rel="noopener" href="https://github.com/jpcertcc/aa-tools/blob/master/cobaltstrikescan.py]">https://github.com/jpcertcc/aa-tools/blob/master/cobaltstrikescan.py]</a></p>
+</li>
+<li><p>[CobaltStrikeParser][<a target="_blank" rel="noopener" href="https://github.com/Sentinel-One/CobaltStrikeParser]">https://github.com/Sentinel-One/CobaltStrikeParser]</a></p>
+</li>
+</ul>
+<p>结合URL合法性校验的算法和Stage的解密算法，接下来简单介绍如何通过这两者结合来伪造主机上线：</p>
+<ul>
+<li>通过[cobaltspam][<a target="_blank" rel="noopener" href="https://github.com/hariomenkel/CobaltSpam]%E7%94%9F%E6%88%90%E4%BC%AA%E9%80%A0%E4%B8%BB%E6%9C%BA,%E4%BD%86CobaltSpam%E4%B8%8A%E7%BA%BF%E7%9A%84%E4%B8%BB%E6%9C%BA%E4%BF%A1%E6%81%AF%E9%83%BD%E6%98%AF%E9%9A%8F%E6%9C%BA%E7%94%9F%E6%88%90%EF%BC%8C%E5%BE%88%E5%AE%B9%E6%98%93%E8%A2%AB%E8%AF%86%E5%88%AB%E3%80%82">https://github.com/hariomenkel/CobaltSpam]生成伪造主机,但CobaltSpam上线的主机信息都是随机生成，很容易被识别。</a></li>
+<li>手动生成</li>
+</ul>
+<p>首先，构造Stager Url下载Stage，然后，解析Stager Beacon的配置文件，此处推荐[cobaltstrikescan][<a target="_blank" rel="noopener" href="https://github.com/jpcertcc/aa-tools/blob/master/cobaltstrikescan.py]%E5%92%8C[CobaltStrikeParser][https://github.com/Sentinel-One/CobaltStrikeParser]%EF%BC%8C%E5%BE%97%E5%88%B0%E4%BA%86PublicKey%E5%85%AC%E9%92%A5%E4%B8%8EC2">https://github.com/jpcertcc/aa-tools/blob/master/cobaltstrikescan.py]和[CobaltStrikeParser][https://github.com/Sentinel-One/CobaltStrikeParser]，得到了PublicKey公钥与C2</a> Server地址之后，构造虚假主机元数据，加密发送至C2 Server。</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="spam"></p>
+<h2 id="HTTP流量特征"><a href="#HTTP流量特征" class="headerlink" title="HTTP流量特征"></a>HTTP流量特征</h2><p>对于CS通信过程中的HTTP流量特征，主要有如下两点：</p>
+<ul>
+<li>URL校验的checksum8算法</li>
+</ul>
+<p>URL校验部分可以通过对4位url进行简单处理验证，判断是否在与server进行通信</p>
+<ul>
+<li>submit请求</li>
+</ul>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="submit"></p>
+<p>通过多次报文对比，都会存在&#x2F;submit.php?id&#x3D;xxx的url，且每个主机都对应一个独有的id值。该id值与cookie解密之后的id是一致的。</p>
+<h3 id="隐藏方法-1"><a href="#隐藏方法-1" class="headerlink" title="隐藏方法"></a>隐藏方法</h3><ul>
+<li>修改函数校验值</li>
+<li>通过<a target="_blank" rel="noopener" href="https://github.com/rsmudge/Malleable-C2-Profiles">Malleable-C2-Profiles</a>，修改默认请求配置，改成高可信厂商</li>
+</ul>
+<h2 id="HTTPS流量特征"><a href="#HTTPS流量特征" class="headerlink" title="HTTPS流量特征"></a>HTTPS流量特征</h2><p>对于CS的HTTPS流量特征，除了一般特征外，还能从Client Hello报文中获取一些信息：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220410235127740"></p>
+<p>JA3 用于收集Client Hello数据包中以下字段的十进制值：包括版本、可接受的密码、扩展列表、椭圆曲线密码和椭圆曲线密码格式。然后，用<code>,</code>来分隔各个字段、用<code>-</code>来分隔各个字段中的各个值，将这些值串联在一起之后，计算 <code>MD5</code>，就是一个ja3。如果没有某个字段，则这些字段的值为空。</p>
+<p>从报文中可以看出JA3的值，根据这个md5值，可以直接与参考值进行比对，确定是否为某些工具。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://github.com/ByteSecLabs/ja3-ja3s-combo/blob/master/master-list.txt">https://github.com/ByteSecLabs/ja3-ja3s-combo/blob/master/master-list.txt</a></p>
+<p>推荐使用[ja3box][<a target="_blank" rel="noopener" href="https://github.com/Macr0phag3/ja3box]%E5%B7%A5%E5%85%B7%EF%BC%8C%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97%E7%9B%B8%E5%BA%94%E5%80%BC%EF%BC%8C%E8%BF%99%E9%87%8C%E9%87%87%E7%94%A8%E8%BE%93%E5%85%A5pcap%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9A">https://github.com/Macr0phag3/ja3box]工具，自动计算相应值，这里采用输入pcap的方式：</a></p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220410235952943"></p>
+<p>比对发现为CS工具：</p>
+<p><img src="/2023/04/27/file-upload/pg" srcset="/img/loading.gif" lazyload alt="image-20220411000145195"></p>
+<h3 id="隐藏方法-2"><a href="#隐藏方法-2" class="headerlink" title="隐藏方法"></a>隐藏方法</h3><ul>
+<li><p>修改HTTPS证书</p>
+</li>
+<li><p>通过<a target="_blank" rel="noopener" href="https://github.com/rsmudge/Malleable-C2-Profiles">Malleable-C2-Profiles</a>，修改默认请求配置，改成高可信厂商</p>
+</li>
+</ul>
+<h2 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h2><ul>
+<li>端口转发</li>
+<li>域前置</li>
+<li>云函数</li>
+</ul>
+<h2 id="Else"><a href="#Else" class="headerlink" title="Else"></a>Else</h2><p>1、报文中出现大量&#x2F;en_US&#x2F;all.js的请求，但是下载文件后查看文件内容为空，不清楚原理：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220410220940372"></p>
+<p>2、同一台主机中的Cookie，通过脚本解密后能得到</p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="cookie"></p>
+<p>其中beacon id就是submit.php?id&#x3D;x中的值，但是从cookie中无法提取有效的CS特征。</p>
+<p>3、hs7001规则，无法命中攻击报文，十六进制串不清楚提取原理。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">alert TCP any any -&gt; any any (msg:<span class="hljs-string">&quot;Tool Cobalt Strike Attack - Interactive Vulnerability&quot;</span>; <span class="hljs-attribute">flow</span>:to_server; uricontent:<span class="hljs-string">&quot;/submit.php?id=&quot;</span>; <span class="hljs-attribute">content</span>:<span class="hljs-string">&quot;Content-Type: application/octet-stream&quot;</span>; <span class="hljs-attribute">content</span>:<span class="hljs-string">&quot;Connection: Keep-Alive&quot;</span>; <span class="hljs-attribute">content</span>:<span class="hljs-string">&quot;|00 00 00 40 00 00 00 02 00 00 00 1e 00 00 00 1e|&quot;</span>; distance:<span class="hljs-number">0</span>; sid:hs7001;)<br></code></pre></td></tr></table></figure>
+
+<p>4、现网CS server扫描方法，通过发送特定字符串，看响应</p>
+<h2 id="Beacon样本分析"><a href="#Beacon样本分析" class="headerlink" title="Beacon样本分析"></a>Beacon样本分析</h2><p>此处以不分段样本举例。</p>
+<p>首先查看导入表：</p>
+<p><img src="/2023/04/27/file-upload/g" srcset="/img/loading.gif" lazyload alt="image-20220411091723512"></p>
+<p>可以看到几个明显的函数，例如CreateNamedPipeA,CreateThread等等。</p>
+<p>接下来查看main函数，F5：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411092057926"></p>
+<p>有两个函数27B0和1800，接着是死循环，sleep10秒，查看第一个函数：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411092234879"></p>
+<p>该函数没有特别的功能，重点是第二个函数，双击查看：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411092407345"></p>
+<p>该函数中，首先V0为GetTickCount()，返回从操作系统启动所经过的毫秒数，接下来拼接处Buffer的值，将16进制数转换成char，可以看到Buffer为<code>\\.\\pipe\\MSSE-v0-server</code>，也就是管道名称，通过日志查看PipeName：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411093159702"></p>
+<p>结合汇编代码查看：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411093637992"></p>
+<p>1800函数拼接了一个管道名称，然后创建线程执行sub_4016D3函数.。</p>
+<p>接下来查看16D3函数：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411222622839"></p>
+<p>16D3函数中又调用了1608函数，查看内容如下：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411222823870"></p>
+<p>该函数进行了创建管道与链接管道操作，并通过WriteFile将数据写入到管道中。</p>
+<p>结合OD查看：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411223415773"></p>
+<p>此时管道名为<code>\\.\pipe\MSSE-8298-server</code>，接着创建管道，连接，将edi指向的数据写入管道(x86_s.00403010)，查看该地址：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411223609880"></p>
+<p>数据写入后，该线程完成，jmp到sub_4017A2:</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411224228022"></p>
+<p>首先分配一段内存，调用sub_4016F2，查看：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411225448071"></p>
+<p>这里通过ReadFile去读取先前写入管道的数据。读取完之后，跳到sub_401559：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411230004241"></p>
+<p>接着通过VirtualAlloc分配内存，然后通过一个循环异或解密数据放入到这片内存中。</p>
+<p>查看OD：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411231043647"></p>
+<p>前面的分析可知，这里是在循环异或四个字节的数据，四字节位置是[ebp+10]的，也就是x86_s.00403008:</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411231209582"></p>
+<p>大概的外层逻辑就是这样，不断的通过管道读写数据。因此，beacon.exe其实是一个外层的loader，而真正的核心的其中的shellcode。接下来使用海珍的方法直接提取出PE文件。</p>
+<p>直接查看main，跟入sub_401800,由于401800return了sun_4017A2,继续跟踪，到达sub_401559，查看401559，直接在最后一个call下断点，debug：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411232255418"></p>
+<p>运行：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411155147952"></p>
+<p>加载脚本：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">from</span> idc import *<br>tmp_list = []<br><span class="hljs-keyword">for</span> <span class="hljs-keyword">byte</span> <span class="hljs-keyword">in</span> idc.GetManyBytes(<span class="hljs-number">0x6c0000</span>, <span class="hljs-number">0x33000</span>):<br>    tmp_list.append(<span class="hljs-keyword">byte</span>)<br><br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;dump.bin&quot;</span>, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:<br>    f.<span class="hljs-built_in">write</span>(<span class="hljs-keyword">bytes</span>(tmp_list))<br>print(<span class="hljs-string">&quot;success&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>通过file–&gt;script file：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="file"></p>
+<p>可以提取出dump.bin.</p>
+<p>拖进exe info:</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411232540644"></p>
+<p>可以看出为dll文件。</p>
+<p>对于更深层次的特征分析例如ip，host等，需要对dll文件进行逆向，难度较大，等相关知识完善后进行补充。</p>
+<p>但是通过简单查看导入表，可以猜测出dll的部分功能：</p>
+<p><img src="/2023/04/27/file-upload/" srcset="/img/loading.gif" lazyload alt="image-20220411234121140"></p>
+<p>可以看到createremotethread（进程注入），createnamedpipe（创建命名管道）等等操作。</p>
+<p>通过上述分析，可以得到当前版本的CS(4.0)，存在的特征如下：</p>
+<ul>
+<li>data段偏移0xC处为连续的4个a</li>
+<li>rdata头部的管道名格式：%c%c%c%c%c%c%c%c%cMSSE-%d-server</li>
+</ul>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><p>对TLS报文作一定处理，通过JA3的原理进行防护？</p>
+<p>WAF对URL进行处理，检验URL合法性的算法？</p>
+<p>是否可以通过nmap的原理，进行扫描？</p>
+<p>引擎判断一定误差内同一个IP相同时间间隔的请求？（可以解决CS的sleep，以及各类爆破，注入工具等等，实现难度可能较大）</p>
+<p>使用yara规则对命名管道进行查询？</p>
+<p>对于data段0xC处的aaaa特征是否有方法检测到？</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/C2/">C2</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C2/">C2</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/">
+                        <span class="hidden-mobile">Bugbounty Automation 01——LFI自动化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
