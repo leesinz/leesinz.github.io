@@ -23,26 +23,26 @@
 <meta property="og:site_name" content="Ry4nnnn">
 <meta property="og:description" content="htb_blockygetshell首先nmap：   访问http（记得添加dns解析）：  目录爆破：  这里有几个目录需要关注，首先是wp-login.php，表明这是wordpress，其次还存在phpmyadmin，可以考虑写shell，还有&#x2F;plugins。 phpmyadmin:  弱口令失败，常规的登录界面：  &#x2F;plugins：  存在两个jar包，下载至本地">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505100458297.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505100513185.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505100551956.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505100715971.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505100857737.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505101115855.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505101142490.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505101337316.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505101556152.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505101918535.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505102933041.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505103014481.png">
-<meta property="og:image" content="http://example.com/htb-blocky/image-20230505103044495.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505100458297.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505100513185.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505100551956.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505100715971.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505100857737.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505101115855.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505101142490.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505101337316.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505101556152.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505101918535.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505102933041.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505103014481.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/-20230505103044495.png">
 <meta property="article:published_time" content="2023-05-05T09:50:52.000Z">
-<meta property="article:modified_time" content="2024-07-23T06:29:54.131Z">
+<meta property="article:modified_time" content="2024-07-23T07:13:32.096Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="walkthrough">
 <meta property="article:tag" content="htb">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/htb-blocky/image-20230505100458297.png">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/-20230505100458297.png">
   
   
   <title>htb_blocky - Ry4nnnn</title>
@@ -262,37 +262,37 @@
             
             <div class="markdown-body">
               <h1 id="htb-blocky"><a href="#htb-blocky" class="headerlink" title="htb_blocky"></a>htb_blocky</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>首先nmap：</p>
-<p><img src="/htb-blocky/image-20230505100458297.png" srcset="/img/loading.gif" lazyload alt="image-20230505100458297"></p>
-<p><img src="/htb-blocky/image-20230505100513185.png" srcset="/img/loading.gif" lazyload alt="image-20230505100513185"></p>
+<p><img src="/2023/04/27/file-upload/-20230505100458297.png" srcset="/img/loading.gif" lazyload alt="image-20230505100458297"></p>
+<p><img src="/2023/04/27/file-upload/-20230505100513185.png" srcset="/img/loading.gif" lazyload alt="image-20230505100513185"></p>
 <p>访问http（记得添加dns解析）：</p>
-<p><img src="/htb-blocky/image-20230505100551956.png" srcset="/img/loading.gif" lazyload alt="image-20230505100551956"></p>
+<p><img src="/2023/04/27/file-upload/-20230505100551956.png" srcset="/img/loading.gif" lazyload alt="image-20230505100551956"></p>
 <p>目录爆破：</p>
-<p><img src="/htb-blocky/image-20230505100715971.png" srcset="/img/loading.gif" lazyload alt="image-20230505100715971"></p>
+<p><img src="/2023/04/27/file-upload/-20230505100715971.png" srcset="/img/loading.gif" lazyload alt="image-20230505100715971"></p>
 <p>这里有几个目录需要关注，首先是wp-login.php，表明这是wordpress，其次还存在phpmyadmin，可以考虑写shell，还有&#x2F;plugins。</p>
 <p>phpmyadmin:</p>
-<p><img src="/htb-blocky/image-20230505100857737.png" srcset="/img/loading.gif" lazyload alt="image-20230505100857737"></p>
+<p><img src="/2023/04/27/file-upload/-20230505100857737.png" srcset="/img/loading.gif" lazyload alt="image-20230505100857737"></p>
 <p>弱口令失败，常规的登录界面：</p>
-<p><img src="/htb-blocky/image-20230505101115855.png" srcset="/img/loading.gif" lazyload alt="image-20230505101115855"></p>
+<p><img src="/2023/04/27/file-upload/-20230505101115855.png" srcset="/img/loading.gif" lazyload alt="image-20230505101115855"></p>
 <p>&#x2F;plugins：</p>
-<p><img src="/htb-blocky/image-20230505101142490.png" srcset="/img/loading.gif" lazyload alt="image-20230505101142490"></p>
+<p><img src="/2023/04/27/file-upload/-20230505101142490.png" srcset="/img/loading.gif" lazyload alt="image-20230505101142490"></p>
 <p>存在两个jar包，下载至本地，利用jd-gui查看：</p>
-<p><img src="/htb-blocky/image-20230505101337316.png" srcset="/img/loading.gif" lazyload alt="image-20230505101337316"></p>
+<p><img src="/2023/04/27/file-upload/-20230505101337316.png" srcset="/img/loading.gif" lazyload alt="image-20230505101337316"></p>
 <p>在blockycore.class中发现一组账号密码:root&#x2F;8YsqfCTnvxAUeduzjNSXe22</p>
 <p>由于网站为wordpress，用wpscan扫一下：</p>
 <p><code>wpscan --url http://blocky.htb -e u,ap</code></p>
-<p><img src="/htb-blocky/image-20230505101556152.png" srcset="/img/loading.gif" lazyload alt="image-20230505101556152"></p>
+<p><img src="/2023/04/27/file-upload/-20230505101556152.png" srcset="/img/loading.gif" lazyload alt="image-20230505101556152"></p>
 <p>发现用户notch。</p>
 <p>接下来尝试利用账号密码登录wordpress，失败。</p>
 <p>用该账户登录phpmyadmin：</p>
-<p><img src="/htb-blocky/image-20230505101918535.png" srcset="/img/loading.gif" lazyload alt="image-20230505101918535"></p>
+<p><img src="/2023/04/27/file-upload/-20230505101918535.png" srcset="/img/loading.gif" lazyload alt="image-20230505101918535"></p>
 <p>成功登录，并且查到notch用户。</p>
 <p>不知道绝对路径和网站目录路径，因此跳过phpmyadmin写shell，再利用该账户ssh：</p>
-<p><img src="/htb-blocky/image-20230505102933041.png" srcset="/img/loading.gif" lazyload alt="image-20230505102933041"></p>
+<p><img src="/2023/04/27/file-upload/-20230505102933041.png" srcset="/img/loading.gif" lazyload alt="image-20230505102933041"></p>
 <p>root登录失败，notch登录成功。</p>
 <h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>sudo -l：</p>
-<p><img src="/htb-blocky/image-20230505103014481.png" srcset="/img/loading.gif" lazyload alt="image-20230505103014481"></p>
+<p><img src="/2023/04/27/file-upload/-20230505103014481.png" srcset="/img/loading.gif" lazyload alt="image-20230505103014481"></p>
 <p>可以执行所有命令，直接&#x2F;bin&#x2F;bash:</p>
-<p><img src="/htb-blocky/image-20230505103044495.png" srcset="/img/loading.gif" lazyload alt="image-20230505103044495"></p>
+<p><img src="/2023/04/27/file-upload/-20230505103044495.png" srcset="/img/loading.gif" lazyload alt="image-20230505103044495"></p>
 <p>root权限。</p>
 
             </div>
