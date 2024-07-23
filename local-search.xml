@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>test123</title>
+    <link href="/2024/07/23/test123/"/>
+    <url>/2024/07/23/test123/</url>
+    
+    <content type="html"><![CDATA[<p>aaa</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>test_category</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>test</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>test</title>
     <link href="/2024/07/23/test/"/>
     <url>/2024/07/23/test/</url>
