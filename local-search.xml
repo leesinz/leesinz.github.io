@@ -247,6 +247,33 @@
   
   
   <entry>
+    <title>vulnhub_kioptrix_level_1</title>
+    <link href="/2024/07/23/CVE-2023-7028_gitlab%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
+    <url>/2024/07/23/CVE-2023-7028_gitlab%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="CVE-2023-7028-gitlab-任意用户密码重置漏洞复现"><a href="#CVE-2023-7028-gitlab-任意用户密码重置漏洞复现" class="headerlink" title="CVE-2023-7028_gitlab 任意用户密码重置漏洞复现"></a>CVE-2023-7028_gitlab 任意用户密码重置漏洞复现</h1><h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>GitLab 是一个用于仓库管理系统的开源项目，其使用 Git 作为代码管理工具，可通过 Web 界面访问公开或私人项目。<br>GitLab CE&#x2F;EE 中支持用户通过辅助电子邮件地址重置密码。GitLab CE&#x2F;EE 多个受影响版本中，由于电子邮件验证过程中存在错误，用户帐户密码重置电子邮件可以发送到未经验证的电子邮件地址，可能导致在无需用户交互的情况下通过密码重置进行帐户接管。<br>CVSS3 评分为 10.0，严重。</p><h3 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h3><p>16.1 &lt;&#x3D; Gitlab &lt; 16.1.6<br>16.2 &lt;&#x3D; Gitlab &lt; 16.2.9<br>16.3 &lt;&#x3D; Gitlab &lt; 16.3.7<br>16.4 &lt;&#x3D; Gitlab &lt; 16.4.5<br>16.5 &lt;&#x3D; Gitlab &lt; 16.5.6<br>16.6 &lt;&#x3D; Gitlab &lt; 16.6.4<br>16.7 &lt;&#x3D; Gitlab &lt; 16.7.2</p><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>首先在 docker 中安装 gitlab-ee:16.7.0<br><code>docker pull gitlab/gitlab-ee:16.7.0-ee.0</code><br>启动容器：<br><code>docker run --detach --publish 8443:443 --publish 2222:22 --publish 9999:80 --name gitlab-container --restart always --volume $GITLAB_HOME/config:/etc/gitlab --volume $GITLAB_HOME/logs:/var/log/gitlab --volume $GITLAB_HOME/data:/var/opt/gitlab --shm-size 256m gitlab/gitlab-ee:16.7.0-ee.0</code><br>其中部分参数解释如下：</p><ul><li><code>detach </code>：在后台运行</li><li><code>--publish 8443:443 --publish 2222:22 --publish 9999:80</code>: 将容器内部的端口映射到宿主机上，分别将容器的443端口映射到宿主机的8443端口、容器的22端口映射到宿主机的2222端口、容器的80端口映射到宿主机的 9999端口</li><li><code>--restart always</code>: 如果容器停止，Docker 会自动重新启动容器</li><li><code>--shm-size 256m</code>: 设置容器中的共享内存大小为256兆字节<br>容器成功启动后，访问 9999 端口，以 root 登录，密码为随机值，进入容器后查看文件&#x2F;etc&#x2F;gitlab&#x2F;initial_root_password 即可。<br>下面配置&#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb 文件，配置完成后，才能通过忘记密码功能发送邮件。<br><img src="/2023/04/27/file-upload/8/image-20240115142222406.png"><br>搜索 smtp_enable，将对应选项打开，将 smtp 邮件服务器地址改为对应的值，此处我使用的是 163 邮箱，即改为 smtp.163.com，user_name 就是发送邮箱的账户，password 为授权码：<br><img src="/2023/04/27/file-upload/8/image-20240115142340278.png"><br>最后将 gitlab_rails[‘gitlab_email_from’]和 user[‘git_user_email’]也改为发件人地址即可。<br>配置文件修改完成后，更新一下配置：<br><code>gitlab-ctl stop</code><br><img src="/2023/04/27/file-upload/8/image-20240115142507638.png"><br><code>gitlab-ctl reconfigure</code><br><img src="/2023/04/27/file-upload/8/image-20240115142544587.png"><br><code>gitlab-ctl start</code><br><img src="/2023/04/27/file-upload/8/image-20240115142619795.png"><br>通过 gitlab-rails 测试是否配置成功：<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arcade">gitlab-rails <span class="hljs-built_in">console</span><br>Notify.test_email(<span class="hljs-string">&#x27;ry4nnnn@163.com&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span>, <span class="hljs-string">&#x27;test&#x27;</span>).deliver_now<br></code></pre></td></tr></table></figure><img src="/2023/04/27/file-upload/8/image-20240115142705160.png"><br>测试邮件发送失败，提示 sendmail not found。<br>安装 sendmail 即可。</li></ul><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> update<br>apt-<span class="hljs-built_in">get</span> install sendmail<span class="hljs-built_in"></span><br><span class="hljs-built_in">service </span>sendmail start<br></code></pre></td></tr></table></figure><p>下面再次测试：<br><img src="/2023/04/27/file-upload/8/image-20240115143002012.png"><br>等待两分钟左右，成功接收到邮件，至此已经完成所有配置。</p><h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>新建一个用户，邮箱设置为 <a href="mailto:&#x31;&#x33;&#120;&#120;&#120;&#x78;&#x78;&#x40;&#49;&#x36;&#51;&#x2e;&#x63;&#x6f;&#109;">&#x31;&#x33;&#120;&#120;&#120;&#x78;&#x78;&#x40;&#49;&#x36;&#51;&#x2e;&#x63;&#x6f;&#109;</a> ,作为受害者账户。</p><h3 id="脚本一键利用"><a href="#脚本一键利用" class="headerlink" title="脚本一键利用"></a>脚本一键利用</h3><p><a href="https://github.com/Vozec/CVE-2023-7028">Fetching Data#zet5</a><br><img src="/2023/04/27/file-upload/8/image-20240115143345623.png"><br>-e 后输入自己的邮箱，运行后会收到一封重置邮件，将链接复制到 cmd 中即可一键完成密码修改，默认密码为一串随机值。<br>成功登录：<br><img src="/2023/04/27/file-upload/8/image-20240115143454315.png"></p><h3 id="burp-改包"><a href="#burp-改包" class="headerlink" title="burp 改包"></a>burp 改包</h3><p>点击忘记密码，输入受害者邮箱，抓包：<br><img src="/2023/04/27/file-upload/8/image-20240115144641095.png"><br>将 body 部分改为 user[email][]&#x3D;a.com&amp;user[email][]&#x3D;b.com 即可。密码重置邮件会同时发送给 a，b 两个邮箱，从而导致密码重置。<br><img src="/2023/04/27/file-upload/8/image-20240115150419752.png"></p><h2 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h2><p>官方已发布安全更新，建议升级至最新版本，若无法升级，建议开启双因素认证功能。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnerability</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnerability</tag>
+      
+      <tag>CVE-2023-7028</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>htb_armageddon</title>
     <link href="/2023/05/06/htb-armageddon/"/>
     <url>/2023/05/06/htb-armageddon/</url>

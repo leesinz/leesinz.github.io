@@ -191,6 +191,55 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/06/htb-armageddon/" target="_self">
+          htb_armageddon
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/06/htb-armageddon/" target="_self">
+          
+          htb_armageddongetshellnmap扫端口：  这里直接扫出来80端口为drupal 7。 后台目录扫一下：  一一访问之后没有发现有用信息，但是在changelog.txt发现了具体版本号：  当前drupal版本为7.56. 火狐访问：  这里为登录框，考虑sql注入或者默认密码弱口令等等，但是由于已经框架和版本，先搜索有无对应漏洞。 searchsploit：  前四个都跟版
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-06 15:48" pubdate>
+              2023-05-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/06/htb-mirai/" target="_self">
           htb_mirai
         </a>
@@ -626,60 +675,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/05/01/htb-jerry/" target="_self">
-          htb_jerry
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2023/05/01/htb-jerry/" target="_self">
-          
-          htb_jerrynmap先端口扫描：  8080的http服务，firefox访问看看：  tomcat。使用tomcat字典进行目录爆破，先查找tomcat字典：  爆破：  访问之后，发现只有manager可利用，为登录页面：  tomcat&#x2F;tomcat登录失败。此时点击cancel：  返回401页面，并包含了tomcat&#x2F;s3cret的一组账号密码：  成功登录。
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-05-01 22:55" pubdate>
-              2023-05-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/htb/">htb</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
-            
-              <a href="/tags/htb/">htb</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
