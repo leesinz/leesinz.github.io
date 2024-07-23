@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="vulnhub_Zico2arp-scan+masscan扫端口：  nmap扫服务：  开放了22，80，111，50670等端口。 尝试ssh弱口令，失败：  访问80端口的http服务：  点击各类功能点，发现如下页面，page&#x3D;xxx:  尝试本地文件包含，存在漏洞：  dirsearch爆破后台目录：  发现&#x2F;dbadmin，访问路径：  发现phpliteadmin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vulnhub_Zico2">
+<meta property="og:url" content="http://example.com/2023/04/26/vulnhub-Zico2/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="vulnhub_Zico2arp-scan+masscan扫端口：  nmap扫服务：  开放了22，80，111，50670等端口。 尝试ssh弱口令，失败：  访问80端口的http服务：  点击各类功能点，发现如下页面，page&#x3D;xxx:  尝试本地文件包含，存在漏洞：  dirsearch爆破后台目录：  发现&#x2F;dbadmin，访问路径：  发现phpliteadmin">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309085304660.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309085425386.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309091310662.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309091518406.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309091602675.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309091624462.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309091822847.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309091837154.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095117322.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095224609.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095355218.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095433457.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095517231.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095627928.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309095639243.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309100008129.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309100225528.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309100615572.png">
+<meta property="og:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309100803138.png">
+<meta property="article:published_time" content="2023-04-26T09:12:46.000Z">
+<meta property="article:modified_time" content="2024-07-23T06:59:59.291Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="vulnhub">
+<meta property="article:tag" content="walkthrough">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2023/04/27/file-upload/2/image-20230309085304660.png">
+  
+  
+  <title>vulnhub_Zico2 - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="vulnhub_Zico2">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-04-26 17:12" pubdate>
+        2023年4月26日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      517 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      5 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">vulnhub_Zico2</h1>
+            
+            <div class="markdown-body">
+              <h1 id="vulnhub-Zico2"><a href="#vulnhub-Zico2" class="headerlink" title="vulnhub_Zico2"></a>vulnhub_Zico2</h1><p>arp-scan+masscan扫端口：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309085304660.png" srcset="/img/loading.gif" lazyload alt="image-20230309085304660"></p>
+<p>nmap扫服务：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309085425386.png" srcset="/img/loading.gif" lazyload alt="image-20230309085425386"></p>
+<p>开放了22，80，111，50670等端口。</p>
+<p>尝试ssh弱口令，失败：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309091310662.png" srcset="/img/loading.gif" lazyload alt="image-20230309091310662"></p>
+<p>访问80端口的http服务：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309091518406.png" srcset="/img/loading.gif" lazyload alt="image-20230309091518406"></p>
+<p>点击各类功能点，发现如下页面，page&#x3D;xxx:</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309091602675.png" srcset="/img/loading.gif" lazyload alt="image-20230309091602675"></p>
+<p>尝试本地文件包含，存在漏洞：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309091624462.png" srcset="/img/loading.gif" lazyload alt="image-20230309091624462"></p>
+<p>dirsearch爆破后台目录：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309091822847.png" srcset="/img/loading.gif" lazyload alt="image-20230309091822847"></p>
+<p>发现&#x2F;dbadmin，访问路径：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309091837154.png" srcset="/img/loading.gif" lazyload alt="image-20230309091837154"></p>
+<p>发现phpliteadmin，尝试弱口令admin：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095117322.png" srcset="/img/loading.gif" lazyload alt="image-20230309095117322"></p>
+<p>登录成功：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095224609.png" srcset="/img/loading.gif" lazyload alt="image-20230309095224609"></p>
+<p>首先想到查询数据，选择csv格式导出：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095355218.png" srcset="/img/loading.gif" lazyload alt="image-20230309095355218"></p>
+<p>发现root和zico两个用户。</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095433457.png" srcset="/img/loading.gif" lazyload alt="image-20230309095433457"></p>
+<p>md5解密：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095517231.png" srcset="/img/loading.gif" lazyload alt="image-20230309095517231"></p>
+<p>直接ssh登录root&#x2F;34root34，失败。</p>
+<p>尝试寻找phpliteadmin漏洞，使用searchsploit搜索：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095627928.png" srcset="/img/loading.gif" lazyload alt="image-20230309095627928"></p>
+<p>存在代码注入漏洞，根据提示，需要新建数据库，新建表，就能执行php代码。</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309095639243.png" srcset="/img/loading.gif" lazyload alt="image-20230309095639243"></p>
+<p>创建表，插入一条数据<code>&lt;?php @eval($_POST[cmd]); ?&gt;</code></p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309100008129.png" srcset="/img/loading.gif" lazyload alt="image-20230309100008129"></p>
+<p>成功写入，再配合前面的本地文件包含，直接getshell，连上蚁剑。</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309100225528.png" srcset="/img/loading.gif" lazyload alt="image-20230309100225528"></p>
+<p>在home下，查找zico相关文件，发现wp配置，存在用户名密码。</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309100615572.png" srcset="/img/loading.gif" lazyload alt="image-20230309100615572"></p>
+<p>弹shell到kali，生成交互shell，su zico，切换到zico用户：</p>
+<p><img src="/2023/04/27/file-upload/2/image-20230309100803138.png" srcset="/img/loading.gif" lazyload alt="image-20230309100803138"></p>
+<p>sudo -l，发现tar，zip，直接提权到root。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/vulnhub/">vulnhub</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vulnhub/">vulnhub</a>
+                    
+                      <a class="hover-with-bg" href="/tags/walkthrough/">walkthrough</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/04/27/file-upload/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">file_upload</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/26/vulnhub-Stapler/">
+                        <span class="hidden-mobile">vulnhub_Stapler</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
