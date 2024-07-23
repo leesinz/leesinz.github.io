@@ -1,0 +1,974 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="file_upload 介绍什么是文件上传漏洞简单来说，存在文件上传，就可能存在文件上传漏洞。上传文件时，如果未对上传的文件进行严格的验证和过滤，就可能导致传入非法文件，例如木马等等。 文件上传的危害上传漏洞与SQL注入或 XSS相比，其风险更大。 如果 Web应用程序存在上传漏洞，攻击者上传的文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本，就会导致代码执行。如果上传的文件是F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="file_upload">
+<meta property="og:url" content="http://example.com/2023/04/27/file-upload/index.html">
+<meta property="og:site_name" content="Ry4nnnn">
+<meta property="og:description" content="file_upload 介绍什么是文件上传漏洞简单来说，存在文件上传，就可能存在文件上传漏洞。上传文件时，如果未对上传的文件进行严格的验证和过滤，就可能导致传入非法文件，例如木马等等。 文件上传的危害上传漏洞与SQL注入或 XSS相比，其风险更大。 如果 Web应用程序存在上传漏洞，攻击者上传的文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本，就会导致代码执行。如果上传的文件是F">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/file-upload/pic.jpg">
+<meta property="og:image" content="http://example.com/file-upload/uploadlabs.png">
+<meta property="og:image" content="http://example.com/file-upload/firefox.png">
+<meta property="og:image" content="http://example.com/file-upload/pass3code.png">
+<meta property="og:image" content="http://example.com/file-upload/fail.png">
+<meta property="og:image" content="http://example.com/file-upload/pass3s.png">
+<meta property="og:image" content="http://example.com/file-upload/apache.png">
+<meta property="og:image" content="http://example.com/file-upload/pass4code.png">
+<meta property="og:image" content="http://example.com/file-upload/htaccess.png">
+<meta property="og:image" content="http://example.com/file-upload/pass4s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass4info.png">
+<meta property="og:image" content="http://example.com/file-upload/pass5code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass5s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass6code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass6s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass7code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass7s.png">
+<meta property="og:image" content="http://example.com/file-upload/type.png">
+<meta property="og:image" content="http://example.com/file-upload/pass8code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass8s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass9code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass9s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass10code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass10t.png">
+<meta property="og:image" content="http://example.com/file-upload/info.png">
+<meta property="og:image" content="http://example.com/file-upload/pass10s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass2code.png">
+<meta property="og:image" content="http://example.com/file-upload/fail.png">
+<meta property="og:image" content="http://example.com/file-upload/pass2p.png">
+<meta property="og:image" content="http://example.com/file-upload/pass2s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass11code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass11f.png">
+<meta property="og:image" content="http://example.com/file-upload/pass11s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass11info.png">
+<meta property="og:image" content="http://example.com/file-upload/pass12code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass12en.png">
+<meta property="og:image" content="http://example.com/file-upload/pass12s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass12info.png">
+<meta property="og:image" content="http://example.com/file-upload/ps.png">
+<meta property="og:image" content="http://example.com/file-upload/pass13up.png">
+<meta property="og:image" content="http://example.com/file-upload/pass13s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass17code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass17rename.png">
+<meta property="og:image" content="http://example.com/file-upload/webshell.png">
+<meta property="og:image" content="http://example.com/file-upload/pass17brute.png">
+<meta property="og:image" content="http://example.com/file-upload/pass17su.png">
+<meta property="og:image" content="http://example.com/file-upload/pass17fa.png">
+<meta property="og:image" content="http://example.com/file-upload/pass19code.png">
+<meta property="og:image" content="http://example.com/file-upload/pass19ui.png">
+<meta property="og:image" content="http://example.com/file-upload/pass19s.png">
+<meta property="og:image" content="http://example.com/file-upload/pass19info.png">
+<meta property="og:image" content="http://example.com/file-upload/pass05test.jpg">
+<meta property="og:image" content="http://example.com/file-upload/05phP.jpg">
+<meta property="og:image" content="http://example.com/file-upload/yichu1.jpg">
+<meta property="og:image" content="http://example.com/file-upload/yichu2.jpg">
+<meta property="og:image" content="http://example.com/file-upload/pass061.jpg">
+<meta property="og:image" content="http://example.com/file-upload/yichu3.jpg">
+<meta property="og:image" content="http://example.com/file-upload/pass062.jpg">
+<meta property="og:image" content="http://example.com/file-upload/pass021.jpg">
+<meta property="og:image" content="http://example.com/file-upload/test022.jpg">
+<meta property="og:image" content="http://example.com/file-upload/pass023.jpg">
+<meta property="og:image" content="http://example.com/file-upload/server1.jpg">
+<meta property="og:image" content="http://example.com/file-upload/pass024.jpg">
+<meta property="og:image" content="http://example.com/file-upload/webshell.jpg">
+<meta property="og:image" content="http://example.com/file-upload/00.jpg">
+<meta property="og:image" content="http://example.com/file-upload/server2.jpg">
+<meta property="og:image" content="http://example.com/file-upload/white.jpg">
+<meta property="og:image" content="http://example.com/file-upload/0d.jpg">
+<meta property="og:image" content="http://example.com/file-upload/shell.jpg">
+<meta property="og:image" content="http://example.com/file-upload/hahaha.jpg">
+<meta property="og:image" content="http://example.com/file-upload/jpegaaa.jpg">
+<meta property="og:image" content="http://example.com/file-upload/content.jpg">
+<meta property="og:image" content="http://example.com/file-upload/test.jpg">
+<meta property="og:image" content="http://example.com/file-upload/final.jpg">
+<meta property="og:image" content="http://example.com/file-upload/suc.jpg">
+<meta property="og:image" content="http://example.com/file-upload/render.jpg">
+<meta property="og:image" content="http://example.com/file-upload/server4.jpg">
+<meta property="article:published_time" content="2023-04-27T14:32:14.000Z">
+<meta property="article:modified_time" content="2024-07-23T06:31:33.752Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="file upload">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/file-upload/pic.jpg">
+  
+  
+  <title>file_upload - Ry4nnnn</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","app_key":"P8Ab9EN1clJmhpYHpamFEiD9","server_url":"https://mgdyy5xe.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Ry4nnnn&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/moon.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="file_upload">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-04-27 22:32" pubdate>
+        2023年4月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      8.6k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      72 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- LeanCloud 统计文章PV -->
+      <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="leancloud-page-views"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">file_upload</h1>
+            
+            <div class="markdown-body">
+              <h1 id="file-upload"><a href="#file-upload" class="headerlink" title="file_upload"></a>file_upload</h1><p><img src="/file-upload/pic.jpg" srcset="/img/loading.gif" lazyload alt="pic"></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="什么是文件上传漏洞"><a href="#什么是文件上传漏洞" class="headerlink" title="什么是文件上传漏洞"></a>什么是文件上传漏洞</h3><p>简单来说，存在文件上传，就可能存在文件上传漏洞。上传文件时，如果未对上传的文件进行严格的验证和过滤，就可能导致传入非法文件，例如木马等等。</p>
+<h3 id="文件上传的危害"><a href="#文件上传的危害" class="headerlink" title="文件上传的危害"></a>文件上传的危害</h3><p>上传漏洞与SQL注入或 XSS相比，其风险更大。</p>
+<p>如果 Web应用程序存在上传漏洞，攻击者上传的文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本，就会导致代码执行。如果上传的文件是Flash的策略文件crossdomain.xml，黑客用以控制Flash在该域下的行为。如果上传的文件是钓鱼图片或者包含了脚本的图片，在某些版本的浏览器中会被作为脚本执行，被用于钓鱼和欺诈。甚至攻击者可以直接上传一个webshell到服务器上完全控制系统。</p>
+<h3 id="如何查找"><a href="#如何查找" class="headerlink" title="如何查找"></a>如何查找</h3><ul>
+<li><p>fofa等引擎搜索。例如inurl:upload.php.</p>
+</li>
+<li><p>黑盒。使用敏感目录扫描工具查找:御剑后台扫描工具，dirsearch等等。</p>
+</li>
+<li><p>白盒。找对cms，看源码。</p>
+</li>
+<li><p>后台查找。进入后台之后并不能获得网站权限，只是后台权限，可以通过登录后台进行文件上传从而获得整个网站的权限。</p>
+</li>
+<li><p>会员中心，个人资料等模块查找。</p>
+</li>
+</ul>
+<p>找到上传点之后，是否具有上传漏洞，具体情况需要结合抓包情况查看。</p>
+<h3 id="upload-labs靶场介绍"><a href="#upload-labs靶场介绍" class="headerlink" title="upload-labs靶场介绍"></a>upload-labs靶场介绍</h3><p><img src="/file-upload/uploadlabs.png" srcset="/img/loading.gif" lazyload alt="image-20211025002900015"></p>
+<p>upload-labs是一个使用php语言编写的，专门收集渗透测试过程中遇到的各种上传漏洞的靶场。提供了文件上传的各种不同环境，用以进行原理的学习。</p>
+<p>项目地址:<a target="_blank" rel="noopener" href="https://github.com/c0ny1/upload-labs">https://github.com/c0ny1/upload-labs</a></p>
+<p>本文档主要介绍文件上传部分内容，靶场搭建等部分不进行详细讲解，可以参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32448559/article/details/81667309?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522163509252516780271586181%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=163509252516780271586181&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-81667309.first_rank_v2_pc_rank_v29&utm_term=uploadlabs%E5%AE%89%E8%A3%85&spm=1018.2226.3001.4187">https://blog.csdn.net/qq_32448559/article/details/81667309?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522163509252516780271586181%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=163509252516780271586181&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-81667309.first_rank_v2_pc_rank_v29&amp;utm_term=uploadlabs%E5%AE%89%E8%A3%85&amp;spm=1018.2226.3001.4187</a></p>
+<h3 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h3><ul>
+<li>格式</li>
+</ul>
+<p>正常情况下，如果将php木马上传到网站，但格式为jpg格式，一般是无法成功进行利用的（无解析漏洞）。需要注意网站所使用的语言以及上传文件的格式类型。</p>
+<ul>
+<li>分类</li>
+</ul>
+<p>对于文件上传漏洞，需要注意的是清楚地把握住出现漏洞的点。例如是编辑器漏洞，还是第三方应用漏洞，或者是代码的逻辑中存在漏洞。针对不同的漏洞，应该采用更有针对性的方法。在下文会对不同的分类具体展开。</p>
+<h2 id="绕过方法"><a href="#绕过方法" class="headerlink" title="绕过方法"></a>绕过方法</h2><h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><h4 id="js类防护"><a href="#js类防护" class="headerlink" title="js类防护"></a>js类防护</h4><p><strong>Pass-01</strong></p>
+<ul>
+<li>靶场环境中，可以直接删除js过滤代码</li>
+<li>真实环境中可以考虑浏览器禁用js（可能会导致正常功能无法使用，不推荐）</li>
+</ul>
+<p>浏览器禁用javascript方法（Firefox为例）：</p>
+<p>搜索栏中输入about:config，确定之后搜索javascript.enabled,点击切换即可禁用js脚本</p>
+<p><img src="/file-upload/firefox.png" srcset="/img/loading.gif" lazyload alt="image-20211025135825125"></p>
+<p>Tips:有时候上传文件使用burp抓包无法捕获到流量，可能就是因为采用了本地js的验证方法。</p>
+<p><strong>防护措施</strong></p>
+<p>尽量使用后端验证</p>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><p>文件上传的后端验证主要有后缀名，文件类型和文件头等等。其中后缀名主要使用黑白名单进行验证，文件类型主要通过MIME信息验证，而文件头一般通过内容头进行校验。</p>
+<h4 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h4><p>黑名单验证是指只要后缀名不在给定的数组中，就不会被拦截，可以进行上传。常见的黑名单有asp,php,jsp,aspx,cgi,war等等。一般可以通过如下几种方式绕过：</p>
+<h5 id="特殊解析后缀"><a href="#特殊解析后缀" class="headerlink" title="特殊解析后缀"></a>特殊解析后缀</h5><p><strong>Pass-03</strong></p>
+<p>首先查看源码：</p>
+<p><img src="/file-upload/pass3code.png" srcset="/img/loading.gif" lazyload alt="image-20211025145816144"></p>
+<p>典型的黑名单过滤，上传php文件，上传失败：</p>
+<p><img src="/file-upload/fail.png" srcset="/img/loading.gif" lazyload alt="image-20211025144503909"></p>
+<p>以最常用的php为例，如果黑名单中只有.php后缀，可以通过php3,php5,phtml等未被过滤的后缀名进行绕过，上传.php5进行测试：</p>
+<p><img src="/file-upload/pass3s.png" srcset="/img/loading.gif" lazyload alt="image-20211025150600496"></p>
+<p>上传成功。</p>
+<p>对于该绕过方法，在Apache服务器中，可以通过更改Apache httpd.conf配置文件，添加.php3 和.phtml，并且取消注释，来实现对php3,phtml等文件的解析。</p>
+<p><img src="/file-upload/apache.png" srcset="/img/loading.gif" lazyload alt="image-20211025150142567"></p>
+<p><strong>防护措施</strong></p>
+<p>拓展黑名单的内容，并且对服务器配置进行严格限制，即使文件上传也无法解析</p>
+<h5 id="htaccess解析"><a href="#htaccess解析" class="headerlink" title=".htaccess解析"></a>.htaccess解析</h5><p>.htaccess文件是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Apache">Apache</a>服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许&#x2F;阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+<p>Tips:只有Apache才可以</p>
+<p><strong>Pass-04</strong></p>
+<p>查看源码：</p>
+<p><img src="/file-upload/pass4code.png" srcset="/img/loading.gif" lazyload alt="image-20211025163819926"></p>
+<p>可以看出，这里也是使用了黑名单的方式进行过滤。但是.htaccess并不在黑名单中，因此首先上传.htaccess文件：</p>
+<p><img src="/file-upload/htaccess.png" srcset="/img/loading.gif" lazyload alt="image-20211025152331749"></p>
+<p>这里.htaccess文件的意义是将后续上传的文件，当作php来进行解析。</p>
+<p>Tips:</p>
+<ul>
+<li>如果上传的内容如上图所示，那么后续上传的文件名或后缀名中需要包含有info，也就是双引号中的值。</li>
+<li>如果文件的内容为<code>setHandler application/x-httpd-php</code>，那么，任意形式的文件都会被当作php解析。</li>
+<li>文件名后缀命名时记得绕开黑名单中的后缀名。</li>
+<li>上传的.htaccess文件，通过记事本可能无法保存，可以通过burp修改文件名或者使用Notepad++保存文件。</li>
+</ul>
+<p>接下来对上传的info.abc进行测试：</p>
+<p><img src="/file-upload/pass4s.png" srcset="/img/loading.gif" lazyload alt="image-20211025164521803"></p>
+<p>上传成功，查看phpinfo:</p>
+<p><img src="/file-upload/pass4info.png" srcset="/img/loading.gif" lazyload alt="image-20211025164609493"></p>
+<p>成功解析成php文件。</p>
+<p><strong>防护措施</strong></p>
+<p>禁止上传.htaccess文件，可以通过snort对filename的内容进行检测</p>
+<h5 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h5><p><strong>Pass-05</strong></p>
+<p>查看源码：</p>
+<p><img src="/file-upload/pass5code.png" srcset="/img/loading.gif" lazyload alt="image-20211025164929968"></p>
+<p>使用黑名单进行过滤，这里直接使用大小写绕过：</p>
+<p><img src="/file-upload/pass5s.png" srcset="/img/loading.gif" lazyload alt="image-20211025165114713"></p>
+<p>成功上传php文件。</p>
+<p><strong>防护措施</strong></p>
+<p>拓展黑名单内容</p>
+<h5 id="空格绕过"><a href="#空格绕过" class="headerlink" title="空格绕过"></a>空格绕过</h5><p><strong>Pass-06</strong></p>
+<p>查看源码：</p>
+<p><img src="/file-upload/pass6code.png" srcset="/img/loading.gif" lazyload alt="image-20211025165335192"></p>
+<p>发现这里没有使用trim()函数，也就是没有对空格进行过滤。因此尝试使用空格绕过：</p>
+<p><img src="/file-upload/pass6s.png" srcset="/img/loading.gif" lazyload alt="image-20211025165548554"></p>
+<p>使用burp在filename内容最后加上空格，绕过黑名单验证，成功上传。</p>
+<p>Tips:</p>
+<ul>
+<li>必须抓包后在最后添加空格，如果直接在本地文件后缀加空格会被自动删除。</li>
+<li>抓包添加空格之后，会绕过黑名单的验证，但是保存到服务器之后，文件最后的空格还是会被删除，最终还是php文件。</li>
+</ul>
+<p><strong>防护措施</strong></p>
+<p>拓展黑名单，或者使用函数删除文件名末尾的空格再进行过滤。</p>
+<p>也可写规则对空格0d0a进行匹配。</p>
+<h5 id="点绕过"><a href="#点绕过" class="headerlink" title="点绕过"></a>点绕过</h5><p><strong>Pass-07</strong></p>
+<p>源码如下：</p>
+<p><img src="/file-upload/pass7code.png" srcset="/img/loading.gif" lazyload alt="image-20211025170004591"></p>
+<p>这里少了deldot()函数，即删除文件名末尾的点。</p>
+<p>这里思路和空格绕过相同，但是同样需要注意只能通过抓包修改，直接在本地修改会默认删除最后的点，抓包添加点之后会绕过黑名单，但是保存到服务器之后同样最后的点会被删除，还是原来的文件格式：</p>
+<p><img src="/file-upload/pass7s.png" srcset="/img/loading.gif" lazyload alt="image-20211025170344273"></p>
+<p><img src="/file-upload/type.png" srcset="/img/loading.gif" lazyload alt="image-20211025170445942"></p>
+<p>到上传目录查看，还是原理的php格式，并能成功解析。</p>
+<p><strong>防护措施</strong></p>
+<p>使用函数先删除文件名末尾的.再进行过滤。</p>
+<p>写规则对点0d0a进行匹配。</p>
+<h5 id="DATA绕过"><a href="#DATA绕过" class="headerlink" title="::$DATA绕过"></a>::$DATA绕过</h5><p><strong>Pass-08</strong></p>
+<p>审计源码发现，没有使用stri_replace函数替换字符串::$DATA。</p>
+<p><img src="/file-upload/pass8code.png" srcset="/img/loading.gif" lazyload alt="image-20211025170728809"></p>
+<p>在windows下，如果文件名+”::$DATA”，系统会把::$DATA之后的数据当成文件流处理,不会检测后缀名.且保持”::$DATA”之前的文件名。例如:phpinfo.php::$DATA，Windows会自动去掉末尾的::$DATA变成phpinfo.php。利用windows特性，可在后缀名中加” ::$DATA”绕过</p>
+<p><img src="/file-upload/pass8s.png" srcset="/img/loading.gif" lazyload alt="image-20211025170934067"></p>
+<p>上传成功。</p>
+<p><strong>防护措施</strong></p>
+<p>先删除文件名末尾的::$DATA再过滤操作</p>
+<p>对filename中的::$DATA进行匹配（已经添加规则）</p>
+<h5 id="点加空格加点绕过"><a href="#点加空格加点绕过" class="headerlink" title="点加空格加点绕过"></a>点加空格加点绕过</h5><p><strong>Pass-09</strong></p>
+<p>审计源码：</p>
+<p><img src="/file-upload/pass9code.png" srcset="/img/loading.gif" lazyload alt="image-20211025171317917"></p>
+<p>这里首先会去除空格，接着删除文件名末尾的点，最后再去空。</p>
+<p>因为最后会去空，因此文件名结尾不能为空格，可以结合点绕过进行考虑。文件名末尾为点，删除空格就加上空格，	开始还会删除一个点，因此再加上点，也就是<code>. .</code>，测试：</p>
+<p><img src="/file-upload/pass9s.png" srcset="/img/loading.gif" lazyload alt="image-20211025172046926"></p>
+<p>成功绕过过滤，上传文件。</p>
+<p><strong>防护措施</strong></p>
+<p>删除文件名末尾的点，空格再过滤</p>
+<h5 id="双写绕过"><a href="#双写绕过" class="headerlink" title="双写绕过"></a>双写绕过</h5><p><strong>Pass-10</strong></p>
+<p>源码：</p>
+<p><img src="/file-upload/pass10code.png" srcset="/img/loading.gif" lazyload alt="image-20211025172233670"></p>
+<p>这里直接上传文件，成功：</p>
+<p><img src="/file-upload/pass10t.png" srcset="/img/loading.gif" lazyload alt="image-20211025172429960"></p>
+<p>到对应目录下查看，发现文件为：</p>
+<p><img src="/file-upload/info.png" srcset="/img/loading.gif" lazyload alt="image-20211025172515208"></p>
+<p>文件格式不对是无法进行解析的。本关中过滤思路为直接删除黑名单中的后缀名，因此双写进行绕过：</p>
+<p><img src="/file-upload/pass10s.png" srcset="/img/loading.gif" lazyload alt="image-20211025172629452"></p>
+<p>文件格式为php，可以正常解析。</p>
+<p><strong>防护措施</strong></p>
+<p>对文件名的过滤使用循环过滤来替代单次过滤</p>
+<h4 id="白名单"><a href="#白名单" class="headerlink" title="白名单"></a>白名单</h4><p>白名单验证是指只有后缀名在给定的数组中，才不会被拦截，可以进行上传。较黑名单而言，白名单验证往往更为安全。但是也有如下几类绕过方式：</p>
+<h5 id="MIME绕过"><a href="#MIME绕过" class="headerlink" title="MIME绕过"></a>MIME绕过</h5><p><strong>Pass-02</strong></p>
+<p>查看源码：</p>
+<p><img src="/file-upload/pass2code.png" srcset="/img/loading.gif" lazyload alt="image-20211025143831680"></p>
+<p>先简单介绍一下$FILES函数：<br>$_FILES[myFile] [name]:客户端文件的原名称</p>
+<p>$_FILES[myFile] [type]:文件的MIME类型</p>
+<p>$_FILES[myFile] [size]:上传文件的大小，单位为字节</p>
+<p>$_FILES[myFile] [tmp_name]:文件被上传后在服务端存储的临时文件名</p>
+<p>$_FILES[myFile] [error]:和该文件上传相关的错误代码</p>
+<p>通过源码可以发现，这里通过对MIME类型的验证进行过滤。上传文件测试：</p>
+<p><img src="/file-upload/fail.png" srcset="/img/loading.gif" lazyload alt="image-20211025144503909"></p>
+<p>上传失败，抓包查看：</p>
+<p><img src="/file-upload/pass2p.png" srcset="/img/loading.gif" lazyload alt="image-20211025144604979"></p>
+<p>对content-type内容进行修改：</p>
+<p><img src="/file-upload/pass2s.png" srcset="/img/loading.gif" lazyload alt="image-20211025144748487"></p>
+<p>上传成功。</p>
+<p>因此，单纯通过对MIME类型进行验证是很不安全的。</p>
+<p><strong>防护措施</strong></p>
+<p>对MIME,后缀名进行匹配验证。</p>
+<h5 id="00截断"><a href="#00截断" class="headerlink" title="%00截断"></a>%00截断</h5><p><strong>Pass-11</strong></p>
+<p>这里的%00截断需要与后面的00截断区分开。%00截断主要使用在地址中。</p>
+<p>首先查看源码：</p>
+<p><img src="/file-upload/pass11code.png" srcset="/img/loading.gif" lazyload alt="image-20211025175804899"></p>
+<p>非常典型的白名单过滤。首先抓包：</p>
+<p><img src="/file-upload/pass11f.png" srcset="/img/loading.gif" lazyload alt="image-20211025175934766"></p>
+<p>这里发现url中带有参数save_path.结合源码发现，本关的文件，上传之后，保存到file_upload_path中，而file_upload_path由save_path,随机数和日期拼接而成。例如save_path为..&#x2F;upload，那么保存的路径就是..&#x2F;upload&#x2F;6620211025.jpg（jpg是上传的文件的后缀）。此处利用%00对后续内容进行截断，例如save_path为..&#x2F;upload&#x2F;a.php%00，正常来说保存路径应该是..&#x2F;upload&#x2F;a.php%006620211025.jpg，但是%00会将后面的随机数及日期部分丢弃，直接保存为a.php，测试：</p>
+<p><img src="/file-upload/pass11s.png" srcset="/img/loading.gif" lazyload alt="image-20211025180435295"></p>
+<p>上传成功。</p>
+<p>Tips:此处的文件名后缀，一定要在白名单中，不然会被拦截，即使后缀为jpg，但是截断时保存为php，依然能够被解析：</p>
+<p><img src="/file-upload/pass11info.png" srcset="/img/loading.gif" lazyload alt="image-20211025180635064"></p>
+<p><strong>防护措施</strong></p>
+<p>对url中的00进行匹配（已添加规则）</p>
+<h5 id="00截断-1"><a href="#00截断-1" class="headerlink" title="00截断"></a>00截断</h5><p><strong>Pass-12</strong></p>
+<p>源码：</p>
+<p><img src="/file-upload/pass12code.png" srcset="/img/loading.gif" lazyload alt="image-20211025205040477"></p>
+<p>这里的提交方式由get变成了post，同样修改save_path参数的值。</p>
+<p>注意：00截断与前文的%00截断的区别在于，%00截断主要用于地址，例如上一关所示的文件上传地址，并且get方法会自动解码%00，因此直接输入%00即可，但是post方法不会，因此需要先将其编码才能实现截断的效果。</p>
+<p><img src="/file-upload/pass12en.png" srcset="/img/loading.gif" lazyload alt="image-20211025211523737"></p>
+<p>上传的文件名后缀为白名单中的jpg，MIME格式无需修改，将save_path加上hahaha.php%00，再使用编码功能对%00进行编码，最后发送数据包，上传成功：</p>
+<p><img src="/file-upload/pass12s.png" srcset="/img/loading.gif" lazyload alt="image-20211025211121816"></p>
+<p>文件名为我们修改的hahaha.php，并能成功解析：</p>
+<p><img src="/file-upload/pass12info.png" srcset="/img/loading.gif" lazyload alt="image-20211025211716502"></p>
+<p><strong>防护措施</strong></p>
+<p>对post参数的内容进行00匹配</p>
+<h4 id="内容及其他"><a href="#内容及其他" class="headerlink" title="内容及其他"></a>内容及其他</h4><h5 id="上传图片马配合文件包含漏洞"><a href="#上传图片马配合文件包含漏洞" class="headerlink" title="上传图片马配合文件包含漏洞"></a>上传图片马配合文件包含漏洞</h5><p>上传图片马可以用来突破getimagesize，exif_imagetype等函数，就不一一举例，原理和方法都相同，接下来以Pass-13进行说明。</p>
+<p><strong>Pass-13</strong></p>
+<p>图片马是指将木马插入到图片中，并且不影响图片的正常显示。</p>
+<p>图片马的制作一般有如下几种方法：</p>
+<ul>
+<li>以文本方式打开图片</li>
+</ul>
+<p>在文件末尾直接写一句话木马。</p>
+<ul>
+<li>使用cmd制作木马</li>
+</ul>
+<p>copy aaa.jpg &#x2F;b + trojan.php &#x2F;a webshell.jpg。其中&#x2F;b是二进制形式打开，&#x2F;a是ascii方式打开，webshell.jpg是生成的图片马。这里最好把图片文件放在前面，如果反过来，不会影响效果，但是会让木马脚本出现在文件的开头，更容易被检测到。</p>
+<ul>
+<li>16进制打开图片插入木马</li>
+</ul>
+<p>使用winhex等工具打开， 在文件尾插入一句话木马。</p>
+<ul>
+<li>使用PS</li>
+</ul>
+<p>打开文件-&gt;文件简介，在标题处写入木马：</p>
+<p><img src="/file-upload/ps.png" srcset="/img/loading.gif" lazyload alt="image-20211025214635884"></p>
+<p>这里就使用cmd制作木马，生成webshell.jpg，上传成功：</p>
+<p><img src="/file-upload/pass13up.png" srcset="/img/loading.gif" lazyload alt="image-20211025214745607"></p>
+<p>接下来结合文件包含漏洞，执行php代码。</p>
+<p>右键图片复制地址，并打开文件包含漏洞页面，将地址传给file参数，成功以jpg格式执行phpinfo():</p>
+<p><img src="/file-upload/pass13s.png" srcset="/img/loading.gif" lazyload alt="image-20211025214919172"></p>
+<p><strong>防护措施</strong></p>
+<p>在文件内容中搜索特征字符串例如&lt;?php等，对其进行匹配</p>
+<h5 id="二次渲染"><a href="#二次渲染" class="headerlink" title="二次渲染"></a>二次渲染</h5><p><strong>Pass-17</strong></p>
+<p>源码如下 ：</p>
+<p><img src="/file-upload/pass17code.png" srcset="/img/loading.gif" lazyload alt="image-20211025220038872"></p>
+<p>为了将用户提交的图片进行尺寸上的更改或者适应某些内容，有时会进行二次渲染。</p>
+<p>审计这里的代码，可以发现存在逻辑问题。首先没有进行验证，就将文件直接上传，随后将temp_file移动到upload_file，再将upload_file重命名为file_upload_path. 但是其实在开始，文件已经成功上传到了服务器，只是被重命名了无法发现，接下来进行测试：</p>
+<p><img src="/file-upload/pass17rename.png" srcset="/img/loading.gif" lazyload alt="image-20211025221931927"></p>
+<p>将rename直接注释掉，上传文件：</p>
+<p><img src="/file-upload/webshell.png" srcset="/img/loading.gif" lazyload alt="image-20211025222114342"></p>
+<p>可以发现文件已经被上传到了服务器。结合条件竞争的利用在下面具体讲解。</p>
+<h5 id="条件竞争"><a href="#条件竞争" class="headerlink" title="条件竞争"></a>条件竞争</h5><p>还是以17关为例。上面已知，代码中先移动文件，再进行过滤，因此只需要在文件被移动之前，通过与rename进行”竞争”，并将其”占有”，就可以进行利用。</p>
+<p>这里使用burp进行爆破来实现不断发包的目的：</p>
+<p><img src="/file-upload/pass17brute.png" srcset="/img/loading.gif" lazyload alt="image-20211025224348276"></p>
+<p>重复发包10000次，并且不断刷新页面访问文件上传保存到的临时地址，也就是upload&#x2F;abcd.php。</p>
+<p>会出现如下两种情况：</p>
+<p><img src="/file-upload/pass17su.png" srcset="/img/loading.gif" lazyload alt="image-20211025223249026"></p>
+<p><img src="/file-upload/pass17fa.png" srcset="/img/loading.gif" lazyload alt="image-20211025223310146"></p>
+<p>如果为not found，就是文件已经被重命名，如果是warning或者直接解析出phpinfo()的内容就是”竞争”成功，避免了将php格式重命名为jpg等格式，可以执行所写的php脚本，连接一句话木马等等。</p>
+<p>条件竞争典型：phpcms</p>
+<p><strong>防护措施</strong></p>
+<p>优化过滤的代码逻辑，先过滤再上传。</p>
+<h5 id="文件夹绕过"><a href="#文件夹绕过" class="headerlink" title="文件夹绕过"></a>文件夹绕过</h5><p><strong>Pass-19</strong></p>
+<p>查看源码：</p>
+<p><img src="/file-upload/pass19code.png" srcset="/img/loading.gif" lazyload alt="image-20211025225857102"></p>
+<p>这里将上传的文件移动到file_upload_path,file_upload_path为upload&#x2F;拼接上file_name，而file_name就是我们用post提交的save_name的值。</p>
+<p>这里用到新的思路，首先查看UI界面：</p>
+<p><img src="/file-upload/pass19ui.png" srcset="/img/loading.gif" lazyload alt="image-20211025230304838"></p>
+<p>这里我们可以决定保存的名称，抓包：</p>
+<p><img src="/file-upload/pass19s.png" srcset="/img/loading.gif" lazyload alt="image-20211025230502806"></p>
+<p>这里保存的名字为upload-19.php&#x2F;. 看似是文件夹的命名习惯，但是和上文的点绕过&#x2F;空格绕过类似，&#x2F;.结尾时，可以绕过黑名单过滤，不会被黑名单中的后缀所命中，成功上传后，服务器又会将&#x2F;.删除，保存为原来的格式，进行验证：</p>
+<p><img src="/file-upload/pass19info.png" srcset="/img/loading.gif" lazyload alt="image-20211025230651515"></p>
+<p>成功绕过并能够正常解析。</p>
+<p><strong>防护措施</strong></p>
+<p>与空格绕过点绕过类似，可以删除文件名中的&#x2F;，也可以对filename中的&#x2F;进行匹配</p>
+<p><strong>上文讲过的哪一种思路也能进行绕过</strong></p>
+<h5 id="challenge"><a href="#challenge" class="headerlink" title="challenge"></a>challenge</h5><p><strong>Pass-20</strong></p>
+<p>结合了MIME过滤，后缀名过滤，采用白名单的方式，绕过方法为逻辑数组绕过，因为在真实环境中的实用性很小，不作讲解。</p>
+<h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>编辑器是软体程序，一般是指用来修改电脑档案的编写软件。常见的编辑器有文本编辑器、网页编辑器、源程序编辑器、图像编辑器，声音编辑器和视频编辑器等。</p>
+<h3 id="常见编辑器"><a href="#常见编辑器" class="headerlink" title="常见编辑器"></a>常见编辑器</h3><ul>
+<li>FCKeditor</li>
+<li>UEditor</li>
+<li>eWebEditor</li>
+<li>Cute Editor</li>
+<li>Webhtmleditor</li>
+<li>Kindeditor</li>
+<li>Freetextbox</li>
+<li>Msn editor</li>
+</ul>
+<h3 id="识别编辑器"><a href="#识别编辑器" class="headerlink" title="识别编辑器"></a>识别编辑器</h3><ul>
+<li><p>inurl:fckeditor</p>
+</li>
+<li><p>后台看</p>
+</li>
+<li><p>目录扫描</p>
+</li>
+</ul>
+<h3 id="编辑器漏洞利用"><a href="#编辑器漏洞利用" class="headerlink" title="编辑器漏洞利用"></a>编辑器漏洞利用</h3><p>编辑器产生的漏洞一般都是文件上传漏洞，一般没有普适性的绕过方法等，利用方法和CMS漏洞类似，需要根据已知的编辑器版本信息进行查找，如果有漏洞，就能进行利用，因此不作演示。</p>
+<h2 id="WAF绕过（有文件上传漏洞的前提下）"><a href="#WAF绕过（有文件上传漏洞的前提下）" class="headerlink" title="WAF绕过（有文件上传漏洞的前提下）"></a>WAF绕过（有文件上传漏洞的前提下）</h2><p>目前主流的WAF大概有safedog，宝塔，D盾等等，safedog相对比较容易绕过，本次以safedog为例进行演示。实验环境为win10系统+phpstudy(Apache2.2)+safedog(Apache版)，实验的靶场为upload-labs。</p>
+<p>WAF的绕过思路大概有两种：</p>
+<p>1.躲过WAF的检测</p>
+<p>2.上传其他后缀名，但是同样执行脚本内容</p>
+<p>方法有如下几种：</p>
+<ul>
+<li>数据溢出-防匹配（xxx…）</li>
+<li>符号变异-防匹配（’ “ ;）</li>
+<li>数据截断-防匹配（%00，换行）</li>
+<li>重复数据-防匹配（多次参数）</li>
+</ul>
+<h3 id="数据溢出"><a href="#数据溢出" class="headerlink" title="数据溢出"></a>数据溢出</h3><p>首先对pass-05再次进行测试。</p>
+<p><img src="/file-upload/pass05test.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104092359806"></p>
+<p>直接上传php失败，接下来测试没有安全狗的情况下可以绕过的方法：</p>
+<p><img src="/file-upload/05phP.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104092514190"></p>
+<p>大小写被安全狗拦截，接着尝试通过数据溢出来绕过安全狗。</p>
+<p>一般情况下name属性无法进行更改，因此首先想到在filename处进行溢出。</p>
+<p><img src="/file-upload/yichu1.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104093032823"></p>
+<p>失败，被拦截，尝试更多溢出：</p>
+<p><img src="/file-upload/yichu2.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104093453518"></p>
+<p>直接没有返回，失败。经过测试，如果继续加大溢出的字符，会导致apache服务直接崩溃。</p>
+<p>Tips:这里在filename中进行溢出尝试时候，pass-06成功上传了php文件：</p>
+<p><img src="/file-upload/pass061.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104101741140"></p>
+<p>因此，针对不同的过滤方法，就数据溢出形式的绕过而言，对filename进行溢出可能是一种可行的方法。</p>
+<p>接着尝试在两个属性之间溢出：</p>
+<p><img src="/file-upload/yichu3.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104094059729"></p>
+<p>可以绕过安全狗，但是无法上传，提示上传出错。</p>
+<p>接下来模仿报文的格式，在溢出的数据后加”;” :</p>
+<p><img src="/file-upload/pass062.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104101947942"></p>
+<p>可以成功绕过安全狗限制。</p>
+<p>Tips:如果溢出的数据不够，可能还会被拦截，加大溢出数据的长度即可。经过测试，不止在name,filename处可以成功，其他属性直接插入垃圾数据并使用”;”分隔也有同样的效果。</p>
+<h3 id="符号变异"><a href="#符号变异" class="headerlink" title="符号变异"></a>符号变异</h3><p>首先对正常php进行测试，被安全狗拦截：</p>
+<p><img src="/file-upload/pass021.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104124300312"></p>
+<p>符号变异的绕过主要就是通过对<code>&#39; &quot; ;   </code>等符号进行测试。接下来依次尝试：</p>
+<p>从报文可以看出，filename到content-type中间没有分号，而是一个换行，尝试添加分号：</p>
+<p><img src="/file-upload/test022.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104124615589"></p>
+<p>绕过失败，被拦截。</p>
+<p>尝试删除一个后面的引号：</p>
+<p><img src="/file-upload/pass023.jpg" srcset="/img/loading.gif" lazyload alt="test023"></p>
+<p>成功绕过安全狗上传文件,到目录下查看，正常：</p>
+<p><img src="/file-upload/server1.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104125154265"></p>
+<p>尝试删除前面的引号：</p>
+<p><img src="/file-upload/pass024.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104125241961"></p>
+<p>被拦截。这里引号的位置不同，导致拦截行为有差异，可能跟安全狗的安全策略有关。</p>
+<p>接下来考虑用单引号替换双引号，测试方法相同就不再重复。结果如下：</p>
+<p><img src="/file-upload/webshell.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104125535150"></p>
+<p>如果没有单引号、只有一个单引号或者有一个闭合的单引号，全部都能绕过检测成功上传文件。</p>
+<p>Tips:上述单引号的四种绕过中，第二种会上传后缀名为php’的文件，无法执行</p>
+<p>另外可以尝试filename&#x3D;”x”a.php。有一定几率绕过，上传的文件名为a.php。如果直接写”x”.php，则文件名为.php,也能执行。</p>
+<h3 id="数据截断"><a href="#数据截断" class="headerlink" title="数据截断"></a>数据截断</h3><p>尝试之前试过的00截断，在post中，因此需要进行url编码：</p>
+<p><img src="/file-upload/00.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104132010892"></p>
+<p>直接绕过了安全狗。查看服务器中的文件，为a.php:</p>
+<p><img src="/file-upload/server2.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104132106720"></p>
+<p>接着通过分号进行截断，这里主要是利用了白名单，让检测时误以为是白名单中的内容：</p>
+<p><img src="/file-upload/white.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104132231286"></p>
+<p>成功绕过安全狗，注意，虽然有.jpg ; 但是文件最终还是php文件。</p>
+<p>Tips:利用数据截断进行上传时，还可以考虑::$DATA截断，换行截断。</p>
+<p>换行截断是指：</p>
+<p><img src="/file-upload/0d.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104135213671"></p>
+<p>也有一定的几率能够绕过。</p>
+<h3 id="重复数据-防匹配"><a href="#重复数据-防匹配" class="headerlink" title="重复数据-防匹配"></a>重复数据-防匹配</h3><p>这里通过使用重复数据进行绕过，上传的最终文件是最后一个，因此前面重复添加jpg来绕过：</p>
+<p><img src="/file-upload/shell.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104133636071"></p>
+<p>成功，到服务器进行验证：</p>
+<p><img src="/file-upload/hahaha.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104133806292"></p>
+<p>上传了名为hahaha.php的文件。</p>
+<p>尝试在filename中加入重复数据：</p>
+<p><img src="/file-upload/jpegaaa.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104134353518"></p>
+<p>这里将name，content-type的内容添加到filename中，绕过了安全狗，查看上传的文件名：</p>
+<p><img src="/file-upload/content.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104134444896"></p>
+<p>发现文件名闻jpegaaaaa.php，观察报文发现新的思路，是否可以直接使用&#x2F;绕过？</p>
+<p>进行测试：</p>
+<p><img src="/file-upload/test.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104134940506"></p>
+<p>发现被过滤，将aaa替换成更长的字符串依然失败。再结合报文，可能需要引号闭合，进行测试：</p>
+<p><img src="/file-upload/final.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104134902898"></p>
+<p>成功绕过，查看服务器中的文件名：</p>
+<p><img src="/file-upload/suc.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104135052079"></p>
+<p>与猜想的一致，成功。</p>
+<h3 id="fuzz"><a href="#fuzz" class="headerlink" title="fuzz"></a>fuzz</h3><p>在不了解黑白名单内容的情况下，可以通过fuzz测试来进行尝试。</p>
+<p>还是以upload-labs为例，假设只针对php文件。</p>
+<p>对filename的内容进行爆破，使用fuzz字典，结果如下：</p>
+<p><img src="/file-upload/render.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104135715164"></p>
+<p>是否能通过检测可以通过render查看，此处直接从服务器上更直观地来看：</p>
+<p><img src="/file-upload/server4.jpg" srcset="/img/loading.gif" lazyload alt="image-20211104135831748"></p>
+<p>上传的都是绕过了黑白名单限制的后缀。</p>
+<p>Tips：对网站爆破可能会被封锁IP，可以通过burp的fakeip插件或者动态ip进行一定程度的缓解。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>WAF的绕过方法有很多种，但是思路大致就是上文提到的内容，将各种方法结合使用往往就能对WAF进行有效地绕过。</p>
+<h3 id="防护"><a href="#防护" class="headerlink" title="防护"></a>防护</h3><ul>
+<li>对于垃圾数据填充，可以通过content!进行一定程度的防御</li>
+<li>限制上传文件名的最大长度</li>
+<li>对<code>; &#39; &quot; /</code>等特殊字符进行限制</li>
+<li>对文件名中的00进行匹配</li>
+</ul>
+<h2 id="利用思路"><a href="#利用思路" class="headerlink" title="利用思路"></a>利用思路</h2><ul>
+<li>看中间件，看是否存在解析漏洞&#x2F;CMS&#x2F;编辑器漏洞&#x2F;CVE&#x2F;漏洞。如果有，搜索对应的利用方法。</li>
+<li>查找文件上传点，找到后，先上传普通的文件进行测试，筛选，接着对过滤方法进行猜测，针对不同的过滤采用不同的绕过方法。</li>
+</ul>
+<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><p>识别方法：</p>
+<ul>
+<li>云悉</li>
+<li>whatweb</li>
+<li>御剑识别</li>
+<li>文件md5值</li>
+<li>F12数据包</li>
+<li>robots.txt</li>
+</ul>
+<h3 id="编辑器-1"><a href="#编辑器-1" class="headerlink" title="编辑器"></a>编辑器</h3><ul>
+<li>通过url或者UI界面内容进行识别</li>
+</ul>
+<h3 id="其他-CVE"><a href="#其他-CVE" class="headerlink" title="其他&#x2F;CVE"></a>其他&#x2F;CVE</h3><ul>
+<li>关注CVE官网，漏洞库等</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/OWASP/">OWASP</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/file-upload/">file upload</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/05/htb-blocky/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">htb_blocky</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"MgDyY5XEdtIKIZHTxzy3GBJV-gzGzoHsz","appKey":"P8Ab9EN1clJmhpYHpamFEiD9","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- LeanCloud 统计PV -->
+        <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+            <span id="leancloud-site-pv"></span>
+             次
+          </span>
+      
+      
+        <!-- LeanCloud 统计UV -->
+        <span id="leancloud-site-uv-container" style="display: none">
+            总访客数 
+            <span id="leancloud-site-uv"></span>
+             人
+          </span>
+      
+
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+  <script defer src="/js/leancloud.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

@@ -191,15 +191,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/test123/" target="_self">
-          test123
+        <a href="/2024/07/23/vulnhub_kioptrix_2014/" target="_self">
+          vulnhub_kioptrix_2014
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/test123/" target="_self">
+        <a href="/2024/07/23/vulnhub_kioptrix_2014/" target="_self">
           
-          aaa
+          vulnhub_kioptrix_2014Finally arrived at the last box of the Kioptrix series! EnumerationI’ll start by seeking for open ports on the target box.I prefer using masscan and namp for this initial task.  T
         </a>
       </p>
 
@@ -207,7 +207,7 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 14:21" pubdate>
+            <time datetime="2024-07-23 12:00" pubdate>
               2024-07-23
             </time>
           </div>
@@ -216,7 +216,7 @@
           <div class="post-meta mr-3">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/test-category/">test_category</a>
+              <a href="/categories/vulnhub/">vulnhub</a>
             
           </div>
         
@@ -224,7 +224,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/test/">test</a>
+              <a href="/tags/vulnhub/">vulnhub</a>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
             
           </div>
         
@@ -238,15 +240,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/test/" target="_self">
-          test
+        <a href="/2023/05/06/htb-armageddon/" target="_self">
+          htb_armageddon
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/test/" target="_self">
+        <a href="/2023/05/06/htb-armageddon/" target="_self">
           
-          this is a test page here is a img:
+          htb_armageddongetshellnmap扫端口：  这里直接扫出来80端口为drupal 7。 后台目录扫一下：  一一访问之后没有发现有用信息，但是在changelog.txt发现了具体版本号：  当前drupal版本为7.56. 火狐访问：  这里为登录框，考虑sql注入或者默认密码弱口令等等，但是由于已经框架和版本，先搜索有无对应漏洞。 searchsploit：  前四个都跟版
         </a>
       </p>
 
@@ -254,12 +256,28 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 09:22" pubdate>
-              2024-07-23
+            <time datetime="2023-05-06 15:48" pubdate>
+              2023-05-06
             </time>
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
         
       </div>
     </article>
@@ -271,15 +289,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/07/23/hello-world/" target="_self">
-          Hello World
+        <a href="/2023/05/05/htb-blocky/" target="_self">
+          htb_blocky
         </a>
       </h1>
 
       <p class="index-excerpt">
-        <a href="/2024/07/23/hello-world/" target="_self">
+        <a href="/2023/05/05/htb-blocky/" target="_self">
           
-          Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
+          htb_blockygetshell首先nmap：   访问http（记得添加dns解析）：  目录爆破：  这里有几个目录需要关注，首先是wp-login.php，表明这是wordpress，其次还存在phpmyadmin，可以考虑写shell，还有&#x2F;plugins。 phpmyadmin:  弱口令失败，常规的登录界面：  &#x2F;plugins：  存在两个jar包，下载至本地
         </a>
       </p>
 
@@ -287,12 +305,75 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-23 09:05" pubdate>
-              2024-07-23
+            <time datetime="2023-05-05 17:50" pubdate>
+              2023-05-05
             </time>
           </div>
         
         
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2023/04/27/file-upload/" target="_self">
+          file_upload
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/04/27/file-upload/" target="_self">
+          
+          file_upload 介绍什么是文件上传漏洞简单来说，存在文件上传，就可能存在文件上传漏洞。上传文件时，如果未对上传的文件进行严格的验证和过滤，就可能导致传入非法文件，例如木马等等。 文件上传的危害上传漏洞与SQL注入或 XSS相比，其风险更大。 如果 Web应用程序存在上传漏洞，攻击者上传的文件是Web脚本语言，服务器的Web容器解释并执行了用户上传的脚本，就会导致代码执行。如果上传的文件是F
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-04-27 22:32" pubdate>
+              2023-04-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/OWASP/">OWASP</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/file-upload/">file upload</a>
+            
+          </div>
         
       </div>
     </article>
