@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>Bugbounty Automation 01——LFI自动化</title>
+    <link href="/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/"/>
+    <url>/2024/07/23/Bugbounty%20Automation%2001%E2%80%94%E2%80%94LFI%E8%87%AA%E5%8A%A8%E5%8C%96/</url>
+    
+    <content type="html"><![CDATA[<p>在阅读了各类文章之后发现，其实针对各类漏洞的自动化挖掘都或多或少已经有一些脚本，但是原理和利用的工具都有所差异，因此决定自己动手实现。<br>初步的设想是，依托于 redis 数据库的任务队列特性，自动化进行子域名挖掘，参数挖掘，js 文件泄露，漏洞检测等等功能，并进行消息的即时推送。</p><h2 id="LFI-漏洞"><a href="#LFI-漏洞" class="headerlink" title="LFI 漏洞"></a>LFI 漏洞</h2><p>本地文件包含漏洞(Local File Inclusion)是一种常见的 web 安全漏洞。当应用程序将用户输入的数据作为文件名包含（include）到服务器端的文件中时，由于缺乏对输入数据的适当验证，攻击者可以包含服务器上的其他文件，甚至是敏感文件。<br>一般会造成任意文件读取甚至远程代码执行。</p><h2 id="自动化流程"><a href="#自动化流程" class="headerlink" title="自动化流程"></a>自动化流程</h2><h3 id="子域名挖掘"><a href="#子域名挖掘" class="headerlink" title="子域名挖掘"></a>子域名挖掘</h3><p>子域名挖掘的工具很多，下面列举部分常见的：</p><ul><li><a href="https://github.com/tomnomnom/assetfinder">https://github.com/tomnomnom/assetfinder</a></li><li><a href="https://github.com/YashGoti/crtsh">https://github.com/YashGoti/crtsh</a></li><li><a href="https://github.com/gwen001/github-subdomains">https://github.com/gwen001/github-subdomains</a></li><li><a href="https://github.com/owasp-amass/amass">https://github.com/owasp-amass/amass</a></li><li><a href="https://github.com/tomnomnom/assetfinder">https://github.com/tomnomnom/assetfinder</a></li><li><a href="https://github.com/aboul3la/Sublist3r">https://github.com/aboul3la/Sublist3r</a></li><li>…<br>这部分尽量使用尽可能多的工具，保证收集到的子域名尽量全面。<br>所有工具跑出来的结果放到一个文件里，进行去重处理。<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cat</span> domains | assetfinder -subs-<span class="hljs-keyword">only</span><br>subfinder -d vulnweb.<span class="hljs-keyword">com</span> -<span class="hljs-keyword">o</span> results.txt<br>...<br></code></pre></td></tr></table></figure></li></ul><h3 id="参数挖掘"><a href="#参数挖掘" class="headerlink" title="参数挖掘"></a>参数挖掘</h3><p>在获取到子域名之后，对每个域名进行参数的挖掘，这部分为了提高效率，需要先进行判活，再对相似的站点进行过滤等等，后面会单独写一篇文章讨论信息收集（子域名挖掘和参数挖掘）的内容。<br>这里利用 paramspider 工具：<br><a href="https://github.com/devanshbatham/ParamSpider">https://github.com/devanshbatham/ParamSpider</a><br><code>paramspider -d [domain] -o results.txt </code><br><img src="/2023/04/27/file-upload/240412144948960.png"><br>结果如下：<br><img src="/2023/04/27/file-upload/240412145009453.png"></p><h3 id="FFUF"><a href="#FFUF" class="headerlink" title="FFUF"></a>FFUF</h3><p>收集完参数之后，用 FFUF 进行探测。<br><a href="https://github.com/ffuf/ffuf">ffuf&#x2F;ffuf: Fast web fuzzer written in Go (github.com)</a><br><code>for URL in $(&lt;results.txt); do (ffuf -u &quot;$&#123;URL&#125;&quot; -c -w LFI-Jhaddix.txt -mc 200 -ac -sa -t 20 -or -od ffuf_lfi_results); done</code><br>其中- </p><ul><li>-mc 200：只匹配 HTTP 状态码为200的响应。</li><li>-ac：自动调整请求的并发数。</li><li>-sa：禁用自动大小写变异。</li><li>-t 20：设置请求的超时时间为20秒。</li><li>-or：将结果输出到屏幕。</li><li>-od ffuf_lfi_results：将结果输出到指定的目录<code>ffuf_lfi_results</code>。<br>直接用 bash 命令，对 paramspider 的结果进行遍历，用到的字典为 seclist 中的 LFI-Jhaddix.txt:<br><a href="https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/LFI/LFI-Jhaddix.txt">https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/LFI/LFI-Jhaddix.txt</a></li></ul><h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><p>在上一步之后，生成的文件内容如下：<br><img src="/2023/04/27/file-upload/240412150801610.png"><br>再通过 grep 命令筛选敏感内容。<br><code>grep -Ril &quot;root:x&quot; ffuf_lfi_results/ | tee VULNERABLE.txt</code></p><ul><li>-R：以递归的方式搜索所有子目录。</li><li>-i：在搜索时忽略大小写</li><li>-l ：只输出包含匹配字符串的文件名，而不输出匹配行的内容。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>vulnerability</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>vulnerability</tag>
+      
+      <tag>SRC</tag>
+      
+      <tag>automation</tag>
+      
+      <tag>LFI</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>vulnhub_kioptrix_2014</title>
     <link href="/2024/07/23/vulnhub_kioptrix_2014/"/>
     <url>/2024/07/23/vulnhub_kioptrix_2014/</url>

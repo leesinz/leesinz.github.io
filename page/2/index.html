@@ -191,6 +191,55 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/05/05/htb-squashed/" target="_self">
+          htb_squashed
+        </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/05/05/htb-squashed/" target="_self">
+          
+          htb_squashedgetshell首先nmap：  详细扫描：  重点放在http和rpc服务上。 先看80端口的http：  目录爆破： 没有可用信息。 rpcinfo：  showmount看一下有无可挂载目录：  有两个，&#x2F;home&#x2F;ross和&#x2F;var&#x2F;www&#x2F;html。 分别挂载到&#x2F;mnt&#x2F;1,&#x2F;mnt&amp;
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-05-05 17:51" pubdate>
+              2023-05-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/htb/">htb</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/walkthrough/">walkthrough</a>
+            
+              <a href="/tags/htb/">htb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/05/05/htb-blocky/" target="_self">
           htb_blocky
         </a>
@@ -601,55 +650,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2023-05-01 22:54" pubdate>
               2023-05-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/htb/">htb</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/walkthrough/">walkthrough</a>
-            
-              <a href="/tags/htb/">htb</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2023/04/28/htb-photobomb/" target="_self">
-          htb_photobomb
-        </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2023/04/28/htb-photobomb/" target="_self">
-          
-          htb_photobombgetshell首先使用nmap简单扫一下端口：  加上参数扫服务：  火狐访问http服务，dns解析出错：  域名加到hosts文件：  成功：  to get started, please click here,点击超链：  弹出一个登录框，无法抓取流量，应该是前端校验。 尝试目录爆破：  也没有可利用内容。 查看源代码：  出现可疑js文件，photobomb.
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-28 13:32" pubdate>
-              2023-04-28
             </time>
           </div>
         
